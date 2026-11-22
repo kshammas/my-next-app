@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Bell,
-  ChevronLeft,
   ChevronRight,
   Coins,
   Download,
@@ -19,8 +18,6 @@ import type { Session } from '@/lib/types';
 
 type InstallPrompt = Event & { prompt: () => Promise<void> };
 
-const focusOnDark =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FDF6D4]';
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
@@ -60,19 +57,9 @@ export default function ProfilePage() {
 
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#F5FAF6] pb-6">
-        <header className="relative flex min-h-[64px] items-center justify-center bg-[#13512C] px-14 py-4 text-white">
-          <Link
-            href="/home"
-            aria-label="Go back"
-            className={`absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/25 ${focusOnDark}`}
-          >
-            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
-          </Link>
-          <h1 className="text-[18px] font-extrabold tracking-tight">Profile</h1>
-        </header>
-
-        <section className="px-4 pb-1 pt-6 text-center">
+      <div className="min-h-full bg-[#F5FAF6] pb-6 pt-[max(32px,env(safe-area-inset-top))]">
+        <section className="px-4 pb-1 text-center">
+          <h1 className="sr-only">Profile</h1>
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#FDF6D4] bg-[#15532E] text-[24px] font-extrabold text-[#EECE2D] shadow-sm">
             {initials || 'G'}
           </div>

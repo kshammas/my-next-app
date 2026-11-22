@@ -141,10 +141,10 @@ function GuestHome() {
 function ParticipantHome({ session }: { session: Session }) {
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#F4F6F3] pb-8">
+      <div className="min-h-full bg-[#F6F8F5] pb-8">
         <BrandHeader />
 
-        <section className="mx-4 rounded-[22px] bg-[#13512C] px-5 py-4 text-white shadow-sm">
+        <section className="mx-4 rounded-[22px] bg-[#0C3523] px-5 py-4 text-white shadow-sm">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <p className="truncate text-[17px] font-extrabold tracking-tight">{session.name}</p>
@@ -171,7 +171,7 @@ function ParticipantHome({ session }: { session: Session }) {
             </div>
             <Link
               href="/wallet"
-              className="flex min-h-[38px] items-center gap-1 rounded-full bg-[#EECE2D] px-4 text-[11px] font-extrabold text-[#13512C] transition hover:bg-[#F4DA57]"
+              className="flex min-h-[38px] items-center gap-1 rounded-full bg-[#FDE047] px-4 text-[11px] font-extrabold text-[#0C3523] transition hover:bg-[#F7DF5B]"
             >
               Wallet
               <ArrowUpRight size={14} strokeWidth={2.6} aria-hidden="true" />
@@ -182,12 +182,12 @@ function ParticipantHome({ session }: { session: Session }) {
         <div className="mx-4 mt-3 grid grid-cols-2 gap-3">
           <Link
             href="/scan?mode=claim"
-            className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-white px-4 shadow-sm transition-transform duration-150 active:scale-[0.98]"
+            className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-[#FDE047] px-4 shadow-sm transition-transform duration-150 active:scale-[0.98]"
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#FDF6D4] text-[#13512C]">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-white/50 text-[#0C3523]">
               <ScanLine size={20} strokeWidth={2.4} aria-hidden="true" />
             </span>
-            <span className="text-[12px] font-extrabold leading-tight text-[#243B2E]">
+            <span className="text-[12px] font-extrabold leading-tight text-[#0C3523]">
               Scan to redeem
             </span>
           </Link>
@@ -224,7 +224,7 @@ function ParticipantHome({ session }: { session: Session }) {
             <div className="relative flex h-[116px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#00130D] via-[#09301E] to-[#15532E]">
               <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full border border-white/10" />
               <div className="absolute -bottom-16 right-0 h-44 w-44 rounded-full border border-white/10" />
-              <span className="absolute right-3 top-3 rounded-full bg-[#EECE2D] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest text-[#13512C]">
+              <span className="absolute right-3 top-3 rounded-full bg-[#FDE047] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest text-[#0C3523]">
                 Live
               </span>
               <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
@@ -236,7 +236,9 @@ function ParticipantHome({ session }: { session: Session }) {
                 <h2 className="text-[15px] font-extrabold text-[#171717]">Watch Live</h2>
                 <p className="mt-1 text-[11px] text-[#7E7E80]">Catch every moment, live</p>
               </div>
-              <ArrowUpRight size={18} className="text-[#13512C]" aria-hidden="true" />
+              <span className="flex min-h-[36px] shrink-0 items-center rounded-full bg-[#FDE047] px-4 text-[10px] font-extrabold text-[#0C3523]">
+                Watch Live
+              </span>
             </div>
           </Link>
         </section>

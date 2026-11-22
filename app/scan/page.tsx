@@ -30,7 +30,7 @@ function ScannerView() {
           { fps: 10, qrbox: { width: 160, height: 160 } },
           (value) => {
             if (cancelled) return;
-            const destination = isClaim ? '/points' : '/home';
+            const destination = isClaim ? '/points' : '/onboarding';
             void apiSend<Session>('/api/session', 'POST', { code: value })
               .catch(() => undefined)
               .finally(() => {
