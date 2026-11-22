@@ -1,26 +1,20 @@
-
-import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'My Next App',
-    short_name: 'My App',
-    description: 'My Progressive Web Application',
-    start_url: '/',
+    name: 'Rendezvous 26',
+    short_name: 'Rendezvous',
+    description: 'Jamia Madeenathunoor Life Festival — schedule, scores, live events and Glocal Points.',
+    start_url: '/home',
+    scope: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#000000',
+    orientation: 'portrait',
+    background_color: '#f4f8f6',
+    theme_color: '#064e24',
+    categories: ['entertainment', 'events', 'lifestyle'],
     icons: [
-      {
-        src: '/icon-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: '/icon-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
+      { src: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
-  }
+  };
 }

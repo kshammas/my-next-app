@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rendezvous 26 — Web App
 
-## Getting Started
+A web version of the Rendezvous 26 (Jamia Madeenathunoor Life Festival) app, built on Next.js 16 App Router. Same phone-shaped UI and green/yellow festival styling, with a server-side API-key layer.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Sign in by scanning/entering a participant ID, or continue as a guest.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The app runs with built-in sample data out of the box — no credentials needed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Backend / API key
 
-## Learn More
+The browser never sees the upstream key. It calls local `/api/*` route handlers, and `lib/api.ts` (a `server-only` module) attaches the key to upstream requests.
 
-To learn more about Next.js, take a look at the following resources:
+Set both variables together in `.env.local` to use a real backend:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+API_BASE_URL=https://your-api.example.com/v1
+API_KEY=your-secret-key
+# Optional: API_KEY_HEADER=x-api-key  API_AUTH_SCHEME=bearer
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Default auth header: `x-api-key: <key>`
+- `API_AUTH_SCHEME=bearer` sends `Authorization: Bearer <key>` instead
+- Setting only one of `API_BASE_URL` / `API_KEY` throws a config error; setting neither uses the demo fixtures in `lib/demo-data.ts`
 
-## Deploy on Vercel
+Upstream endpoint paths are centralized in the route handlers under `app/api/`. Adjust them there to match your API.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Screens
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Login, Home, Schedule, My Program, Results, Live & Videos, Campus Map, Glocal Store, Notifications, Glocal Points, Glocal Wallet, Profile.
+
+## PWA
+
+A web manifest (`app/manifest.ts`) and a small service worker (`public/sw.js`) make the app installable. Personalized `/api/*` responses are never cached by the service worker.
+
+## Scripts
+
+```bash
+npm run dev     # development server
+npm run build   # production build (includes lint + type check)
+npm run lint    # ESLint
+npm run start   # serve the production build
+```
