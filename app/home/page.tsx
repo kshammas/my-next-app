@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Clock,
   Home,
+  LifeBuoy,
   Map,
   Radio,
   ScanLine,
@@ -38,6 +39,8 @@ const menu: { label: string; href: string; icon: ReactNode }[] = [
   { label: 'Map', href: '/map', icon: <Map className="h-7 w-7 text-[#0a7a33]" /> },
   { label: 'Store', href: '/store', icon: <ShoppingCart className="h-7 w-7 text-[#0a7a33]" /> },
   { label: 'Glocal Wallet', href: '/wallet', icon: <Wallet className="h-7 w-7 text-[#0a7a33]" /> },
+  { label: 'Result', href: '/results', icon: <Trophy className="h-7 w-7 text-[#0a7a33]" /> },
+  { label: 'Support', href: '/support', icon: <LifeBuoy className="h-7 w-7 text-[#0a7a33]" /> },
 ];
 
 function GoldCoin({ className = '' }: { className?: string }) {

@@ -584,6 +584,39 @@ svg {
   animation: rise var(--dur-base) var(--ease) both;
 }
 
+/* Splash loader — fades in, then out before routing on. */
+@keyframes splash-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes splash-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes splash-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.splash-in {
+  animation: splash-in 600ms var(--ease) both;
+}
+
+.splash-out {
+  animation: splash-out 500ms ease-in both;
+}
+
+/* Full-screen scanner viewfinder corners. */
+.scanner-corner {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-color: #ffea04;
+  pointer-events: none;
+}
+
 /* Respect user motion preference everywhere. */
 @media (prefers-reduced-motion: reduce) {
   html {
