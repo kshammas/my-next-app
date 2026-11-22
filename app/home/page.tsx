@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   Bell,
@@ -35,12 +36,15 @@ export default function HomePage() {
     <AppShell>
       <div className="min-h-full bg-[#F6F8F5] pb-8">
         <header className="px-5 pb-9 pt-14">
-          <h1 className="text-[27px] font-black uppercase leading-none tracking-tight text-[#000000]">
-            Rendezvous 26
-          </h1>
-          <p className="mt-0.5 text-[8.5px] font-bold tracking-[0.06em] text-[#3A443E]">
-            JAMIA MADEENATHUNOOR LIFE FESTIVAL
-          </p>
+          <h1 className="sr-only">Rendezvous 26 — Jamia Madeenathunoor Life Festival</h1>
+          <Image
+            className="h-auto w-[196px] object-contain"
+            src="/rend-logo-mobilesrc.png"
+            alt="Rendezvous 26 — Jamia Madeenathunoor Life Festival"
+            width={196}
+            height={40}
+            priority
+          />
         </header>
 
         <section className="mx-4 rounded-[20px] bg-[#113E29] px-4 py-3 text-white">

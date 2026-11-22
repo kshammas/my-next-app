@@ -18,13 +18,10 @@ export function SideNav() {
           width={42}
           height={42}
         />
-        <Image
-          className="side-nav-brand-wordmark"
-          src="/rend-logo-mobilesrc.png"
-          alt="Rendezvous 26 — Jamia Madeenathunoor Life Festival"
-          width={128}
-          height={26}
-        />
+        <div>
+          <p className="side-nav-brand-name">Rendezvous 26</p>
+          <p className="side-nav-brand-sub">Life Fest · Jamia</p>
+        </div>
       </div>
 
       <div>
