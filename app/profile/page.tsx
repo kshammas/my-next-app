@@ -3,13 +3,26 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Download, LogOut } from 'lucide-react';
+import {
+  Bell,
+  ChevronLeft,
+  ChevronRight,
+  Coins,
+  Download,
+  LifeBuoy,
+  LogOut,
+} from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { demoSession } from '@/lib/demo-data';
 import { apiSend, useApi } from '@/lib/use-api';
 import type { Session } from '@/lib/types';
 
 type InstallPrompt = Event & { prompt: () => Promise<void> };
+
+const focusOnDark =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FDF6D4]';
+const focusOnLight =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -46,66 +59,121 @@ export default function ProfilePage() {
     .toUpperCase();
 
   return (
-    <AppShell>
-      <div className="min-h-full bg-[#f4f8f5]">
-        <div className="rounded-b-[32px] bg-gradient-to-br from-[#e3f3e8] to-[#f9f9e4] px-5 pb-6 pt-8 text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-[#064e24] text-[24px] font-extrabold text-[#f7e305]">
+    <AppShell showBottomNav>
+      <div className="min-h-full bg-[#F5FAF6] pb-6">
+        <header className="relative flex min-h-[64px] items-center justify-center bg-[#13512C] px-14 py-4 text-white">
+          <Link
+            href="/home"
+            aria-label="Go back"
+            className={`absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/25 ${focusOnDark}`}
+          >
+            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+          </Link>
+          <h1 className="text-[18px] font-extrabold tracking-tight">Profile</h1>
+        </header>
+
+        <section className="px-4 pb-1 pt-6 text-center">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#FDF6D4] bg-[#15532E] text-[24px] font-extrabold text-[#EECE2D] shadow-sm">
             {initials || 'G'}
           </div>
-          <h1 className="mt-3 text-[19px] font-extrabold text-[#073b1d]">{session.name}</h1>
-          <span className="mt-1.5 inline-block rounded-full bg-[#d3eedb] px-3.5 py-1 text-[11px] font-semibold text-[#085c2b]">
+          <h2 className="mt-3 text-[19px] font-extrabold text-[#15532E]">{session.name}</h2>
+          <span className="mt-2 inline-block rounded-full bg-[#FDF6D4] px-3.5 py-1 text-[11px] font-bold text-[#15532E]">
             Jamia No. {session.jamiaId}
           </span>
-        </div>
+        </section>
 
-        <div className="mx-auto grid w-full max-w-2xl gap-3 px-5 py-4 lg:max-w-none lg:grid-cols-2">
-          <div className="space-y-3 rounded-[22px] bg-white p-4">
-            <div className="flex justify-between text-[13.5px]">
-              <span className="font-semibold text-[#073b1d]">Jamia ID</span>
-              <span className="text-slate-500">{session.jamiaId}</span>
-            </div>
-            <div className="flex justify-between text-[13.5px]">
-              <span className="font-semibold text-[#073b1d]">Campus</span>
-              <span className="capitalize text-slate-500">{session.campus}</span>
-            </div>
-            <div className="flex justify-between text-[13.5px]">
-              <span className="font-semibold text-[#073b1d]">Saved sessions</span>
-              <span className="text-slate-500">{session.registered.length}</span>
-            </div>
+        <section className="mx-4 mt-5 rounded-[22px] bg-white p-4 shadow-sm" aria-label="Your details">
+          <h3 className="text-[10px] font-extrabold tracking-[0.14em] text-[#8FA79A]">
+            YOUR DETAILS
+          </h3>
+          <div className="mt-3 flex items-center justify-between gap-3 border-b border-[#13512C]/10 pb-3 text-[13px]">
+            <span className="font-bold text-[#15532E]">Jamia ID</span>
+            <span className="text-[#6B7B72]">{session.jamiaId}</span>
           </div>
-
-          <div className="space-y-3 rounded-[22px] bg-white p-4">
-            <Link href="/points" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
-              <span>Glocal Points</span>
-              <span>{session.points} GP ›</span>
-            </Link>
-            <Link href="/wallet" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
-              <span>Glocal Wallet</span>
-              <span>›</span>
-            </Link>
-            <Link href="/programs" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
-              <span>My Program</span>
-              <span>›</span>
-            </Link>
-            <button
-              onClick={() => void install()}
-              className="flex min-h-[44px] w-full items-center justify-between text-[13.5px] font-semibold text-[#073b1d]"
-            >
-              <span className="flex items-center gap-2"><Download size={16} /> Install app</span>
-              <span>›</span>
-            </button>
+          <div className="mt-3 flex items-center justify-between gap-3 text-[13px]">
+            <span className="font-bold text-[#15532E]">Campus</span>
+            <span className="capitalize text-[#6B7B72]">{session.campus}</span>
           </div>
+        </section>
 
-          {message ? <p role="status" className="rounded-2xl bg-[#e7f4ea] p-3 text-[12px] text-[#0a5c2e] lg:col-span-2">{message}</p> : null}
+        <section className="mx-4 mt-4 overflow-hidden rounded-[22px] bg-white shadow-sm" aria-label="Account menu">
+          <Link
+            href="/wallet"
+            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FDF6D4] text-[#15532E]">
+              <Coins size={18} aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">
+              Glocal Points
+            </span>
+            <span className="text-[12px] font-extrabold text-[#15532E]">{session.points} GP</span>
+            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          </Link>
+
+          <Link
+            href="/notifications"
+            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+              <Bell size={18} aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13px] font-bold text-[#15532E]">Notifications</span>
+              <span className="mt-0.5 block text-[11px] text-[#6B7B72]">Push notifications</span>
+            </span>
+            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          </Link>
+
+          <Link
+            href="/support"
+            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+              <LifeBuoy size={18} aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">
+              Help &amp; support
+            </span>
+            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          </Link>
 
           <button
+            type="button"
+            onClick={() => void install()}
+            className={`flex min-h-[56px] w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+              <Download size={18} aria-hidden="true" />
+            </span>
+            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">Install app</span>
+            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          </button>
+        </section>
+
+        {message ? (
+          <p
+            role="status"
+            className="mx-4 mt-4 rounded-[14px] bg-[#E7F4EA] px-4 py-3 text-[11px] font-semibold leading-relaxed text-[#0A5C2E]"
+          >
+            {message}
+          </p>
+        ) : null}
+
+        <div className="mx-4 mt-4">
+          <button
+            type="button"
             onClick={() => void signOut()}
             disabled={busy}
-            className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[20px] bg-white p-4 font-semibold text-[13.5px] text-red-600 disabled:opacity-50 lg:col-span-2"
+            className={`flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[18px] bg-white p-4 text-[13px] font-bold text-[#B64235] shadow-sm transition-colors hover:bg-[#FDECEA] disabled:opacity-50 ${focusOnLight}`}
           >
-            <LogOut size={16} /> {busy ? 'Signing out…' : 'Sign out'}
+            <LogOut size={17} aria-hidden="true" /> {busy ? 'Signing out…' : 'Sign out'}
           </button>
         </div>
+
+        <footer className="pb-6 pt-8 text-center text-[11px] font-semibold text-[#15532E]/60">
+          Rendezvous 26
+        </footer>
       </div>
     </AppShell>
   );

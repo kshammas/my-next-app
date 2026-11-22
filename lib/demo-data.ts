@@ -10,28 +10,23 @@ import type {
   Venue,
 } from './types';
 
-export const demoTransactions: Session['transactions'] = [
-  { id: 'tx-1', title: 'Expert Talk 01', points: 50, date: 'Day 1 · 10:30', kind: 'earned' },
-  { id: 'tx-2', title: 'Urse Ajmer', points: 20, date: 'Day 1 · 15:00', kind: 'earned' },
-  { id: 'tx-3', title: 'Glocal Store redemption', points: -50, date: 'Day 2 · 12:15', kind: 'redeemed' },
-  { id: 'tx-4', title: 'Koomu Talks', points: 20, date: 'Day 2 · 16:40', kind: 'earned' },
-];
+export const demoTransactions: Session['transactions'] = [];
 
 export const demoSession: Session = {
   id: 'demo-participant',
-  name: 'ANAS KABEER',
-  jamiaId: '2020JM010',
-  campus: 'senior',
-  points: 92,
-  claimed: ['expert-covos', 'koomu-talks'],
+  name: 'Midlaj Thonikkadavan',
+  jamiaId: '2025JM122',
+  campus: 'Baithullzza',
+  points: 0,
+  claimed: [],
   registered: ['p-2'],
   readNotifications: [],
   transactions: demoTransactions,
 };
 
 export const demoDashboard: Dashboard = {
-  earned: 140,
-  redeemed: 58,
+  earned: 0,
+  redeemed: 0,
   nextEvent: { title: 'Expert Talk 02', time: '10:30 AM', venue: 'Main Hall' },
 };
 
@@ -135,9 +130,44 @@ export const demoNotifications: AppNotification[] = [
 ];
 
 export const demoActivities: PointActivity[] = [
-  { id: 'expert-covos', title: 'Expert Covos (01)', reward: 30, description: 'Attend the expert session and scan the booth QR to claim your coins.', claimed: true },
-  { id: 'glocal-vr', title: 'Glocal VR', reward: 12, description: 'Dive into the Glocal VR showcase at the Expo Block.', claimed: false },
-  { id: 'visit-expo', title: 'Visit Expo', reward: 50, description: 'Walk through the expo stalls and scan at the exit desk.', claimed: false },
-  { id: 'naat-competition', title: 'Naat Competition', reward: 20, description: 'Join the Naat competition and scan your card at the venue.', claimed: false },
-  { id: 'cultural-night', title: 'Cultural Night', reward: 25, description: 'Be part of the closing night and claim your reward.', claimed: false },
+  {
+    id: 'welcome-reward',
+    title: 'Welcome Reward',
+    reward: 10,
+    when: '19 Nov, 2:00 pm',
+    description: 'Welcome to Rendezvous! Claim your welcome Glocal Points and start exploring!',
+    claimed: false,
+  },
+  {
+    id: 'expert-convos',
+    title: 'Expert Convos',
+    reward: 30,
+    when: '19 Nov, 5:00 pm',
+    description: 'Attend the expert conversation and scan the booth QR to claim your coins.',
+    claimed: false,
+  },
+  {
+    id: 'prochat',
+    title: 'ProChat',
+    reward: 20,
+    when: '19 Nov, 9:00 pm',
+    description: 'Join ProChat, scan your participant card at the venue and collect your reward.',
+    claimed: false,
+  },
+  {
+    id: 'buy-a-book',
+    title: 'Buy a Book',
+    reward: 15,
+    when: 'Anytime',
+    description: 'Pick up a book from the fest stall and scan the counter QR to earn coins.',
+    claimed: false,
+  },
+  {
+    id: 'visit-expo',
+    title: 'Visit Expo',
+    reward: 50,
+    when: 'Anytime',
+    description: 'Walk through the expo stalls and scan at the exit desk.',
+    claimed: false,
+  },
 ];

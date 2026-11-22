@@ -98,6 +98,7 @@ export type PointActivity = {
   reward: number;
   description: string;
   claimed: boolean;
+  when?: string;
 };
 
 export type Dashboard = {

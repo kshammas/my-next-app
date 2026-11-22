@@ -9,19 +9,21 @@ export function BottomNav() {
 
   return (
     <nav className="bottom-nav" aria-label="Primary navigation">
-      {navItems.map(({ href, label, icon: Icon }) => {
-        const active = pathname === href;
+      {navItems.map((item) => {
+        const active = pathname === item.href;
+        const label = 'mobileLabel' in item ? item.mobileLabel : item.label;
+        const Icon = item.icon;
         return (
           <Link
-            key={href}
-            href={href}
+            key={item.href}
+            href={item.href}
             className="bottom-nav-item"
             aria-current={active ? 'page' : undefined}
           >
             <span className={`bottom-nav-icon ${active ? 'bottom-nav-icon-active' : ''}`}>
               <Icon
                 size={24}
-                fill={active && label === 'Home' ? 'currentColor' : 'none'}
+                fill={active && item.href === '/home' ? 'currentColor' : 'none'}
                 strokeWidth={active ? 2.6 : 2}
                 aria-hidden="true"
               />

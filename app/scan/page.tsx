@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { X } from 'lucide-react';
 import type { Html5Qrcode } from 'html5-qrcode';
 import { apiSend } from '@/lib/use-api';
 import type { Session } from '@/lib/types';
 
-export default function ScanPage() {
+function ScannerView() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isClaim = searchParams.get('mode') === 'claim';
   const holderRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState('');
 
@@ -28,10 +30,11 @@ export default function ScanPage() {
           { fps: 10, qrbox: { width: 160, height: 160 } },
           (value) => {
             if (cancelled) return;
+            const destination = isClaim ? '/points' : '/home';
             void apiSend<Session>('/api/session', 'POST', { code: value })
               .catch(() => undefined)
               .finally(() => {
-                if (!cancelled) router.push('/home');
+                if (!cancelled) router.push(destination);
               });
           },
           () => undefined,
@@ -49,22 +52,26 @@ export default function ScanPage() {
         void scanner.stop().then(() => scanner?.clear()).catch(() => undefined);
       }
     };
-  }, [router]);
+  }, [router, isClaim]);
 
   return (
     <main className="fixed inset-0 z-[90] flex flex-col bg-black text-white">
-      <h1 className="sr-only">Scan event pass</h1>
+      <h1 className="sr-only">
+        {isClaim ? 'Scan to claim Glocal coin' : 'Scan event pass'}
+      </h1>
 
       <div className="flex items-center justify-between px-5 pb-2 pt-[max(16px,env(safe-area-inset-top))]">
         <button
           type="button"
-          onClick={() => router.push('/welcome')}
+          onClick={() => router.push(isClaim ? '/points' : '/welcome')}
           aria-label="Close scanner"
           className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white"
         >
           <X size={20} />
         </button>
-        <p className="text-[16px] font-bold text-[#FFEA00]">Scan event pass</p>
+        <p className="text-[16px] font-bold text-[#FFEA00]">
+          {isClaim ? 'Scan to claim Glocal coin' : 'Scan event pass'}
+        </p>
         <span className="h-11 w-11" aria-hidden="true" />
       </div>
 
@@ -75,14 +82,14 @@ export default function ScanPage() {
             ref={holderRef}
             className="absolute inset-0 overflow-hidden rounded-lg"
           />
-          <span className="scanner-corner left-0 top-0 rounded-tl-lg border-l-4 border-t-4" />
-          <span className="scanner-corner right-0 top-0 rounded-tr-lg border-r-4 border-t-4" />
-          <span className="scanner-corner bottom-0 left-0 rounded-bl-lg border-b-4 border-l-4" />
-          <span className="scanner-corner bottom-0 right-0 rounded-br-lg border-b-4 border-r-4" />
+          <span className="pointer-events-none absolute left-0 top-0 h-[42px] w-[42px] rounded-tl-lg border-l-4 border-t-4 border-[#FFEA00]" aria-hidden="true" />
+          <span className="pointer-events-none absolute right-0 top-0 h-[42px] w-[42px] rounded-tr-lg border-r-4 border-t-4 border-[#FFEA00]" aria-hidden="true" />
+          <span className="pointer-events-none absolute bottom-0 left-0 h-[42px] w-[42px] rounded-bl-lg border-b-4 border-l-4 border-[#FFEA00]" aria-hidden="true" />
+          <span className="pointer-events-none absolute bottom-0 right-0 h-[42px] w-[42px] rounded-br-lg border-b-4 border-r-4 border-[#FFEA00]" aria-hidden="true" />
         </div>
 
         <p className="mt-8 max-w-xs text-center text-[13px] leading-relaxed text-[#C3CAD0]">
-          Point at the QR code on your participant card
+          {isClaim ? 'Place the Event QR inside this frame' : 'Point at the QR code on your participant card'}
         </p>
 
         {error ? (
@@ -92,5 +99,19 @@ export default function ScanPage() {
         ) : null}
       </div>
     </main>
+  );
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black text-white" role="status">
+          <p className="text-[14px] font-bold text-[#FFEA00]">Opening scanner…</p>
+        </div>
+      }
+    >
+      <ScannerView />
+    </Suspense>
   );
 }

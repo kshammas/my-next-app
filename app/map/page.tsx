@@ -1,81 +1,43 @@
 'use client';
 
-import { useState } from 'react';
-import { MapPin, Navigation } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronLeft, MapPin } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { PageHeader } from '@/components/PageHeader';
-import { demoVenues } from '@/lib/demo-data';
-import { useApi } from '@/lib/use-api';
-import type { Venue } from '@/lib/types';
 
 export default function MapPage() {
-  const { data: venues } = useApi<Venue[]>('/api/map', demoVenues);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = venues.find((venue) => venue.id === selectedId) ?? null;
-
   return (
     <AppShell>
-      <div className="app-content">
-        <PageHeader title="Campus Map" />
+      <div className="min-h-full bg-[#F5FAF6]">
+        <header className="flex items-center gap-3 bg-[#13512C] px-4 py-4 text-white">
+          <Link
+            href="/home"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15"
+            aria-label="Go back"
+          >
+            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+          </Link>
+          <h1 className="flex-1 pr-11 text-center text-[18px] font-extrabold">Map</h1>
+          <span className="h-11 w-11" aria-hidden="true" />
+        </header>
 
-        <p className="mt-4 text-[12px] text-slate-500">
-          Find your way around the fest. Tap a marker for details.
-        </p>
-
-        <div className="relative mt-4 h-[340px] overflow-hidden rounded-[26px] border border-emerald-100 bg-[#eaf3ec] sm:h-[420px] lg:h-[520px]">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-            <path d="M0 78 Q30 62 52 78 T100 72 L100 100 L0 100 Z" fill="#dcebdc" />
-            <path d="M6 14 L94 12 M8 46 L92 44 M14 74 L86 72 M22 4 L18 96 M52 4 L56 96 M82 6 L78 94" stroke="#fff" strokeWidth="3" opacity="0.9" />
-            <rect x="36" y="50" width="26" height="20" rx="3" fill="#cfe3d1" />
-            <rect x="64" y="20" width="18" height="16" rx="3" fill="#cfe3d1" />
-            <rect x="14" y="58" width="16" height="14" rx="3" fill="#cfe3d1" />
-          </svg>
-
-          {venues.map((venue) => (
-            <button
-              key={venue.id}
-              onClick={() => setSelectedId(venue.id)}
-              style={{ left: `${venue.x}%`, top: `${venue.y}%` }}
-              aria-label={venue.name}
-              aria-pressed={selectedId === venue.id}
-              className={`absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-[12px] font-extrabold shadow-md ${
-                selectedId === venue.id ? 'bg-[#f7e305] text-[#06451f]' : 'bg-[#064e24] text-white'
-              }`}
-            >
-              {venue.label}
-            </button>
-          ))}
-
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[10px] font-bold text-[#0a5c2e]">
-            <Navigation size={12} /> Jamia Madeenathunoor
+        <div className="flex flex-col items-center px-5 pb-12 pt-16 sm:pt-24">
+          <div className="flex h-28 w-28 items-center justify-center rounded-full bg-[#DDEBDE] sm:h-32 sm:w-32">
+            <MapPin size={46} strokeWidth={1.8} className="text-[#2E7D4F]" aria-hidden="true" />
           </div>
-        </div>
 
-        <div className="soft-card mt-4 flex items-start gap-3 p-4">
-          <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#0a7a33]" />
-          <div>
-            <p className="text-[14px] font-extrabold text-[#073b1d]">
-              {selected ? selected.name : 'Choose a venue'}
-            </p>
-            <p className="mt-0.5 text-[12px] text-slate-500">
-              {selected ? selected.note : 'Tap any marker on the map to see what is happening there.'}
-            </p>
-          </div>
-        </div>
+          <h2 className="mt-8 text-center text-[20px] font-extrabold text-[#13512C]">
+            Stage Map Unavailable
+          </h2>
+          <p className="mx-auto mt-3 max-w-[300px] text-center text-[13px] leading-relaxed text-[#6B7B72]">
+            The interactive venue map and stage directions will be available soon.
+          </p>
 
-        <div className="grid-cards mt-4">
-          {venues.map((venue) => (
-            <button
-              key={venue.id}
-              onClick={() => setSelectedId(venue.id)}
-              className={`rounded-2xl p-3 text-left text-[12px] font-bold ${
-                selectedId === venue.id ? 'bg-[#064e24] text-white' : 'bg-white text-[#073b1d]'
-              }`}
-            >
-              <span className="mr-2 opacity-60">{venue.label}</span>
-              {venue.name}
-            </button>
-          ))}
+          <Link
+            href="/home"
+            className="mt-9 flex min-h-[44px] items-center justify-center rounded-full bg-[#13512C] px-7 text-[13px] font-bold text-white transition-colors hover:bg-[#0E3D21] active:scale-[0.98]"
+          >
+            ← Back to Home
+          </Link>
         </div>
       </div>
     </AppShell>
