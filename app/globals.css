@@ -9,30 +9,30 @@
 :root {
   color-scheme: light;
 
-  /* Brand */
-  --brand-950: #032211;
-  --brand-900: #03301a;
-  --brand-800: #06451f;
-  --brand-700: #064e24;
-  --brand-600: #0a7a33;
-  --brand-500: #159447;
-  --brand-200: #b9dcc5;
+  /* Brand — sampled from the Rendezvous 26 reference screens */
+  --brand-950: #00130d;
+  --brand-900: #09301e;
+  --brand-800: #113e29;
+  --brand-700: #15532e;
+  --brand-600: #166535;
+  --brand-500: #18bb46;
+  --brand-200: #a1c8b3;
   --brand-100: #e1efe4;
-  --brand-50: #f1f8f3;
-  --lime-400: #f7e305;
-  --lime-300: #d7e86b;
+  --brand-50: #f2fef0;
+  --lime-400: #eece2d;
+  --lime-300: #fef3c6;
 
   /* Surfaces & text */
-  --canvas: #e9edea;
+  --canvas: #f6f8f5;
   --surface: #ffffff;
-  --surface-muted: #f4f8f6;
-  --text: #073b1d;
-  --text-muted: #4f6357;
-  --text-subtle: #66796d;
-  --border: rgba(6, 78, 36, 0.13);
-  --focus: #0a7a33;
+  --surface-muted: #f6f8f5;
+  --text: #1a2e23;
+  --text-muted: #6b7b72;
+  --text-subtle: #8b949b;
+  --border: rgba(21, 83, 46, 0.13);
+  --focus: #15532e;
   --danger: #be123c;
-  --success: #0a5c2e;
+  --success: #166535;
 
   /* Spacing — 4/8 rhythm */
   --space-1: 4px;
@@ -613,7 +613,7 @@ svg {
   position: absolute;
   width: 42px;
   height: 42px;
-  border-color: #ffea04;
+  border-color: #ffea00;
   pointer-events: none;
 }
 

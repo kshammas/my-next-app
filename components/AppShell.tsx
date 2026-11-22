@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { BottomNav } from './BottomNav';
 import { SideNav } from './SideNav';
 
 export function AppShell({
@@ -17,7 +16,6 @@ export function AppShell({
         {showNav ? <SideNav /> : null}
         <div className="phone-frame">
           <div className="phone-scroll" id="main-content">{children}</div>
-          {showNav ? <BottomNav /> : null}
         </div>
       </div>
     </main>

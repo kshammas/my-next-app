@@ -64,7 +64,7 @@ export default function ScanPage() {
         >
           <X size={20} />
         </button>
-        <p className="text-[16px] font-bold text-[#FFEA04]">Scan event pass</p>
+        <p className="text-[16px] font-bold text-[#FFEA00]">Scan event pass</p>
         <span className="h-11 w-11" aria-hidden="true" />
       </div>
 

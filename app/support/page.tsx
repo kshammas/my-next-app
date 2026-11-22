@@ -65,22 +65,22 @@ export default function SupportPage() {
         </header>
 
         <div className="bg-[#F3F8F4] px-4 pb-10 pt-5">
-          <section className="rounded-[22px] bg-[#0B3424] p-5 text-white">
+          <section className="rounded-[22px] bg-[#09301E] p-4 text-white">
             <h2 className="text-[19px] font-extrabold">Need help during Rendezvous?</h2>
-            <p className="mt-2 text-[12.5px] leading-relaxed text-white/80">
+            <p className="mt-1.5 text-[12px] leading-snug text-white/80">
               Reach out to our organizing committee or check quick answers below.
             </p>
           </section>
 
-          <h2 className="mt-6 text-[17px] font-extrabold text-[#1A2E23]">Contact Us</h2>
-          <div className="mt-3 space-y-3">
+          <h2 className="mt-4 text-[17px] font-extrabold text-[#1A2E23]">Contact Us</h2>
+          <div className="mt-2 space-y-2">
             {contacts.map(({ label, detail, icon: Icon, href }) => (
               <a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noreferrer"
-                className="flex min-h-[82px] items-center gap-3 rounded-[18px] bg-white px-4 py-3 shadow-sm"
+                className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-white px-4 py-2 shadow-sm"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EFF9F4] text-[#0B3424]">
                   <Icon size={19} />
@@ -96,10 +96,10 @@ export default function SupportPage() {
             ))}
           </div>
 
-          <h2 className="mt-7 text-[17px] font-extrabold text-[#1A2E23]">
+          <h2 className="mt-5 text-[17px] font-extrabold text-[#1A2E23]">
             Frequently Asked Questions
           </h2>
-          <div className="mt-3 space-y-2.5">
+          <div className="mt-2 space-y-2">
             {faqs.map(({ question, answer }, index) => {
               const expanded = open === index;
               return (
@@ -108,9 +108,9 @@ export default function SupportPage() {
                     type="button"
                     onClick={() => setOpen(expanded ? null : index)}
                     aria-expanded={expanded}
-                    className="flex min-h-[56px] w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                    className="flex min-h-[42px] w-full items-center justify-between gap-3 px-3 py-2 text-left"
                   >
-                    <span className="text-[13px] font-bold text-[#1A2E23]">{question}</span>
+                    <span className="text-[12px] font-bold text-[#1A2E23]">{question}</span>
                     <ChevronDown
                       size={18}
                       aria-hidden="true"
@@ -118,14 +118,14 @@ export default function SupportPage() {
                     />
                   </button>
                   {expanded ? (
-                    <p className="px-4 pb-4 text-[11.5px] leading-relaxed text-slate-600">{answer}</p>
+                    <p className="px-4 pb-3 text-[10px] leading-snug text-slate-600">{answer}</p>
                   ) : null}
                 </div>
               );
             })}
           </div>
 
-          <p className="mt-7 rounded-[14px] bg-[#F7F3F1] p-4 text-center text-[11px] leading-relaxed text-[#6b514a]">
+          <p className="mt-5 rounded-[14px] bg-[#F7F3F1] p-4 text-center text-[11px] leading-relaxed text-[#6b514a]">
             For medical or campus security emergencies, contact the nearest volunteer in a green vest
             immediately.
           </p>
