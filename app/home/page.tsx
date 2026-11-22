@@ -52,7 +52,7 @@ export default function HomePage() {
               <p className="mt-1 text-[11px] text-[#A1C8B3]/80">Limited Access Mode</p>
             </div>
             <Link
-              href="/login"
+              href="/welcome"
               className="flex min-h-[38px] shrink-0 items-center justify-center rounded-full bg-[#2E4E41] px-5 text-[12px] font-bold text-white"
             >
               Sign In
@@ -97,7 +97,7 @@ export default function HomePage() {
             features
           </p>
           <Link
-            href="/login"
+            href="/welcome"
             className="mx-auto mt-3 flex min-h-[44px] w-full max-w-[190px] items-center justify-center rounded-full bg-[#075F47] text-[12px] font-bold text-white"
           >
             Back to Login

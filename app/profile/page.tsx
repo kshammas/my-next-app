@@ -21,7 +21,7 @@ export default function ProfilePage() {
     setBusy(true);
     try {
       await apiSend('/api/session', 'DELETE');
-      router.push('/login');
+      router.push('/welcome');
       router.refresh();
     } finally {
       setBusy(false);

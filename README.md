@@ -33,7 +33,7 @@ Upstream endpoint paths are centralized in the route handlers under `app/api/`. 
 
 ## Screens
 
-Login, Home, Schedule, My Program, Results, Live & Videos, Campus Map, Glocal Store, Notifications, Glocal Points, Glocal Wallet, Profile.
+Welcome, Home, Schedule, My Program, Results, Live & Videos, Campus Map, Glocal Store, Notifications, Glocal Points, Glocal Wallet, Profile. `/login` redirects to `/welcome`.
 
 ## PWA
 

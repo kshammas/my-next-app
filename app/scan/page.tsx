@@ -37,7 +37,7 @@ export default function ScanPage() {
           () => undefined,
         );
       } catch {
-        if (!cancelled) setError('Camera unavailable. Please check permission or enter your ID manually.');
+        if (!cancelled) setError('Camera unavailable. Please check your camera permission and try again.');
       }
     }
 
@@ -90,14 +90,6 @@ export default function ScanPage() {
             {error}
           </p>
         ) : null}
-
-        <button
-          type="button"
-          onClick={() => router.push('/login')}
-          className="mt-6 min-h-[44px] px-4 text-[12px] font-semibold text-white/60 underline underline-offset-4"
-        >
-          Enter ID manually
-        </button>
       </div>
     </main>
   );
