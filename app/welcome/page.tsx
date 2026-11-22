@@ -1,15 +1,22 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { AppShell } from '@/components/AppShell';
-import { Logo } from '@/components/Logo';
 
 export default function WelcomePage() {
   return (
     <AppShell showNav={false}>
       <div className="flex min-h-full flex-col bg-white px-6 pb-5 pt-14">
         <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <Logo className="h-[150px] w-[124px]" />
+          <Image
+            className="h-[150px] w-[124px] object-contain"
+            src="/rendezvous-logo.png"
+            alt="Rendezvous 26 logo"
+            width={124}
+            height={150}
+            priority
+          />
           <h1 className="mt-1 text-[28px] font-extrabold text-[#113B61]">Welcome</h1>
           <p className="mt-3 text-[13px] leading-relaxed text-[#8B949B]">
             Sign in with your
