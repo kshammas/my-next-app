@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { QrCode, ScanLine } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, Gift, QrCode, ScanLine, Ticket, TrendingUp } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { PageHeader } from '@/components/PageHeader';
 import { demoSession } from '@/lib/demo-data';
@@ -42,7 +42,7 @@ export default function WalletPage() {
 
   return (
     <AppShell>
-      <div className="px-5 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Glocal Wallet" />
 
         <div className="mt-4 rounded-[24px] bg-gradient-to-br from-[#0a5c2e] to-[#06451f] p-5 text-white">
@@ -60,14 +60,18 @@ export default function WalletPage() {
 
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f5d90a]/20 text-[#f5d90a]">↙</span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f5d90a]/20 text-[#f5d90a]">
+                <ArrowDownLeft size={18} aria-hidden="true" />
+              </span>
               <div>
                 <p className="text-[10px] text-emerald-200/70">Total earned</p>
                 <p className="text-[14px] font-bold">{wallet.earned} GP</p>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-xl bg-white/5 p-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">↗</span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+                <ArrowUpRight size={18} aria-hidden="true" />
+              </span>
               <div>
                 <p className="text-[10px] text-emerald-200/70">Total redeemed</p>
                 <p className="text-[14px] font-bold">{wallet.redeemed} GP</p>
@@ -79,7 +83,7 @@ export default function WalletPage() {
         <div className="mt-4 grid grid-cols-2 gap-3">
           <button
             onClick={() => setShowCode(true)}
-            className="flex items-center gap-3 rounded-2xl bg-[#d7e86b] p-4 text-left"
+            className="flex min-h-[68px] items-center gap-3 rounded-2xl bg-[#d7e86b] p-4 text-left transition-transform duration-150 active:scale-[0.98]"
           >
             <span className="text-xl"><QrCode size={22} /></span>
             <div>
@@ -87,8 +91,10 @@ export default function WalletPage() {
               <p className="text-[10px] text-[#073b1d]/60">Show your QR</p>
             </div>
           </button>
-          <Link href="/points" className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm">
-            <span className="text-xl">📈</span>
+          <Link href="/points" className="flex min-h-[68px] items-center gap-3 rounded-2xl bg-white p-4 shadow-sm transition-transform duration-150 active:scale-[0.98]">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#e7f4ea] text-[#0a7a33]">
+              <TrendingUp size={20} aria-hidden="true" />
+            </span>
             <div>
               <p className="text-[14px] font-extrabold text-[#073b1d]">Earn points ›</p>
               <p className="text-[10px] text-slate-400">Explore events</p>
@@ -104,7 +110,8 @@ export default function WalletPage() {
             <button
               key={item.label}
               onClick={() => setFilter(item.kind)}
-              className={`shrink-0 rounded-full px-4 py-1.5 text-[11px] font-bold ${
+              aria-pressed={filter === item.kind}
+              className={`min-h-[44px] shrink-0 rounded-full px-4 text-[11px] font-bold ${
                 filter === item.kind ? 'bg-[#06451f] text-white' : 'bg-white text-slate-500'
               }`}
             >
@@ -125,7 +132,11 @@ export default function WalletPage() {
                       transaction.points < 0 ? 'bg-rose-50' : 'bg-emerald-50'
                     }`}
                   >
-                    {transaction.points < 0 ? '🎟️' : '🎁'}
+                    {transaction.points < 0 ? (
+                      <Ticket size={18} aria-hidden="true" />
+                    ) : (
+                      <Gift size={18} aria-hidden="true" />
+                    )}
                   </span>
                   <div>
                     <p className="text-[13px] font-bold text-[#111]">{transaction.title}</p>

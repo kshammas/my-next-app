@@ -39,7 +39,7 @@ export default function PointsPage() {
 
   return (
     <AppShell>
-      <div className="px-5 pt-6 pb-8">
+      <div className="app-content">
         <PageHeader title="Glocal Points" unread={0} />
 
         <div className="mt-4 flex items-center justify-between">
@@ -48,17 +48,18 @@ export default function PointsPage() {
           </p>
           <Link
             href="/wallet"
-            className="rounded-full bg-[#f7e305] px-3.5 py-2 text-[12px] font-bold text-[#073b1d]"
+            className="inline-flex min-h-[44px] items-center rounded-full bg-[#f7e305] px-4 text-[12px] font-bold text-[#073b1d]"
           >
             {session.points} GP
           </Link>
         </div>
 
         {notice ? (
-          <p className="mt-3 rounded-2xl bg-[#e7f4ea] p-3 text-[12px] font-semibold text-[#0a5c2e]">{notice}</p>
+          <p role="status" className="mt-3 rounded-2xl bg-[#e7f4ea] p-3 text-[12px] font-semibold text-[#0a5c2e]">{notice}</p>
         ) : null}
 
-        <div className="mt-5 space-y-4">
+        <div className="split-layout mt-5">
+          <div className="space-y-4">
           {activities.map((activity, index) => {
             const active = activity.id === selected?.id;
             const left = index % 2 === 1;
@@ -66,7 +67,8 @@ export default function PointsPage() {
               <button
                 key={activity.id}
                 onClick={() => setSelectedId(activity.id)}
-                className={`flex w-full items-center gap-3 ${left ? 'flex-row-reverse' : ''}`}
+                aria-pressed={active}
+                className={`flex min-h-[64px] w-full items-center gap-3 ${left ? 'flex-row-reverse' : ''}`}
               >
                 <div className={`text-[13px] ${left ? 'text-right' : 'text-left'}`}>
                   <p className={`font-bold ${activity.claimed ? 'text-slate-400' : 'text-[#073b1d]'}`}>
@@ -88,9 +90,9 @@ export default function PointsPage() {
               </button>
             );
           })}
-        </div>
+          </div>
 
-        <div className="mt-8 rounded-t-[28px] bg-white p-6 shadow-[0_-4px_18px_rgba(0,0,0,0.06)]">
+          <div className="rounded-[28px] bg-white p-6 shadow-sm lg:sticky lg:top-0">
           <div className="flex items-center justify-between">
             <h2 className="text-[17px] font-extrabold text-[#073b1d]">{selected?.title ?? 'Activity'}</h2>
             <span className="text-[15px] font-extrabold text-[#0b7a3a]">+{selected?.reward ?? 0}</span>
@@ -105,14 +107,15 @@ export default function PointsPage() {
           ) : (
             <button
               onClick={() => setScanning(true)}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#064e24] py-3.5 text-[13.5px] font-bold text-white"
+              className="mt-4 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-[#064e24] text-[13.5px] font-bold text-white"
             >
               <ScanLine size={17} /> Scan to claim {selected?.reward ?? 0} points
             </button>
           )}
-          <Link href="/schedule" className="mt-3 flex items-center justify-center gap-1 text-[11px] font-bold text-slate-400">
+          <Link href="/schedule" className="mt-3 flex min-h-[44px] items-center justify-center gap-1 text-[11px] font-bold text-slate-400">
             See event schedule <ChevronRight size={13} />
           </Link>
+          </div>
         </div>
 
         {scanning ? (

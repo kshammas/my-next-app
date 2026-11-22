@@ -2,25 +2,29 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Trophy, User } from 'lucide-react';
-
-const items = [
-  { href: '/home', label: 'Home', icon: Home },
-  { href: '/results', label: 'results', icon: Trophy },
-  { href: '/profile', label: 'Profile', icon: User },
-];
+import { navItems } from './nav-items';
 
 export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="bottom-nav">
-      {items.map(({ href, label, icon: Icon }) => {
+    <nav className="bottom-nav" aria-label="Primary navigation">
+      {navItems.map(({ href, label, icon: Icon }) => {
         const active = pathname === href;
         return (
-          <Link key={href} href={href} className="bottom-nav-item">
+          <Link
+            key={href}
+            href={href}
+            className="bottom-nav-item"
+            aria-current={active ? 'page' : undefined}
+          >
             <span className={`bottom-nav-icon ${active ? 'bottom-nav-icon-active' : ''}`}>
-              <Icon size={24} fill={active && label === 'Home' ? 'currentColor' : 'none'} strokeWidth={active ? 2.6 : 2} />
+              <Icon
+                size={24}
+                fill={active && label === 'Home' ? 'currentColor' : 'none'}
+                strokeWidth={active ? 2.6 : 2}
+                aria-hidden="true"
+              />
             </span>
             <span className={`bottom-nav-label ${active ? 'bottom-nav-label-active' : ''}`}>{label}</span>
           </Link>

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { BottomNav } from './BottomNav';
+import { SideNav } from './SideNav';
 
 export function AppShell({
   children,
@@ -12,9 +13,12 @@ export function AppShell({
 }) {
   return (
     <main className="app-backdrop">
-      <div className="phone-frame">
-        <div className="phone-scroll">{children}</div>
-        {showNav ? <BottomNav /> : null}
+      <div className="app-shell">
+        {showNav ? <SideNav /> : null}
+        <div className="phone-frame">
+          <div className="phone-scroll" id="main-content">{children}</div>
+          {showNav ? <BottomNav /> : null}
+        </div>
       </div>
     </main>
   );

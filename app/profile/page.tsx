@@ -58,7 +58,7 @@ export default function ProfilePage() {
           </span>
         </div>
 
-        <div className="space-y-3 px-5 py-4">
+        <div className="mx-auto grid w-full max-w-2xl gap-3 px-5 py-4 lg:max-w-none lg:grid-cols-2">
           <div className="space-y-3 rounded-[22px] bg-white p-4">
             <div className="flex justify-between text-[13.5px]">
               <span className="font-semibold text-[#073b1d]">Jamia ID</span>
@@ -75,33 +75,33 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-3 rounded-[22px] bg-white p-4">
-            <Link href="/points" className="flex justify-between text-[13.5px] font-semibold text-[#073b1d]">
+            <Link href="/points" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
               <span>Glocal Points</span>
               <span>{session.points} GP ›</span>
             </Link>
-            <Link href="/wallet" className="flex justify-between text-[13.5px] font-semibold text-[#073b1d]">
+            <Link href="/wallet" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
               <span>Glocal Wallet</span>
               <span>›</span>
             </Link>
-            <Link href="/programs" className="flex justify-between text-[13.5px] font-semibold text-[#073b1d]">
+            <Link href="/programs" className="flex min-h-[44px] items-center justify-between text-[13.5px] font-semibold text-[#073b1d]">
               <span>My Program</span>
               <span>›</span>
             </Link>
             <button
               onClick={() => void install()}
-              className="flex w-full justify-between text-[13.5px] font-semibold text-[#073b1d]"
+              className="flex min-h-[44px] w-full items-center justify-between text-[13.5px] font-semibold text-[#073b1d]"
             >
               <span className="flex items-center gap-2"><Download size={16} /> Install app</span>
               <span>›</span>
             </button>
           </div>
 
-          {message ? <p className="rounded-2xl bg-[#e7f4ea] p-3 text-[12px] text-[#0a5c2e]">{message}</p> : null}
+          {message ? <p role="status" className="rounded-2xl bg-[#e7f4ea] p-3 text-[12px] text-[#0a5c2e] lg:col-span-2">{message}</p> : null}
 
           <button
             onClick={() => void signOut()}
             disabled={busy}
-            className="flex w-full items-center justify-center gap-2 rounded-[20px] bg-white p-4 font-semibold text-[13.5px] text-red-600 disabled:opacity-50"
+            className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[20px] bg-white p-4 font-semibold text-[13.5px] text-red-600 disabled:opacity-50 lg:col-span-2"
           >
             <LogOut size={16} /> {busy ? 'Signing out…' : 'Sign out'}
           </button>

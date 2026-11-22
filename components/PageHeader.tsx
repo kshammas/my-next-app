@@ -13,15 +13,19 @@ export function PageHeader({
   unread?: number;
 }) {
   return (
-    <div className="page-header">
+    <header className="page-header">
       <Link href={backHref} className="icon-button" aria-label="Go back">
-        <ChevronLeft size={22} strokeWidth={2.6} />
+        <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
       </Link>
       <h1 className="page-header-title">{title}</h1>
-      <Link href="/notifications" className="icon-button relative" aria-label="Notifications">
-        <Bell size={19} />
-        {unread > 0 ? <span className="notification-dot" /> : null}
+      <Link
+        href="/notifications"
+        className="icon-button relative"
+        aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}
+      >
+        <Bell size={19} aria-hidden="true" />
+        {unread > 0 ? <span className="notification-dot" aria-hidden="true" /> : null}
       </Link>
-    </div>
+    </header>
   );
 }

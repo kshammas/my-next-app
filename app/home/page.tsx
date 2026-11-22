@@ -61,7 +61,8 @@ export default function HomePage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-8">
+      <div className="app-content">
+        <h1 className="sr-only">Rendezvous 26 home</h1>
         <div className="flex items-center justify-between">
           <Image
             src="/rend-logo-mobilesrc.png"
@@ -106,27 +107,27 @@ export default function HomePage() {
           <div className="relative mt-5 grid grid-cols-2 gap-3">
             <Link
               href="/wallet"
-              className="flex items-center justify-center gap-1.5 whitespace-nowrap rounded-2xl bg-[#ffe500] px-2 py-3 text-[13px] font-bold text-[#06451f]"
+              className="flex min-h-[48px] items-center justify-center gap-1.5 whitespace-nowrap rounded-2xl bg-[#ffe500] px-2 py-3 text-[13px] font-bold text-[#06451f] transition-transform duration-150 active:scale-[0.98]"
             >
-              <ScanLine className="h-4 w-4 shrink-0" /> Scan to redeem
+              <ScanLine className="h-4 w-4 shrink-0" aria-hidden="true" /> Scan to redeem
             </Link>
             <Link
               href="/points"
-              className="flex items-center justify-center gap-1 whitespace-nowrap rounded-2xl border border-white/20 bg-white/10 px-2 py-3 text-[13px] font-bold"
+              className="flex min-h-[48px] items-center justify-center gap-1 whitespace-nowrap rounded-2xl border border-white/20 bg-white/10 px-2 py-3 text-[13px] font-bold transition-transform duration-150 active:scale-[0.98]"
             >
-              Earn points <ChevronRight className="h-4 w-4 shrink-0" />
+              Earn points <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
             </Link>
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-3 gap-3">
+        <div className="grid-menu mt-4">
           {menu.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center gap-3 rounded-3xl border border-emerald-100 bg-white py-5"
+              className="flex min-h-[104px] flex-col items-center justify-center gap-3 rounded-3xl border border-emerald-100 bg-white py-5 transition-transform duration-150 hover:-translate-y-0.5 active:scale-[0.98] sm:min-h-[116px]"
             >
-              {item.icon}
+              <span aria-hidden="true">{item.icon}</span>
               <span className="text-center text-[12px] font-semibold text-slate-700">{item.label}</span>
             </Link>
           ))}
@@ -134,9 +135,9 @@ export default function HomePage() {
 
         <Link
           href="/live"
-          className="relative mt-4 block h-[150px] overflow-hidden rounded-[24px] bg-gradient-to-r from-[#8a4b12] to-[#5c2e0a] shadow-md"
-          style={{ backgroundImage: "url('/live-banner.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          className="relative mt-4 block h-[150px] overflow-hidden rounded-[24px] bg-gradient-to-r from-[#8a4b12] via-[#6a350c] to-[#2d1806] shadow-md sm:h-[190px] lg:h-[220px]"
         >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(247,227,5,0.25),transparent_45%)]" aria-hidden="true" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute bottom-3 left-4">
             <p className="text-[18px] font-extrabold leading-tight text-white">Watch Live</p>
@@ -151,14 +152,14 @@ export default function HomePage() {
           <span className="flex items-center gap-2 text-slate-600">
             <Trophy className="h-4 w-4 text-[#0a7a33]" /> Check the live leaderboard
           </span>
-          <Link href="/results" className="font-bold text-[#064e24]">View</Link>
+          <Link href="/results" className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl px-3 font-bold text-[#064e24]">View</Link>
         </div>
 
         <div className="mt-3 flex items-center justify-between rounded-2xl bg-white px-4 py-3 text-[12px]">
           <span className="flex items-center gap-2 text-slate-600">
             <User className="h-4 w-4 text-[#0a7a33]" /> Your profile and card
           </span>
-          <Link href="/profile" className="font-bold text-[#064e24]">Open</Link>
+          <Link href="/profile" className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl px-3 font-bold text-[#064e24]">Open</Link>
         </div>
 
         <div className="mt-3 flex items-center justify-between rounded-2xl bg-white px-4 py-3 text-[12px]">

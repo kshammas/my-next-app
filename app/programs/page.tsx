@@ -27,7 +27,7 @@ export default function ProgramsPage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="My Program" />
 
         <p className="mt-4 text-[12px] text-slate-500">
@@ -43,7 +43,7 @@ export default function ProgramsPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-5 space-y-3">
+          <div className="grid-list mt-5">
             {programs.map((program) => (
               <article key={program.id} className="soft-card flex items-center gap-3 p-4">
                 <div className="flex h-12 w-12 flex-col items-center justify-center rounded-2xl bg-[#e7f4ea] text-[#064e24]">
@@ -58,7 +58,7 @@ export default function ProgramsPage() {
                   onClick={() => void remove(program)}
                   disabled={busyId === program.id}
                   aria-label={`Remove ${program.title}`}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-rose-50 text-rose-500"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-rose-50 text-rose-500"
                 >
                   <Trash2 size={16} />
                 </button>

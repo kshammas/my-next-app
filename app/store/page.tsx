@@ -1,12 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { ShoppingBag } from 'lucide-react';
+import { Coffee, Crown, Shirt, ShoppingBag, Sparkles } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { PageHeader } from '@/components/PageHeader';
 import { demoStore } from '@/lib/demo-data';
 import { apiSend, useApi } from '@/lib/use-api';
 import type { StoreItem } from '@/lib/types';
+
+const itemIcons: Record<string, typeof Shirt> = {
+  's-1': Shirt,
+  's-2': Crown,
+  's-3': Sparkles,
+  's-4': Coffee,
+};
 
 export default function StorePage() {
   const { data: items } = useApi<StoreItem[]>('/api/store', demoStore);
@@ -32,7 +39,7 @@ export default function StorePage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Glocal Store" />
 
         <div className="mt-4 rounded-[24px] bg-gradient-to-br from-[#d7e86b] to-[#b6d34a] p-5">
@@ -44,24 +51,27 @@ export default function StorePage() {
         </div>
 
         {notice ? (
-          <p className="mt-4 rounded-2xl bg-[#e7f4ea] p-3 text-[12px] font-semibold text-[#0a5c2e]">{notice}</p>
+          <p role="status" className="mt-4 rounded-2xl bg-[#e7f4ea] p-3 text-[12px] font-semibold text-[#0a5c2e]">{notice}</p>
         ) : null}
 
-        <div className="mt-5 grid grid-cols-2 gap-3">
+        <div className="grid-cards mt-5">
           {items.map((item) => (
             <article key={item.id} className="soft-card relative flex flex-col p-4">
               {item.tag ? (
                 <span className="chip absolute right-3 top-3 bg-[#f7e305] text-[#06451f]">{item.tag}</span>
               ) : null}
-              <div className="flex h-20 items-center justify-center rounded-2xl bg-[#f4f8f5] text-[38px]">
-                {item.emoji}
+              <div className="flex h-20 items-center justify-center rounded-2xl bg-[#f4f8f5] text-[#06451f]">
+                {(() => {
+                  const Icon = itemIcons[item.id] ?? ShoppingBag;
+                  return <Icon size={38} strokeWidth={1.6} aria-hidden="true" />;
+                })()}
               </div>
               <h3 className="mt-3 text-[13px] font-extrabold text-[#073b1d]">{item.name}</h3>
               <p className="mt-0.5 text-[11px] font-bold text-[#0a7a33]">{item.cost} GP</p>
               <button
                 onClick={() => void redeem(item)}
                 disabled={busyId === item.id}
-                className="mt-3 rounded-xl bg-[#064e24] py-2.5 text-[12px] font-bold text-white disabled:opacity-50"
+                className="mt-3 min-h-[44px] rounded-xl bg-[#064e24] text-[12px] font-bold text-white disabled:opacity-50"
               >
                 {busyId === item.id ? 'Redeeming…' : 'Redeem'}
               </button>

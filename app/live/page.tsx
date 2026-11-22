@@ -13,7 +13,7 @@ export default function LivePage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Live & Videos" />
 
         {featured ? (
@@ -21,7 +21,7 @@ export default function LivePage() {
             href={featured.url}
             target="_blank"
             rel="noreferrer"
-            className="relative mt-5 block h-[190px] overflow-hidden rounded-[26px] bg-gradient-to-br from-[#8a4b12] via-[#6a350c] to-[#2d1806]"
+            className="relative mt-5 block h-[190px] overflow-hidden rounded-[26px] bg-gradient-to-br from-[#8a4b12] via-[#6a350c] to-[#2d1806] sm:h-[260px] lg:h-[320px]"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(247,227,5,0.28),transparent_45%)]" />
             <span className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-[#ef4444] px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide text-white">
@@ -42,7 +42,7 @@ export default function LivePage() {
         <h2 className="section-title mt-6">Watch again</h2>
         <p className="section-subtitle mt-0.5">Sessions and highlights from the fest</p>
 
-        <div className="mt-3 space-y-3">
+        <div className="grid-list mt-3">
           {streams.map((item) => (
             <a
               key={item.id}

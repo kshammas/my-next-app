@@ -31,7 +31,7 @@ export default function NotificationsPage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Notifications" unread={unread} />
 
         <div className="mt-5 flex items-center justify-between">
@@ -39,13 +39,13 @@ export default function NotificationsPage() {
           <button
             onClick={() => void markAllRead()}
             disabled={busy || unread === 0}
-            className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold text-[#064e24] disabled:opacity-50"
+            className="flex min-h-[44px] items-center gap-1.5 rounded-full bg-white px-4 text-[11px] font-bold text-[#064e24] disabled:opacity-50"
           >
             <CheckCheck size={14} /> Mark all read
           </button>
         </div>
 
-        <div className="mt-3 space-y-2">
+        <div className="grid-list mt-3">
           {notifications.map((item) => (
             <article
               key={item.id}

@@ -48,7 +48,7 @@ export default function SchedulePage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Schedule" />
 
         <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
@@ -56,7 +56,8 @@ export default function SchedulePage() {
             <button
               key={entry.id}
               onClick={() => setActiveDay(index)}
-              className={`shrink-0 rounded-full px-4 py-2 text-[12px] font-bold ${
+              aria-pressed={index === activeDay}
+              className={`min-h-[44px] shrink-0 rounded-full px-4 text-[12px] font-bold ${
                 index === activeDay ? 'bg-[#064e24] text-white' : 'bg-white text-slate-500'
               }`}
             >
@@ -65,9 +66,9 @@ export default function SchedulePage() {
           ))}
         </div>
 
-        {message ? <p className="mt-3 text-[12px] font-semibold text-[#0a7a33]">{message}</p> : null}
+        {message ? <p role="status" className="mt-3 text-[12px] font-semibold text-[#0a7a33]">{message}</p> : null}
 
-        <div className="mt-4 space-y-3">
+        <div className="grid-list mt-4">
           {day?.events.map((event) => (
             <article key={event.id} className="soft-card p-4">
               <div className="flex items-start justify-between gap-3">
@@ -80,7 +81,8 @@ export default function SchedulePage() {
                   onClick={() => void toggle(event)}
                   disabled={busyId === event.id}
                   aria-label={event.registered ? 'Remove from my program' : 'Add to my program'}
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                  aria-pressed={event.registered}
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
                     event.registered ? 'bg-[#064e24] text-white' : 'bg-[#f1f6f2] text-[#0a7a33]'
                   }`}
                 >

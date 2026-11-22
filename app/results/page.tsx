@@ -7,11 +7,15 @@ import { demoResults } from '@/lib/demo-data';
 import { useApi } from '@/lib/use-api';
 import type { Results, ResultRow } from '@/lib/types';
 
-const medal: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
+const medalColor: Record<number, string> = {
+  1: 'bg-[#f7e305] text-[#06451f]',
+  2: 'bg-[#d7e86b] text-[#06451f]',
+  3: 'bg-[#e7f4ea] text-[#064e24]',
+};
 
 function Leaderboard({ rows }: { rows: ResultRow[] }) {
   return (
-    <div className="space-y-2">
+    <div className="grid-list">
       {rows.map((row) => (
         <article
           key={`${row.name}-${row.rank}`}
@@ -19,8 +23,13 @@ function Leaderboard({ rows }: { rows: ResultRow[] }) {
             row.rank <= 3 ? 'bg-[#fff9dc]' : 'bg-white'
           }`}
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7f4ea] text-[13px] font-extrabold text-[#064e24]">
-            {medal[row.rank] ?? `#${row.rank}`}
+          <div
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold ${
+              medalColor[row.rank] ?? 'bg-[#e7f4ea] text-[#064e24]'
+            }`}
+            aria-label={row.rank <= 3 ? `Rank ${row.rank}` : undefined}
+          >
+            {row.rank <= 3 ? <Medal size={20} aria-hidden="true" /> : `#${row.rank}`}
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-[13.5px] font-extrabold text-[#073b1d]">{row.name}</p>
@@ -42,7 +51,7 @@ export default function ResultsPage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e7f4ea]">
             <Trophy className="h-6 w-6 text-[#0a7a33]" />
@@ -58,7 +67,8 @@ export default function ResultsPage() {
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`rounded-xl py-2.5 text-[12px] font-bold capitalize ${
+              aria-pressed={tab === key}
+              className={`min-h-[44px] rounded-xl text-[12px] font-bold capitalize ${
                 tab === key ? 'bg-[#064e24] text-white' : 'text-slate-500'
               }`}
             >

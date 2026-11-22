@@ -15,14 +15,14 @@ export default function MapPage() {
 
   return (
     <AppShell>
-      <div className="px-4 pt-6 pb-10">
+      <div className="app-content">
         <PageHeader title="Campus Map" />
 
         <p className="mt-4 text-[12px] text-slate-500">
           Find your way around the fest. Tap a marker for details.
         </p>
 
-        <div className="relative mt-4 h-[340px] overflow-hidden rounded-[26px] border border-emerald-100 bg-[#eaf3ec]">
+        <div className="relative mt-4 h-[340px] overflow-hidden rounded-[26px] border border-emerald-100 bg-[#eaf3ec] sm:h-[420px] lg:h-[520px]">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
             <path d="M0 78 Q30 62 52 78 T100 72 L100 100 L0 100 Z" fill="#dcebdc" />
             <path d="M6 14 L94 12 M8 46 L92 44 M14 74 L86 72 M22 4 L18 96 M52 4 L56 96 M82 6 L78 94" stroke="#fff" strokeWidth="3" opacity="0.9" />
@@ -37,7 +37,8 @@ export default function MapPage() {
               onClick={() => setSelectedId(venue.id)}
               style={{ left: `${venue.x}%`, top: `${venue.y}%` }}
               aria-label={venue.name}
-              className={`absolute flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-[12px] font-extrabold shadow-md ${
+              aria-pressed={selectedId === venue.id}
+              className={`absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white text-[12px] font-extrabold shadow-md ${
                 selectedId === venue.id ? 'bg-[#f7e305] text-[#06451f]' : 'bg-[#064e24] text-white'
               }`}
             >
@@ -62,7 +63,7 @@ export default function MapPage() {
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div className="grid-cards mt-4">
           {venues.map((venue) => (
             <button
               key={venue.id}
