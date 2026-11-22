@@ -1,75 +1,122 @@
 'use client';
+
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { QrCode, ArrowRight } from 'lucide-react';
-
-function Logo({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 300 380" className={className} fill="none" aria-label="Logo" role="img">
-      <defs>
-        <linearGradient id="gRight" x1="0" y1="0.6" x2="1" y2="0.3">
-          <stop offset="0" stopColor="#00702f" />
-          <stop offset="1" stopColor="#00b83c" />
-        </linearGradient>
-        <linearGradient id="gLeft" x1="0" y1="1" x2="1" y2="0.2">
-          <stop offset="0" stopColor="#007a33" />
-          <stop offset="1" stopColor="#00b83c" />
-        </linearGradient>
-      </defs>
-
-      <g strokeLinejoin="round" strokeWidth="14">
-        {/* top-left */}
-        <path d="M133 10 L128 194 L16 148 L10 84 Z" fill="#00c43a" stroke="#00c43a" />
-        {/* top-middle */}
-        <path d="M154 46 L250 88 L158 166 Z" fill="#00c43a" stroke="#00c43a" />
-        {/* right, dark gradient */}
-        <path d="M288 108 L290 224 L166 300 L160 208 Z" fill="url(#gRight)" stroke="url(#gRight)" />
-        {/* bottom-right */}
-        <path d="M289 261 L290 348 L168 338 Z" fill="#00c43a" stroke="#00c43a" />
-        {/* bottom-left, gradient */}
-        <path d="M10 168 L118 230 L115 296 L11 366 Z" fill="url(#gLeft)" stroke="url(#gLeft)" />
-      </g>
-    </svg>
-  );
-}
+import { ArrowRight, QrCode } from 'lucide-react';
+import { AppShell } from '@/components/AppShell';
+import { Logo } from '@/components/Logo';
+import { QrScanner } from '@/components/QrScanner';
+import { apiSend } from '@/lib/use-api';
+import type { Session } from '@/lib/types';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [code, setCode] = useState('');
+  const [manual, setManual] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function signIn(payload: { code?: string; guest?: boolean }) {
+    setBusy(true);
+    setError('');
+    try {
+      await apiSend<Session>('/api/session', 'POST', payload);
+      router.push('/home');
+      router.refresh();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Unable to sign in');
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
-    <main className="min-h-screen bg-[#efeeec] flex items-center justify-center">
-      <div className="w-full h-[100dvh] sm:w-[392px] sm:h-[852px] sm:rounded-[40px] bg-white relative overflow-hidden flex flex-col items-center px-8 pt-16">
-
-        {/* Logo */}
-        <Logo className="w-[150px] h-[190px]" />
-
-        {/* Welcome text */}
-        <h1 className="text-[28px] font-extrabold text-[#0a3d8f] mt-8">Welcome</h1>
-        <p className="text-[14px] text-slate-500 mt-2 text-center leading-relaxed">
-          Sign in with your<br />Participant Card or ID Card.
-        </p>
-
-        {/* Bottom section pinned inside the frame */}
-        <div className="mt-auto w-full pb-8">
-          <button
-            onClick={() => router.push('/home')}
-            className="w-full py-4 rounded-2xl bg-[#0a3d8f] text-white font-bold text-[15px] flex items-center justify-center gap-3"
-          >
-            <QrCode size={20} weight="fill" className="text-[#b5e61d]" />
-            Scan Participant Card
-          </button>
-
-          <button
-            onClick={() => router.push('/home')}
-            className="w-full mt-3 py-4 rounded-2xl bg-[#f5f5f3] text-[#0a3d8f] font-bold text-[14px] flex items-center justify-center gap-2"
-          >
-            Continue as guest <ArrowRight size={16} weight="bold" />
-          </button>
-
-          <p className="text-center text-[11px] text-slate-400 mt-6">
-            By continuing you agree to our Terms &amp; Privacy Policy
+    <AppShell showNav={false}>
+      <div className="flex min-h-full flex-col gap-8 bg-white px-6 pb-8 pt-10 sm:px-10 lg:grid lg:grid-cols-2 lg:items-center lg:gap-14 lg:px-12 lg:py-10">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          <Logo className="h-[170px] w-[140px] lg:h-[210px] lg:w-[170px]" />
+          <h1 className="mt-6 text-[28px] font-extrabold text-[#0a3d8f] sm:text-[34px]">Welcome</h1>
+          <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-slate-500">
+            Sign in with your Participant Card or ID Card.
           </p>
         </div>
+
+        <div className="flex w-full flex-col">
+          {manual ? (
+            <form
+              className="w-full"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void signIn({ code });
+              }}
+            >
+              <label className="text-[12px] font-bold text-[#073b1d]" htmlFor="jamia-id">
+                Jamia ID / card code
+              </label>
+              <input
+                id="jamia-id"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+                placeholder="e.g. 2020JM010"
+                autoComplete="username"
+                className="mt-2 min-h-[48px] w-full rounded-2xl border border-emerald-100 bg-[#f6faf7] px-4 text-[14px] outline-none focus:border-[#0a7a33]"
+                autoFocus
+              />
+              <button type="submit" disabled={busy || !code.trim()} className="primary-button mt-3">
+                {busy ? 'Signing in…' : 'Continue'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setManual(false)}
+                className="mt-3 min-h-[44px] w-full text-[12px] font-semibold text-slate-500"
+              >
+                Use camera instead
+              </button>
+            </form>
+          ) : null}
+
+          {error ? (
+            <p role="alert" className="mt-4 text-center text-[12px] text-rose-600 lg:text-left">{error}</p>
+          ) : null}
+
+          <div className="mt-auto w-full pt-8 lg:pt-0">
+            <button
+              onClick={() => setScanning(true)}
+              disabled={busy}
+              className="flex min-h-[52px] w-full items-center justify-center gap-3 rounded-2xl bg-[#0a3d8f] text-[15px] font-bold text-white transition-transform duration-150 active:scale-[0.99]"
+            >
+              <QrCode size={20} className="text-[#b5e61d]" aria-hidden="true" />
+              Scan Participant Card
+            </button>
+
+            <button
+              onClick={() => {
+                if (!manual) setManual(true);
+                else void signIn({ guest: true });
+              }}
+              className="mt-3 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-[#f5f5f3] text-[14px] font-bold text-[#0a3d8f] transition-transform duration-150 active:scale-[0.99]"
+            >
+              {manual ? 'Continue as guest' : 'Enter ID manually'}
+              <ArrowRight size={16} aria-hidden="true" />
+            </button>
+
+            <p className="mt-6 text-center text-[11px] leading-relaxed text-slate-400">
+              By continuing you agree to our Terms &amp; Privacy Policy
+            </p>
+          </div>
+        </div>
       </div>
-    </main>
+
+      {scanning ? (
+        <QrScanner
+          onClose={() => setScanning(false)}
+          onResult={(value) => {
+            setCode(value);
+            void signIn({ code: value });
+          }}
+        />
+      ) : null}
+    </AppShell>
   );
 }
