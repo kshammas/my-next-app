@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Logo } from '@/components/Logo';
 
 export default function RootPage() {
   const router = useRouter();
@@ -20,7 +20,14 @@ export default function RootPage() {
   return (
     <main className="fixed inset-0 z-[100] flex items-center justify-center bg-[#F2FEF0]">
       <div className={`flex flex-col items-center ${leaving ? 'splash-out' : 'splash-in'}`}>
-        <Logo className="h-[170px] w-[140px] sm:h-[220px] sm:w-[180px]" />
+        <Image
+          className="h-[170px] w-[140px] object-contain sm:h-[220px] sm:w-[180px]"
+          src="/rendezvous-logo.png"
+          alt="Rendezvous 26 logo"
+          width={140}
+          height={170}
+          priority
+        />
       </div>
       <h1 className="sr-only">Loading Rendezvous 26</h1>
     </main>
