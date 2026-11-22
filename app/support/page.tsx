@@ -1,55 +1,135 @@
 'use client';
 
-import { LifeBuoy, Mail, MessageCircle, Phone } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
+import { ChevronDown, ChevronLeft, Mail, MessageCircle, Phone } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { PageHeader } from '@/components/PageHeader';
 
 const contacts = [
-  { label: 'Chat on WhatsApp', detail: 'Fastest response during the fest', icon: MessageCircle, href: 'https://wa.me/919947021164' },
-  { label: 'Email the team', detail: 'rendezvous@jamiamadeenathunoor.edu', icon: Mail, href: 'mailto:rendezvous@jamiamadeenathunoor.edu' },
-  { label: 'Call the helpdesk', detail: 'On-site assistance', icon: Phone, href: 'tel:+919947021164' },
+  {
+    label: 'WhatsApp',
+    detail: 'Fastest response (10AM–12PM)',
+    icon: MessageCircle,
+    href: 'https://wa.me/918592955776',
+  },
+  {
+    label: 'Helpline Call',
+    detail: '+918592955776',
+    icon: Phone,
+    href: 'tel:+918592955776',
+  },
+  {
+    label: 'Email Support',
+    detail: 'rend26.home@gmail.com',
+    icon: Mail,
+    href: 'mailto:rend26.home@gmail.com',
+  },
+];
+
+const faqs = [
+  {
+    question: 'How do I sign in to my student account?',
+    answer:
+      "Tap 'Sign In' from the top banner and scan your participant ID. If you are a visitor, you can continue browsing schedules and results in Guest Mode.",
+  },
+  {
+    question: 'How are Glocal Points earned and redeemed?',
+    answer:
+      'Scan QR codes at event stalls and activities to earn Glocal Points, then redeem them for goodies in your Glocal Wallet.',
+  },
+  {
+    question: "Why can't I scan QR codes in Guest Mode?",
+    answer: 'Scanning is available to signed-in participants only. Sign in with your participant card to earn points.',
+  },
+  {
+    question: 'When are program results updated?',
+    answer: 'Results are updated as events conclude. Open the Results page for the latest standings.',
+  },
+  {
+    question: 'My registered event is missing or has the wrong details.',
+    answer: 'Reach out to the organizing committee using any of the contact options above.',
+  },
 ];
 
 export default function SupportPage() {
+  const [open, setOpen] = useState<number | null>(0);
+
   return (
     <AppShell>
-      <div className="app-content">
-        <PageHeader title="Support" />
+      <div className="app-content !px-0 !pt-0">
+        <header className="flex items-center gap-3 bg-white px-4 pb-4 pt-4">
+          <Link href="/home" className="icon-button" aria-label="Go back">
+            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+          </Link>
+          <h1 className="text-[20px] font-extrabold text-[#04251a]">Help &amp; Support</h1>
+        </header>
 
-        <div className="mt-5 flex items-center gap-3 rounded-[24px] bg-[#064e24] p-5 text-white">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/15">
-            <LifeBuoy size={24} />
+        <div className="bg-[#F3F8F4] px-4 pb-10 pt-5">
+          <section className="rounded-[22px] bg-[#0B3424] p-5 text-white">
+            <h2 className="text-[19px] font-extrabold">Need help during Rendezvous?</h2>
+            <p className="mt-2 text-[12.5px] leading-relaxed text-white/80">
+              Reach out to our organizing committee or check quick answers below.
+            </p>
+          </section>
+
+          <h2 className="mt-6 text-[17px] font-extrabold text-[#1A2E23]">Contact Us</h2>
+          <div className="mt-3 space-y-3">
+            {contacts.map(({ label, detail, icon: Icon, href }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="flex min-h-[82px] items-center gap-3 rounded-[18px] bg-white px-4 py-3 shadow-sm"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EFF9F4] text-[#0B3424]">
+                  <Icon size={19} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[14px] font-bold text-[#1A2E23]">{label}</span>
+                  <span className="block truncate text-[11px] text-slate-500">{detail}</span>
+                </span>
+                <span className="flex min-h-[36px] shrink-0 items-center rounded-full bg-[#EFF9F4] px-4 text-[12px] font-bold text-[#0B3424]">
+                  Connect
+                </span>
+              </a>
+            ))}
           </div>
-          <div>
-            <h2 className="text-[17px] font-extrabold">Need help?</h2>
-            <p className="text-[12px] text-white/75">We&apos;re here for you throughout Rendezvous 26.</p>
+
+          <h2 className="mt-7 text-[17px] font-extrabold text-[#1A2E23]">
+            Frequently Asked Questions
+          </h2>
+          <div className="mt-3 space-y-2.5">
+            {faqs.map(({ question, answer }, index) => {
+              const expanded = open === index;
+              return (
+                <div key={question} className="overflow-hidden rounded-[16px] bg-white shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(expanded ? null : index)}
+                    aria-expanded={expanded}
+                    className="flex min-h-[56px] w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                  >
+                    <span className="text-[13px] font-bold text-[#1A2E23]">{question}</span>
+                    <ChevronDown
+                      size={18}
+                      aria-hidden="true"
+                      className={`shrink-0 text-[#0B3424] transition-transform ${expanded ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {expanded ? (
+                    <p className="px-4 pb-4 text-[11.5px] leading-relaxed text-slate-600">{answer}</p>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
-        </div>
 
-        <h2 className="section-title mt-6">Reach us</h2>
-        <div className="grid-list mt-3">
-          {contacts.map(({ label, detail, icon: Icon, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              className="soft-card flex min-h-[64px] items-center gap-3 p-4"
-            >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e7f4ea] text-[#0a7a33]">
-                <Icon size={20} />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[13.5px] font-extrabold text-[#073b1d]">{label}</span>
-                <span className="block truncate text-[11px] text-slate-500">{detail}</span>
-              </span>
-            </a>
-          ))}
+          <p className="mt-7 rounded-[14px] bg-[#F7F3F1] p-4 text-center text-[11px] leading-relaxed text-[#6b514a]">
+            For medical or campus security emergencies, contact the nearest volunteer in a green vest
+            immediately.
+          </p>
         </div>
-
-        <p className="mt-6 text-center text-[11px] text-slate-400">
-          Rendezvous 26 · Jamia Madeenathunoor Life Festival
-        </p>
       </div>
     </AppShell>
   );
