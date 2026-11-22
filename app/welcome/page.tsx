@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowUpRight, ScanLine } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AppShell } from '@/components/AppShell';
@@ -28,17 +29,22 @@ export default function WelcomePage() {
         <div className="mx-auto w-full max-w-md">
           <Link
             href="/scan"
-            className="flex min-h-[54px] w-full items-center justify-center rounded-[14px] bg-[#113B61] text-[14px] font-bold text-white transition-transform duration-150 active:scale-[0.99]"
+            className="relative flex min-h-[56px] w-full items-center justify-center overflow-hidden rounded-[16px] bg-[#113B61] px-12 text-[14px] font-bold tracking-[-0.01em] text-white shadow-[0_12px_24px_-14px_rgba(17,59,97,0.85)] transition duration-150 hover:bg-[#0E3356] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#18BB46]"
           >
+            <span className="absolute inset-y-3 left-0 w-[3px] rounded-r-full bg-[#18BB46]" />
+            <ScanLine className="absolute left-5 h-[18px] w-[18px] text-white/85" aria-hidden="true" />
             Scan Participant Card
+            <ArrowUpRight className="absolute right-5 h-[16px] w-[16px] text-white/60" aria-hidden="true" />
           </Link>
+
           <Link
             href="/home"
-            className="mt-0 flex min-h-[54px] w-full items-center justify-center rounded-[14px] bg-[#F6F7FB] text-[14px] font-bold text-[#143A5E] transition-transform duration-150 active:scale-[0.99]"
+            className="mt-2.5 flex min-h-[52px] w-full items-center justify-center rounded-[16px] border border-[#E3EAF0] bg-[#F7F9FB] text-[13px] font-semibold text-[#143A5E] transition duration-150 hover:border-[#CBD6E1] hover:bg-[#EEF3F8] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#113B61]"
           >
             Continue as guest
           </Link>
-          <p className="mt-2 text-center text-[10px] leading-relaxed text-[#8B949B]">
+
+          <p className="mt-3 text-center text-[10px] leading-relaxed text-[#7C8791]">
             By continuing you agree to our Terms &amp; Privacy Policy
           </p>
         </div>
