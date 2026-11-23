@@ -10,7 +10,6 @@ import {
   ArrowUturnLeftIcon,
   BeakerIcon,
   BellIcon,
-  BuildingLibraryIcon,
   CakeIcon,
   ChartBarIcon,
   CalendarDaysIcon,
@@ -105,7 +104,6 @@ export const CupSoda = adapt(BeakerIcon, 'CupSoda');
 export const Download = adapt(ArrowDownTrayIcon, 'Download');
 export const Gift = adapt(GiftIcon, 'Gift');
 export const Home = adapt(HomeIcon, 'Home');
-export const HomeNav = adapt(BuildingLibraryIcon, 'HomeNav');
 export const LifeBuoy = adapt(LifebuoyIcon, 'LifeBuoy');
 export const LogOut = adapt(ArrowRightEndOnRectangleIcon, 'LogOut');
 export const Mail = adapt(EnvelopeIcon, 'Mail');
