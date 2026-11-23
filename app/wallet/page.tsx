@@ -229,103 +229,104 @@ export default function WalletPage() {
 
     return (
       <AppShell>
-        <div className="min-h-full bg-[#F5FAF6] pb-8">
-          <header className="relative flex items-center bg-[#13512C] px-4 py-4 text-white">
+        <div className="ar-page px-[13px] pt-2">
+          <header className="flex min-h-[58px] items-center gap-2">
             <button
               type="button"
               onClick={() => setShowCode(false)}
               aria-label="Back to wallet"
-              className={`relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/25 ${focusOnDark}`}
+              className={`grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full border border-[#e3efe8] bg-white text-[#103c2a] ${focusOnLight}`}
             >
-              <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+              <ChevronLeft size={21} strokeWidth={2} aria-hidden="true" />
             </button>
-            <h1 className="pointer-events-none absolute inset-x-0 text-center text-[17px] font-extrabold">
-              Redeem Glocal Points
-            </h1>
+            <div className="min-w-0">
+              <h1 className="text-[17px] font-[750] tracking-[-0.4px] text-[#145b3c]">
+                Redeem Glocal Points
+              </h1>
+              <p className="mt-[2px] text-[10px] text-[#87948c]">Your secure redemption code</p>
+            </div>
           </header>
 
-          <div className="px-4 pb-6 pt-4">
-            <p className="text-[12px] leading-relaxed text-[#15532E]/75">
-              Show this QR code to the Glocal Store merchant to redeem your points.
+          <p className="mt-2 text-[10px] leading-relaxed text-[#7c8b82]">
+            Show this QR code to the Glocal Store merchant to redeem your points.
+          </p>
+
+          <section className="mt-3 rounded-[22px] border border-[#e0ebe3] bg-white p-[18px] text-center shadow-[0_2px_8px_rgba(20,52,37,0.06)]">
+            <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full bg-[#eaf7ef] px-3 py-1.5">
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-[750] uppercase tracking-wide text-[#187b4b]">
+                <ShieldCheck size={14} aria-hidden="true" /> Secure QR
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#15814b] px-2 py-[2px] text-[8px] font-[750] text-white">
+                <Check size={11} aria-hidden="true" /> Verified
+              </span>
+            </div>
+
+            <h2 className="mt-3 text-[16px] font-[750] text-[#1b593b]">Scan to redeem</h2>
+            <p className="mt-1 inline-flex items-center justify-center gap-1.5 text-[10px] text-[#89968f]">
+              <ScanLine size={14} aria-hidden="true" /> Ask the merchant to scan your code
             </p>
 
-            <section className="mt-4 rounded-[24px] bg-white p-5 text-center shadow-sm">
-              <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full bg-[#EAF4ED] px-3 py-1.5">
-                <span className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wide text-[#15532E]">
-                  <ShieldCheck size={14} aria-hidden="true" /> Secure QR
+            <div className="mx-auto mt-4 w-full max-w-[254px] rounded-[18px] border border-[#e0e9e3] bg-white p-[10px] shadow-[0_10px_28px_rgba(21,83,46,0.10)]">
+              <div className="aspect-square w-full">
+                <QrMosaic seed={qrSeed} />
+              </div>
+            </div>
+
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <span
+                className={`h-2 w-2 rounded-full ${secondsLeft > 0 ? 'bg-[#18bb46]' : 'bg-[#d94539]'}`}
+                aria-hidden="true"
+              />
+              <p className="text-[11px] font-[700] text-[#286b48]">
+                QR expires in{' '}
+                <span className="font-[750] tabular-nums" aria-live="polite">
+                  {minutes}:{seconds}
                 </span>
-                <span className="flex items-center gap-1 rounded-full bg-[#15532E] px-2 py-0.5 text-[9px] font-bold text-white">
-                  <Check size={11} aria-hidden="true" /> Verified
-                </span>
-              </div>
-
-              <h2 className="mt-3 text-[16px] font-extrabold text-[#15532E]">Scan to redeem</h2>
-              <p className="mt-1 flex items-center justify-center gap-1.5 text-[11px] text-[#6B7B72]">
-                <ScanLine size={14} aria-hidden="true" /> Ask the merchant to scan your code
-              </p>
-
-              <div className="mx-auto mt-4 w-full max-w-[268px] rounded-[18px] border border-[#DCE9DF] bg-white p-3 shadow-[0_10px_28px_rgba(21,83,46,0.10)]">
-                <div className="aspect-square w-full">
-                  <QrMosaic seed={qrSeed} />
-                </div>
-              </div>
-
-              <div className="mt-4 flex items-center justify-center gap-2">
-                <span
-                  className={`h-2 w-2 rounded-full ${secondsLeft > 0 ? 'bg-[#2FA36B]' : 'bg-[#D34A3A]'}`}
-                  aria-hidden="true"
-                />
-                <p className="text-[12px] font-semibold text-[#15532E]">
-                  QR expires in{' '}
-                  <span className="font-extrabold tabular-nums" aria-live="polite">
-                    {minutes}:{seconds}
-                  </span>
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={regenerateQr}
-                className={`mx-auto mt-4 flex min-h-[44px] w-full max-w-[240px] items-center justify-center gap-2 rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
-              >
-                <RefreshCw size={15} aria-hidden="true" /> Generate new QR
-              </button>
-
-              <p className="mt-2 text-[10px] text-[#8A9A90]">Generated at {generatedAt || '--:--:--'}</p>
-              <p className="mt-0.5 text-[10px] text-[#8A9A90]">
-                Linked to {session.name} · {session.jamiaId}
-              </p>
-            </section>
-
-            <section className="mt-5 rounded-[20px] bg-white p-4 shadow-sm">
-              <h2 className="text-[14px] font-extrabold text-[#15532E]">How to redeem</h2>
-              <ol className="mt-3 space-y-3">
-                {redeemSteps.map((step, index) => {
-                  const Icon = step.icon;
-                  return (
-                    <li key={step.title} className="flex gap-3">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#FDF6D4] text-[12px] font-extrabold text-[#15532E]">
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="flex items-center gap-1.5 text-[12px] font-extrabold text-[#15532E]">
-                          {step.title}
-                          <Icon size={13} className="text-[#2FA36B]" aria-hidden="true" />
-                        </p>
-                        <p className="mt-0.5 text-[11px] leading-relaxed text-[#6B7B72]">{step.body}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </section>
-
-            <div className="mt-5 rounded-[18px] bg-[#FDF6D4] p-4">
-              <p className="flex gap-2 text-[10px] leading-relaxed text-[#5B4E1A]">
-                <ShieldCheck size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-                <span>Your QR is temporary. Never share screenshots of your QR.</span>
               </p>
             </div>
+
+            <button
+              type="button"
+              onClick={regenerateQr}
+              className={`mx-auto mt-4 flex min-h-[39px] w-full max-w-[240px] items-center justify-center gap-2 rounded-[13px] bg-[linear-gradient(105deg,#25ae72,#087749)] px-5 text-[10px] font-[750] text-white ${focusOnDark}`}
+            >
+              <RefreshCw size={15} aria-hidden="true" /> Generate new QR
+            </button>
+
+            <p className="mt-2 text-[9px] text-[#93a098]">Generated at {generatedAt || '--:--:--'}</p>
+            <p className="mt-0.5 text-[9px] text-[#93a098]">
+              Linked to {session.name} · {session.jamiaId}
+            </p>
+          </section>
+
+          <section className="mt-4 rounded-[18px] border border-[#e0ebe3] bg-white p-4">
+            <h2 className="text-[14px] font-[740] text-[#1b5037]">How to redeem</h2>
+            <ol className="mt-3 space-y-3">
+              {redeemSteps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <li key={step.title} className="flex gap-3">
+                    <span className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-full bg-[#eaf7ef] text-[10px] font-[750] text-[#187b4b]">
+                      {index + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="flex items-center gap-1.5 text-[10px] font-[750] text-[#205c3c]">
+                        {step.title}
+                        <Icon size={13} className="text-[#18bb46]" aria-hidden="true" />
+                      </p>
+                      <p className="mt-[2px] text-[9px] leading-relaxed text-[#89968f]">{step.body}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+
+          <div className="mt-4 flex gap-2 rounded-[15px] border border-[#f0e6a8] bg-[#fffbe6] p-3">
+            <ShieldCheck size={14} className="mt-[1px] shrink-0 text-[#a48613]" aria-hidden="true" />
+            <p className="text-[9px] leading-relaxed text-[#7a6a1f]">
+              Your QR is temporary. Never share screenshots of your QR.
+            </p>
           </div>
         </div>
       </AppShell>
@@ -334,118 +335,202 @@ export default function WalletPage() {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F5FAF6] pb-8">
-        <header className="relative flex items-center bg-[#13512C] px-4 py-4 text-white">
+      <div className="ar-page px-[13px] pt-2">
+        <header className="flex min-h-[66px] items-center gap-[6px]">
           <Link
             href="/home"
             aria-label="Go back"
-            className={`relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/25 ${focusOnDark}`}
+            className={`grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full border border-[#e3efe8] bg-white text-[#103c2a] ${focusOnLight}`}
           >
-            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+            <ChevronLeft size={21} strokeWidth={2} aria-hidden="true" />
           </Link>
-          <h1 className="pointer-events-none absolute inset-x-0 text-center text-[18px] font-extrabold">
-            Glocal Wallet
-          </h1>
-        </header>
-
-        <section className="mx-4 mt-4 overflow-hidden rounded-[24px] bg-gradient-to-br from-[#15532E] to-[#0A3A20] p-5 text-white shadow-sm">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-[10px] font-extrabold tracking-widest text-[#A1C8B3]">AVAILABLE BALANCE</p>
-            <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold text-[#CDEBD7]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#6BE2A0]" aria-hidden="true" /> Active
-            </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-[21px] font-[750] tracking-[-0.6px] text-[#145b3c]">
+              Glocal Wallet
+            </h1>
+            <p className="mt-[3px] text-[10px] text-[#87948c]">Your points and rewards</p>
           </div>
-
-          <div className="mt-3 flex items-baseline gap-2">
-            <Coins size={22} className="self-center text-[#EECE2D]" aria-hidden="true" />
-            <span className="text-[42px] font-extrabold leading-none">{session.points}</span>
-            <span className="text-[16px] font-bold text-[#DCEBDD]">Glocal Coins</span>
-          </div>
-          <p className="mt-2 text-[12px] text-[#A1C8B3]">Your Glocal Points balance</p>
-
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-[18px] bg-white/10 p-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FDF6D4]/20 text-[#FDF6D4]">
-                <ArrowDownLeft size={18} aria-hidden="true" />
-              </span>
-              <p className="mt-2 text-[10px] text-[#A1C8B3]">Total earned</p>
-              <p className="mt-0.5 text-[15px] font-extrabold">{earned} GP</p>
-            </div>
-            <div className="rounded-[18px] bg-white/10 p-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FDF6D4]/20 text-[#FDF6D4]">
-                <ArrowUpRight size={18} aria-hidden="true" />
-              </span>
-              <p className="mt-2 text-[10px] text-[#A1C8B3]">Total redeemed</p>
-              <p className="mt-0.5 text-[15px] font-extrabold">{redeemedPoints} GP</p>
-            </div>
-          </div>
-        </section>
-
-        <div className="mx-4 mt-4 grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={openQr}
-            className={`flex min-h-[112px] flex-col items-start justify-between rounded-[20px] bg-[#FDF6D4] p-4 text-left transition-transform duration-150 active:scale-[0.98] ${focusOnLight}`}
+            className={`inline-flex min-h-[31px] shrink-0 items-center gap-1 rounded-[10px] bg-[#e8f4ec] px-[10px] text-[9px] font-[700] text-[#147748] ${focusOnLight}`}
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#15532E] text-[#FDF6D4]">
-              <QrCode size={19} aria-hidden="true" />
-            </span>
-            <span>
-              <span className="block text-[14px] font-extrabold text-[#15532E]">Redeem</span>
-              <span className="mt-0.5 block text-[10px] text-[#15532E]/70">Show your QR</span>
-            </span>
+            <QrCode size={16} aria-hidden="true" /> Redeem
           </button>
-          <Link
-            href="/points"
-            className={`flex min-h-[112px] flex-col items-start justify-between rounded-[20px] bg-white p-4 shadow-sm transition-transform duration-150 active:scale-[0.98] ${focusOnLight}`}
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
-              <Gift size={19} aria-hidden="true" />
-            </span>
-            <span>
-              <span className="block text-[14px] font-extrabold text-[#15532E]">Earn points</span>
-              <span className="mt-0.5 block text-[10px] text-[#6B7B72]">Explore events</span>
-            </span>
-          </Link>
+        </header>
+
+        <section className="relative mt-[9px] min-h-[174px] overflow-hidden rounded-[22px] bg-[linear-gradient(125deg,#13593d,#063e2c_77%)] p-[17px] text-white">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-[18px] -top-[40px] h-[128px] w-[128px] rounded-full border border-white/10 shadow-[0_0_0_21px_rgba(255,255,255,0.024),0_0_0_41px_rgba(255,255,255,0.024)]"
+          />
+          <div className="relative z-[1]">
+            <p className="flex items-center gap-[7px] text-[9px] font-[700] tracking-[1.5px] text-[#d9eadf]">
+              <Coins size={19} aria-hidden="true" /> GLOCAL WALLET
+            </p>
+            <p className="mb-[1px] mt-[19px] text-[10px] text-[#bbd0c3]">Your balance</p>
+            <div className="flex items-baseline gap-[6px] text-[39px] font-[750] leading-none tracking-[-1.7px]">
+              {session.points}
+              <span className="text-[12px] font-[700] tracking-normal text-[#dce88b]">GP</span>
+            </div>
+          </div>
+          <div className="absolute bottom-[13px] left-[17px] right-[17px] z-[1] flex justify-between text-[9px] text-[#bbd0c3]">
+            <span>Rendezvous &apos;26</span>
+            <span>{session.jamiaId}</span>
+          </div>
+        </section>
+
+        <div className="mt-3 flex items-center justify-between text-[9px] text-[#7c8b82]">
+          <span className="inline-flex items-center gap-1">
+            <ArrowDownLeft size={12} className="text-[#157b49]" aria-hidden="true" /> Earned{' '}
+            <b className="font-[750] text-[#157b49]">{earned} GP</b>
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <ArrowUpRight size={12} className="text-[#687b70]" aria-hidden="true" /> Redeemed{' '}
+            <b className="font-[750] text-[#687b70]">{redeemedPoints} GP</b>
+          </span>
         </div>
 
-        <section className="mx-4 mt-6" aria-label="Rewards">
-          <div className="flex items-end justify-between gap-3">
+        <Link
+          href="/points"
+          className={`mt-[12px] flex w-full items-center gap-[10px] rounded-[15px] border border-[#cfe5d6] bg-white p-[10px] text-left ${focusOnLight}`}
+        >
+          <span className="grid h-[36px] w-[36px] shrink-0 place-items-center rounded-[12px] bg-[#eaf7ef] text-[#187b4b]">
+            <Gift size={19} aria-hidden="true" />
+          </span>
+          <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
+            <strong className="text-[11px] font-[750] text-[#205c3c]">Earn more Glocal Points</strong>
+            <small className="text-[9px] text-[#89968f]">Complete your festival activities</small>
+          </span>
+          <ChevronLeft size={18} className="-rotate-180 shrink-0 text-[#85948b]" aria-hidden="true" />
+        </Link>
+
+        <section className="mt-5">
+          <div className="flex items-end justify-between gap-2">
             <div>
-              <h2 className="text-[15px] font-extrabold text-[#15532E]">Rewards</h2>
-              <p className="mt-0.5 text-[11px] text-[#6B7B72]">Treats you can pick up around the fest</p>
+              <p className="ar-eyebrow">YOUR ACTIVITY</p>
+              <h2 className="mt-[2px] text-[17px] font-[740] tracking-[-0.35px] text-[#1b5037]">
+                Transactions
+              </h2>
             </div>
-            <span className="flex shrink-0 items-center gap-1 text-[11px] font-extrabold text-[#15532E]">
+            <span className="text-[9px] font-[700] text-[#147748]">All points</span>
+          </div>
+
+          <div className="ar-chip-row -mx-[13px] mt-[9px] px-[13px] pb-1">
+            {filters.map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => setFilter(item.kind)}
+                aria-pressed={filter === item.kind}
+                data-active={filter === item.kind}
+                className={`ar-chip ${focusOnLight}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-[9px] overflow-hidden rounded-[15px] border border-[#e0e9e3] bg-white">
+            {transactions.length === 0 ? (
+              <div className="px-5 py-8 text-center">
+                <span className="mx-auto grid h-[40px] w-[40px] place-items-center rounded-[12px] bg-[#eaf7ef] text-[#187b4b]">
+                  <Coins size={20} aria-hidden="true" />
+                </span>
+                <p className="mt-3 text-[12px] font-[750] text-[#1b5037]">No transactions yet</p>
+                <p className="mx-auto mt-1.5 max-w-[260px] text-[9px] leading-relaxed text-[#89968f]">
+                  Your Glocal Points activity will appear here. Start participating to earn your first
+                  points!
+                </p>
+                <Link
+                  href="/points"
+                  className={`mx-auto mt-4 flex min-h-[39px] w-full max-w-[180px] items-center justify-center rounded-[13px] bg-[linear-gradient(105deg,#25ae72,#087749)] px-5 text-[10px] font-[700] text-white ${focusOnDark}`}
+                >
+                  Explore activities
+                </Link>
+              </div>
+            ) : (
+              transactions.map((transaction) => (
+                <div
+                  key={transaction.id}
+                  className="flex min-h-[59px] items-center gap-[9px] border-b border-[#e8eee9] px-[11px] py-2 last:border-b-0"
+                >
+                  <span
+                    className={`grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] ${
+                      transaction.points < 0
+                        ? 'bg-[#f5f2e9] text-[#937b36]'
+                        : 'bg-[#eaf5ed] text-[#12814b]'
+                    }`}
+                  >
+                    {transaction.points < 0 ? (
+                      <Ticket size={18} aria-hidden="true" />
+                    ) : (
+                      <Gift size={18} aria-hidden="true" />
+                    )}
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
+                    <strong className="truncate text-[10px] font-[700] text-[#335a43]">
+                      {transaction.title}
+                    </strong>
+                    <small className="text-[8px] text-[#8a9890]">{transaction.date}</small>
+                  </span>
+                  <b
+                    className={`shrink-0 text-[10px] font-[750] ${
+                      transaction.points < 0 ? 'text-[#687b70]' : 'text-[#157b49]'
+                    }`}
+                  >
+                    {transaction.points > 0 ? '+' : ''}
+                    {transaction.points} GP
+                  </b>
+                </div>
+              ))
+            )}
+          </div>
+
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[9px] text-[#7c8b82]">
+            <ShieldCheck size={13} aria-hidden="true" /> Your Glocal Points are recorded in this demo.
+          </p>
+        </section>
+
+        <section className="mt-[21px]" aria-label="Rewards">
+          <div className="flex items-end justify-between gap-2">
+            <div>
+              <p className="ar-eyebrow">USE YOUR POINTS</p>
+              <h2 className="mt-[2px] text-[17px] font-[740] tracking-[-0.35px] text-[#1b5037]">
+                Rewards
+              </h2>
+            </div>
+            <span className="inline-flex items-center gap-1 text-[10px] font-[750] text-[#157b49]">
               <Coins size={13} aria-hidden="true" /> {session.points}
             </span>
           </div>
 
           {session.points === 0 ? (
-            <div className="mt-3 flex flex-col items-center rounded-[20px] bg-white px-5 py-7 text-center shadow-sm">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF4ED] text-[#15532E]">
-                <Gift size={22} aria-hidden="true" />
+            <div className="mt-[9px] flex flex-col items-center rounded-[15px] border border-[#e0e9e3] bg-white px-5 py-7 text-center">
+              <span className="grid h-[40px] w-[40px] place-items-center rounded-[12px] bg-[#eaf7ef] text-[#187b4b]">
+                <Gift size={20} aria-hidden="true" />
               </span>
-              <p className="mt-3 text-[14px] font-extrabold text-[#15532E]">No coins yet</p>
-              <p className="mx-auto mt-1 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
+              <p className="mt-3 text-[12px] font-[750] text-[#1b5037]">No coins yet</p>
+              <p className="mx-auto mt-1 max-w-[260px] text-[9px] leading-relaxed text-[#89968f]">
                 Join festival activities to earn your first Glocal Coins and unlock these rewards.
               </p>
               <Link
                 href="/points"
-                className={`mt-4 flex min-h-[44px] w-full max-w-[180px] items-center justify-center rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
+                className={`mt-4 flex min-h-[39px] w-full max-w-[180px] items-center justify-center rounded-[13px] bg-[linear-gradient(105deg,#25ae72,#087749)] px-5 text-[10px] font-[700] text-white ${focusOnDark}`}
               >
                 Explore activities
               </Link>
             </div>
           ) : rewards.length === 0 ? (
-            <div className="mt-3 flex flex-col items-center rounded-[20px] bg-white px-5 py-9 text-center shadow-sm">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF4ED] text-[#15532E]">
-                <Gift size={22} aria-hidden="true" />
+            <div className="mt-[9px] flex flex-col items-center rounded-[15px] border border-[#e0e9e3] bg-white px-5 py-9 text-center">
+              <span className="grid h-[40px] w-[40px] place-items-center rounded-[12px] bg-[#eaf7ef] text-[#187b4b]">
+                <Gift size={20} aria-hidden="true" />
               </span>
-              <p className="mt-3 text-[14px] font-extrabold text-[#15532E]">No rewards right now</p>
-              <p className="mt-1 text-[11px] text-[#6B7B72]">Check back soon for festival treats.</p>
+              <p className="mt-3 text-[12px] font-[750] text-[#1b5037]">No rewards right now</p>
+              <p className="mt-1 text-[9px] text-[#89968f]">Check back soon for festival treats.</p>
             </div>
           ) : (
-            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="mt-[9px] flex flex-col gap-[9px]">
               {rewards.map((reward) => {
                 const Icon = reward.icon;
                 const affordable = session.points >= reward.cost;
@@ -454,172 +539,90 @@ export default function WalletPage() {
                     key={reward.id}
                     type="button"
                     onClick={() => setSelectedReward(reward)}
-                    className="flex items-start gap-3 rounded-[20px] bg-white p-4 text-left shadow-sm transition-transform duration-150 active:scale-[0.99]"
+                    className="flex w-full items-center gap-[9px] rounded-[15px] border border-[#e0e9e3] bg-white p-[10px] text-left transition-transform duration-150 active:scale-[0.99]"
                   >
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-[#FDF6D4] text-[#15532E]">
-                      <Icon className="h-6 w-6" strokeWidth={1.7} aria-hidden="true" />
+                    <span className="grid h-[36px] w-[36px] shrink-0 place-items-center rounded-[11px] bg-[#fff6cc] text-[#a48613]">
+                      <Icon className="h-5 w-5" strokeWidth={1.9} aria-hidden="true" />
                     </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-start justify-between gap-2">
-                        <span className="truncate text-[13px] font-extrabold text-[#15532E]">
+                    <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
+                      <span className="flex min-w-0 items-center gap-1.5">
+                        <strong className="truncate text-[10px] font-[700] text-[#335840]">
                           {reward.name}
-                        </span>
+                        </strong>
                         {reward.tag ? (
-                          <span className="shrink-0 rounded-full bg-[#EECE2D] px-2 py-0.5 text-[9px] font-extrabold tracking-wide text-[#15532E]">
+                          <span className="shrink-0 rounded-full bg-[#fff6cc] px-1.5 py-[1px] text-[8px] font-[750] text-[#a48613]">
                             {reward.tag}
                           </span>
                         ) : null}
                       </span>
-                      <span className="mt-1 block text-[11px] leading-snug text-[#6B7B72]">
+                      <small className="text-[8px] leading-snug text-[#8b9890]">
                         {reward.description}
+                      </small>
+                    </span>
+                    <span className="shrink-0 text-right">
+                      <span className="block text-[9px] font-[750] text-[#16804c]">
+                        {reward.cost} GP
                       </span>
-                      <span className="mt-2 flex items-center gap-1.5 text-[11px] font-extrabold text-[#15532E]">
-                        <Coins size={13} className="text-[#B88900]" aria-hidden="true" />
-                        {reward.cost} coins
-                        {!affordable ? (
-                          <span className="ml-1 text-[10px] font-bold text-[#B64235]">
-                            · need {reward.cost - session.points} more
-                          </span>
-                        ) : null}
-                      </span>
+                      {!affordable ? (
+                        <span className="block text-[8px] font-[700] text-[#b64235]">
+                          need {reward.cost - session.points}
+                        </span>
+                      ) : null}
                     </span>
                   </button>
                 );
               })}
             </div>
           )}
-          <p className="mt-2 text-center text-[10px] text-[#8A9A90]">
+          <p className="mt-2 text-center text-[9px] text-[#93a098]">
             Redeeming a reward deducts demo coins from your wallet balance.
-          </p>
-        </section>
-
-        <section className="mx-4 mt-6">
-          <h2 className="text-[15px] font-extrabold text-[#15532E]">Transaction history</h2>
-          <p className="mt-0.5 text-[11px] text-[#6B7B72]">Track every point you earn and spend</p>
-
-          <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-2">
-            {filters.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => setFilter(item.kind)}
-                aria-pressed={filter === item.kind}
-                className={`min-h-[44px] shrink-0 rounded-full px-4 text-[11px] font-bold transition-colors ${
-                  filter === item.kind
-                    ? 'bg-[#15532E] text-white'
-                    : 'bg-white text-[#6B7B72]'
-                } ${focusOnLight}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-3 divide-y divide-[#EDF2EE] overflow-hidden rounded-[20px] bg-white shadow-sm">
-            {transactions.length === 0 ? (
-              <div className="px-5 py-8 text-center">
-                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF4ED] text-[#15532E]">
-                  <Coins size={22} aria-hidden="true" />
-                </span>
-                <p className="mt-3 text-[14px] font-extrabold text-[#15532E]">No transactions yet</p>
-                <p className="mx-auto mt-1.5 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
-                  Your Glocal Points activity will appear here. Start participating to earn your first
-                  points!
-                </p>
-                <Link
-                  href="/points"
-                  className={`mx-auto mt-4 flex min-h-[44px] w-full max-w-[180px] items-center justify-center rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
-                >
-                  Explore activities
-                </Link>
-              </div>
-            ) : (
-              transactions.map((transaction) => (
-                <div key={transaction.id} className="flex items-center justify-between gap-3 p-3.5">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-                        transaction.points < 0 ? 'bg-[#FDECEA] text-[#B64235]' : 'bg-[#EAF4ED] text-[#15532E]'
-                      }`}
-                    >
-                      {transaction.points < 0 ? (
-                        <Ticket size={18} aria-hidden="true" />
-                      ) : (
-                        <Gift size={18} aria-hidden="true" />
-                      )}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="truncate text-[13px] font-bold text-[#171717]">{transaction.title}</p>
-                      <p className="mt-0.5 text-[10px] text-[#8A9A90]">{transaction.date}</p>
-                    </div>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p
-                      className={`text-[14px] font-extrabold ${
-                        transaction.points < 0 ? 'text-[#B64235]' : 'text-[#2FA36B]'
-                      }`}
-                    >
-                      {transaction.points > 0 ? '+' : ''}
-                      {transaction.points}
-                    </p>
-                    <p className="mt-0.5 text-[9px] font-bold tracking-wide text-[#8A9A90]">
-                      GLOCAL POINTS
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[10px] text-[#6B7B72]">
-            <ShieldCheck size={13} aria-hidden="true" /> Your Glocal Points are recorded in this demo.
           </p>
         </section>
       </div>
 
       {selectedReward ? (
         <div
-          className="modal-backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(7,33,21,0.42)] p-5"
           role="dialog"
           aria-modal="true"
           aria-labelledby="reward-detail-title"
           onClick={() => setSelectedReward(null)}
         >
           <div
-            className="modal-card animate-rise relative"
+            className="animate-rise relative w-full max-w-[365px] rounded-[22px] border border-[#e0ebe3] bg-white p-[22px_18px_17px] text-center shadow-[0_16px_50px_rgba(3,38,21,0.24)]"
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setSelectedReward(null)}
               aria-label="Close reward details"
-              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#F5FAF6] text-[#15532E]"
+              className="absolute right-[10px] top-[10px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#f0f6f2] text-[#72847a]"
             >
-              <X size={17} aria-hidden="true" />
+              <X size={16} aria-hidden="true" />
             </button>
             <div className="flex flex-col items-center text-center">
-              <span className="flex h-20 w-20 items-center justify-center rounded-[24px] bg-[#FDF6D4] text-[#15532E]">
-                <selectedReward.icon className="h-9 w-9" strokeWidth={1.6} aria-hidden="true" />
+              <span className="grid h-[64px] w-[64px] place-items-center rounded-[20px] bg-[#fff6cc] text-[#a48613]">
+                <selectedReward.icon className="h-8 w-8" strokeWidth={1.7} aria-hidden="true" />
               </span>
-              <h2 id="reward-detail-title" className="mt-4 text-[19px] font-extrabold text-[#15532E]">
+              <h2 id="reward-detail-title" className="mt-3 text-[16px] font-[750] text-[#1b593b]">
                 {selectedReward.name}
               </h2>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-[#6B7B72]">
+              <p className="mx-auto mt-2 max-w-[290px] text-[10px] leading-[1.55] text-[#819087]">
                 {selectedReward.description}
               </p>
-              <p className="mt-4 flex items-center gap-1.5 text-[16px] font-extrabold text-[#15532E]">
-                <Coins className="h-5 w-5 text-[#B88900]" aria-hidden="true" />
+              <p className="mt-3 flex items-center gap-1.5 text-[14px] font-[750] text-[#157b49]">
+                <Coins className="h-[18px] w-[18px] text-[#a48613]" aria-hidden="true" />
                 {selectedReward.cost} Glocal Coins
               </p>
-              <p className="mt-1 text-[11px] font-semibold text-[#6B7B72]">
+              <p className="mt-1 text-[9px] font-[650] text-[#89968f]">
                 Your balance: {session.points} coins
               </p>
             </div>
-            <div className="mt-5 flex gap-3">
+            <div className="mt-4 flex gap-2">
               <button
                 type="button"
                 onClick={() => setSelectedReward(null)}
-                className="min-h-[48px] flex-1 rounded-full border border-[#15532E]/15 bg-white px-4 text-[12px] font-bold text-[#15532E]"
+                className="min-h-[37px] flex-1 rounded-full border border-[#dce8e0] bg-white px-3 text-[10px] font-[700] text-[#286b48]"
               >
                 Cancel
               </button>
@@ -627,14 +630,14 @@ export default function WalletPage() {
                 type="button"
                 onClick={() => handleRedeem(selectedReward)}
                 disabled={session.points < selectedReward.cost}
-                className={`min-h-[48px] flex-[1.4] rounded-full bg-[#15532E] px-4 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] disabled:opacity-40 ${focusOnDark}`}
+                className={`min-h-[37px] flex-[1.4] rounded-full bg-[linear-gradient(105deg,#25ae72,#087749)] px-3 text-[10px] font-[700] text-white disabled:opacity-40 ${focusOnDark}`}
               >
                 {session.points >= selectedReward.cost
                   ? `Redeem · ${selectedReward.cost} coins`
                   : `Need ${selectedReward.cost - session.points} more`}
               </button>
             </div>
-            <p className="mt-3 text-center text-[10px] text-[#8A9A90]">
+            <p className="mt-3 text-center text-[9px] text-[#93a098]">
               Demo redemption — deducts {selectedReward.cost} coins and shows a code.
             </p>
           </div>
@@ -642,34 +645,39 @@ export default function WalletPage() {
       ) : null}
 
       {redeemed ? (
-        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reward-success-title">
-          <div className="modal-card animate-rise text-center">
-            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#E7F4EA] text-[#0A5C2E]">
-              <Check size={30} strokeWidth={1.8} aria-hidden="true" />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(7,33,21,0.42)] p-5"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reward-success-title"
+        >
+          <div className="animate-rise w-full max-w-[365px] rounded-[22px] border border-[#e0ebe3] bg-white p-[22px_18px_17px] text-center shadow-[0_16px_50px_rgba(3,38,21,0.24)]">
+            <span className="mx-auto grid h-[45px] w-[45px] place-items-center rounded-[15px] bg-[#e9f5ed] text-[#177c4a]">
+              <Check size={26} strokeWidth={1.8} aria-hidden="true" />
             </span>
-            <h2 id="reward-success-title" className="mt-4 text-[19px] font-extrabold text-[#15532E]">
+            <h2 id="reward-success-title" className="mt-3 text-[16px] font-[750] text-[#1b593b]">
               Reward ready!
             </h2>
-            <p className="mt-1.5 text-[12px] leading-relaxed text-[#6B7B72]">
+            <p className="mx-auto mt-2 max-w-[290px] text-[10px] leading-[1.55] text-[#819087]">
               Show this at the counter to collect your {redeemed.reward.name}.
             </p>
-            <div className="mt-4 rounded-[18px] bg-[#FDF6D4] p-4">
-              <p className="text-[10px] font-extrabold tracking-[0.14em] text-[#8A731A]">DEMO CODE</p>
-              <p className="mt-1 font-mono text-[18px] font-black tracking-wide text-[#15532E]">
+            <div className="mt-4 rounded-[15px] bg-[#fff6cc] p-4">
+              <p className="text-[9px] font-[750] tracking-[0.14em] text-[#a48613]">DEMO CODE</p>
+              <p className="mt-1 font-mono text-[18px] font-black tracking-wide text-[#1b593b]">
                 {redeemed.code}
               </p>
-              <p className="mt-2 text-[11px] font-bold text-[#5B4E1A]">
+              <p className="mt-2 text-[9px] font-[700] text-[#7a6a1f]">
                 −{redeemed.reward.cost} Glocal Coins · balance {session.points}
               </p>
             </div>
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-[#8A9A90]">
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[9px] text-[#93a098]">
               <CircleAlert size={12} aria-hidden="true" /> Prototype only — coins were deducted from
               your demo balance.
             </p>
             <button
               type="button"
               onClick={() => setRedeemed(null)}
-              className={`mt-5 flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
+              className={`mt-4 flex min-h-[37px] w-full items-center justify-center rounded-full bg-[linear-gradient(105deg,#25ae72,#087749)] px-5 text-[10px] font-[700] text-white ${focusOnDark}`}
             >
               Done
             </button>
