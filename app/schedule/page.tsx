@@ -90,6 +90,12 @@ function entryId(stage: string, entry: Entry) {
   return `${stage}-${entry.time}-${entry.title}`.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 }
 
+function shortDay(date: string) {
+  const [weekday, rest] = date.split(', ');
+  const day = rest?.split('/')[0] ?? '';
+  return `${(weekday ?? '').slice(0, 3).toUpperCase()} ${day}`.trim();
+}
+
 export default function SchedulePage() {
   const { session, toggleProgram } = usePrototype();
   const [active, setActive] = useState('Stage 1');
@@ -140,19 +146,19 @@ export default function SchedulePage() {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F6F8F5]">
-        <header className="flex items-center gap-3 bg-[#15532E] px-4 py-4 text-white">
+      <div className="ar-page">
+        <header className="flex items-center gap-3 bg-[#0b5038] px-4 py-3.5 text-white">
           <Link
             href="/home"
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 ${focusOnDark}`}
+            className={`grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/15 ${focusOnDark}`}
             aria-label="Go back"
           >
-            <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
+            <ChevronLeft size={20} strokeWidth={2.6} aria-hidden="true" />
           </Link>
-          <h1 className="flex-1 pr-10 text-center text-[18px] font-extrabold">Schedule</h1>
+          <h1 className="flex-1 pr-9 text-center text-[14px] font-bold">Schedule</h1>
         </header>
 
-        <div className="flex gap-2 overflow-x-auto bg-white px-4 py-3" aria-label="Stages">
+        <div className="mx-4 mt-2 grid grid-cols-3 gap-[7px]" aria-label="Stages">
           {stages.map((stage) => (
             <button
               key={stage}
@@ -162,38 +168,42 @@ export default function SchedulePage() {
                 setDetail(null);
               }}
               aria-pressed={stage === active}
-              className={`min-h-[40px] shrink-0 rounded-full px-4 text-[12px] font-bold transition-colors ${focusOnLight} ${
-                stage === active ? 'bg-[#15532E] text-white' : 'bg-[#F6F8F5] text-[#6B7B72]'
+              className={`flex min-h-[48px] flex-col justify-center gap-[3px] rounded-[13px] border px-2.5 py-1.5 text-left transition-colors ${focusOnLight} ${
+                stage === active
+                  ? 'border-[#c6e1cf] bg-[#e9f5ec] text-[#176c41]'
+                  : 'border-[#dfe9e2] bg-white text-[#718279]'
               }`}
             >
-              {stage}
+              <small className="text-[7px] font-bold uppercase tracking-[0.7px]">
+                {shortDay(stageData[stage].date)}
+              </small>
+              <strong className="text-[10px] font-bold">{stage}</strong>
             </button>
           ))}
         </div>
 
         <div className="px-4 pb-8 pt-3">
-          <label className="flex min-h-[46px] items-center gap-2.5 rounded-[16px] bg-white px-4 shadow-sm focus-within:ring-2 focus-within:ring-[#15532E]/20">
-            <Search className="h-[18px] w-[18px] shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          <label className="ar-search focus-within:ring-2 focus-within:ring-[#16824f]/20">
+            <Search className="h-[18px] w-[18px] shrink-0 text-[#8ca197]" aria-hidden="true" />
             <span className="sr-only">Search schedule</span>
             <input
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search events"
-              className="w-full bg-transparent text-[12px] text-[#1A2E23] outline-none placeholder:text-[#9AA19C]"
+              className="text-[12px]"
             />
           </label>
 
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Event categories">
+          <div className="ar-chip-row mt-3 pb-1" aria-label="Event categories">
             {categories.map((item) => (
               <button
                 key={item}
                 type="button"
                 aria-pressed={category === item}
                 onClick={() => setCategory(item)}
-                className={`min-h-[38px] shrink-0 rounded-full px-4 text-[10px] font-bold transition-colors ${focusOnLight} ${
-                  category === item ? 'bg-[#15532E] text-white' : 'bg-white text-[#6B7B72] shadow-sm'
-                }`}
+                data-active={category === item}
+                className={`ar-chip ${focusOnLight}`}
               >
                 {item}
               </button>
@@ -203,25 +213,23 @@ export default function SchedulePage() {
           {notice ? (
             <p
               role="status"
-              className="mt-3 rounded-[14px] bg-[#ECFDF3] px-4 py-2.5 text-[11px] font-semibold text-[#0C801D]"
+              className="mt-3 rounded-[14px] border border-[#cbe6d5] bg-[#edf7f0] px-3 py-2.5 text-[10px] font-semibold text-[#15774a]"
             >
               {notice}
             </p>
           ) : null}
 
           {visible.length === 0 ? (
-            <div className="mt-4 flex flex-col items-center rounded-[20px] bg-white px-6 py-12 text-center shadow-sm">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EFF3F0] text-[#6B7B72]">
+            <div className="ar-empty mt-4 rounded-[16px] border border-[#e3efe8] bg-white px-6 py-10">
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-[#eef3f0] text-[#61716a]">
                 <Search size={22} aria-hidden="true" />
               </span>
-              <h2 className="mt-4 text-[14px] font-extrabold text-[#1A2E23]">No events found</h2>
-              <p className="mx-auto mt-2 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
-                Try another search term or category.
-              </p>
+              <strong className="mt-3">No events found</strong>
+              <p className="mx-auto max-w-[240px]">Try another search term or category.</p>
               <button
                 type="button"
                 onClick={clearFilters}
-                className={`mt-4 min-h-[40px] rounded-full bg-[#15532E] px-6 text-[11px] font-bold text-white ${focusOnDark}`}
+                className={`mt-4 min-h-[38px] rounded-full bg-[#16824f] px-6 text-[10px] font-bold text-white ${focusOnDark}`}
               >
                 Clear filters
               </button>
@@ -230,57 +238,84 @@ export default function SchedulePage() {
             <>
               {mainEntries.length > 0 ? (
                 <section aria-label={`${active} schedule`}>
-                  <h2 className="mt-5 text-[13px] font-bold text-[#8C928E]">{current.date}</h2>
-                  <div className="mt-2 space-y-2">
+                  <div className="mb-2.5 mt-4 flex items-baseline justify-between gap-3">
+                    <h2 className="m-0 text-[14px] font-bold text-[#1b5237]">{current.date}</h2>
+                    <span className="text-[9px] text-[#8a978f]">{mainEntries.length} events</span>
+                  </div>
+                  <div className="grid gap-0">
                     {mainEntries.map((entry) => {
                       const registered = isRegistered(active, entry);
                       const selected = detail?.stage === active && detail.entry === entry;
                       return (
                         <article
                           key={entryId(active, entry)}
-                          className={`rounded-[16px] bg-white px-4 py-2.5 shadow-sm ${
-                            selected ? 'ring-2 ring-[#15532E]/25' : ''
-                          }`}
+                          className="grid grid-cols-[55px_16px_1fr] gap-[7px]"
                         >
-                          <button
-                            type="button"
-                            onClick={() => setDetail({ stage: active, entry })}
-                            className={`w-full text-left ${focusOnLight}`}
-                            aria-label={`View details for ${entry.title}`}
-                          >
-                            <div className="flex items-start justify-between gap-2">
-                              <p className="text-[11px] font-semibold text-[#3F4B55]">{entry.time}</p>
-                              <p className="text-[10px] text-[#9AA19C]">{entry.duration}</p>
-                            </div>
-                            <div className="mt-1 flex items-center justify-between gap-2">
-                              <h3 className="truncate text-[14px] font-extrabold text-[#1A2E23]">
-                                {entry.title}
-                              </h3>
-                              <span className="shrink-0 rounded-full bg-[#EFF3F0] px-2.5 py-0.5 text-[9px] font-bold text-[#6B7B72]">
-                                {entry.category}
-                              </span>
-                            </div>
-                          </button>
-                          <div className="mt-2 flex items-center justify-between gap-2 border-t border-[#0C3523]/10 pt-2">
+                          <div className="flex flex-col items-end pt-[3px]">
+                            <strong className="text-[9px] font-bold text-[#53685a]">{entry.time}</strong>
+                            <span className="mt-1 text-[8px] text-[#a0aaa4]">{entry.duration}</span>
+                          </div>
+                          <div className="relative flex justify-center">
                             <span
-                              className={`inline-flex items-center gap-1 text-[10px] font-bold ${
-                                registered ? 'text-[#0C801D]' : 'text-[#9AA19C]'
+                              aria-hidden="true"
+                              className="absolute bottom-[-5px] left-1/2 top-3 w-px -translate-x-1/2 bg-[#d5e6db]"
+                            />
+                            <i
+                              aria-hidden="true"
+                              className={`relative z-[1] mt-1 h-[9px] w-[9px] rounded-full border-2 ${
+                                registered
+                                  ? 'border-[#137d49] bg-[#16834e] shadow-[0_0_0_3px_#e2f1e6]'
+                                  : 'border-[#b5d8c1] bg-[#f4f9f5]'
                               }`}
-                            >
-                              {registered ? <Check size={12} aria-hidden="true" /> : null}
-                              {registered ? 'In your program' : 'Not saved yet'}
-                            </span>
+                            />
+                          </div>
+                          <div
+                            className={`relative min-h-[83px] rounded-[14px] border border-[#dce8e0] bg-white p-[9px_10px] shadow-[0_1px_3px_rgba(16,57,38,0.05)] ${
+                              selected ? 'ring-2 ring-[#16824f]/25' : ''
+                            }`}
+                          >
                             <button
                               type="button"
-                              onClick={() => toggleRegistration(active, entry)}
-                              className={`min-h-[32px] rounded-full px-3 text-[10px] font-bold ${
-                                registered
-                                  ? 'bg-[#EFF3F0] text-[#6B7B72]'
-                                  : 'bg-[#E6F3EA] text-[#15532E]'
-                              } ${focusOnLight}`}
+                              onClick={() => setDetail({ stage: active, entry })}
+                              className={`block w-full text-left ${registered ? 'pr-6' : ''} ${focusOnLight}`}
+                              aria-label={`View details for ${entry.title}`}
                             >
-                              {registered ? 'Remove' : 'Add'}
+                              <span className="block text-[7px] font-bold uppercase tracking-[0.7px] text-[#14804b]">
+                                {entry.category}
+                              </span>
+                              <strong className="mt-1 block truncate text-[11px] font-bold text-[#254431]">
+                                {entry.title}
+                              </strong>
+                              <small className="mt-1 flex items-center gap-1 text-[8px] text-[#89978f]">
+                                <MapPin size={10} aria-hidden="true" /> {stageVenues[active]}
+                              </small>
                             </button>
+                            {registered ? (
+                              <span className="absolute right-[9px] top-[9px] text-[#15774a]">
+                                <Check size={12} aria-hidden="true" />
+                              </span>
+                            ) : null}
+                            <div className="mt-2 flex items-center justify-between gap-2 border-t border-[#e6efe9] pt-2">
+                              <span
+                                className={`inline-flex items-center gap-1 text-[8px] font-bold ${
+                                  registered ? 'text-[#15774a]' : 'text-[#94a29a]'
+                                }`}
+                              >
+                                {registered ? <Check size={10} aria-hidden="true" /> : null}
+                                {registered ? 'In your program' : 'Not saved yet'}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => toggleRegistration(active, entry)}
+                                className={`min-h-[30px] rounded-full px-3 text-[9px] font-bold ${
+                                  registered
+                                    ? 'bg-[#eef3f0] text-[#61716a]'
+                                    : 'bg-[#e6f5ea] text-[#166c43]'
+                                } ${focusOnLight}`}
+                              >
+                                {registered ? 'Remove' : 'Add'}
+                              </button>
+                            </div>
                           </div>
                         </article>
                       );
@@ -291,62 +326,89 @@ export default function SchedulePage() {
 
               {extraVisible ? (
                 <section aria-label="Friday schedule">
-                  <h2 className="mt-5 text-[13px] font-bold text-[#8C928E]">Friday, 20/11/2026</h2>
-                  <div className="mt-2 space-y-2">
-                    <article
-                      className={`rounded-[16px] bg-white px-4 py-2.5 shadow-sm ${
-                        detail?.stage === active && detail.entry === extraFridayEntry
-                          ? 'ring-2 ring-[#15532E]/25'
-                          : ''
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setDetail({ stage: active, entry: extraFridayEntry })}
-                        className={`w-full text-left ${focusOnLight}`}
-                        aria-label="View details for Tarteel"
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <p className="text-[11px] font-semibold text-[#3F4B55]">
-                            {extraFridayEntry.time}
-                          </p>
-                          <p className="text-[10px] text-[#9AA19C]">{extraFridayEntry.duration}</p>
-                        </div>
-                        <div className="mt-1 flex items-center justify-between gap-2">
-                          <h3 className="text-[14px] font-extrabold text-[#1A2E23]">
-                            {extraFridayEntry.title}
-                          </h3>
-                          <span className="shrink-0 rounded-full bg-[#EFF3F0] px-2.5 py-0.5 text-[9px] font-bold text-[#6B7B72]">
-                            {extraFridayEntry.category}
-                          </span>
-                        </div>
-                      </button>
-                      <div className="mt-2 flex items-center justify-between gap-2 border-t border-[#0C3523]/10 pt-2">
+                  <div className="mb-2.5 mt-4 flex items-baseline justify-between gap-3">
+                    <h2 className="m-0 text-[14px] font-bold text-[#1b5237]">Friday, 20/11/2026</h2>
+                    <span className="text-[9px] text-[#8a978f]">1 event</span>
+                  </div>
+                  <div className="grid gap-0">
+                    <article className="grid grid-cols-[55px_16px_1fr] gap-[7px]">
+                      <div className="flex flex-col items-end pt-[3px]">
+                        <strong className="text-[9px] font-bold text-[#53685a]">
+                          {extraFridayEntry.time}
+                        </strong>
+                        <span className="mt-1 text-[8px] text-[#a0aaa4]">{extraFridayEntry.duration}</span>
+                      </div>
+                      <div className="relative flex justify-center">
                         <span
-                          className={`inline-flex items-center gap-1 text-[10px] font-bold ${
+                          aria-hidden="true"
+                          className="absolute bottom-[-5px] left-1/2 top-3 w-px -translate-x-1/2 bg-[#d5e6db]"
+                        />
+                        <i
+                          aria-hidden="true"
+                          className={`relative z-[1] mt-1 h-[9px] w-[9px] rounded-full border-2 ${
                             isRegistered(active, extraFridayEntry)
-                              ? 'text-[#0C801D]'
-                              : 'text-[#9AA19C]'
+                              ? 'border-[#137d49] bg-[#16834e] shadow-[0_0_0_3px_#e2f1e6]'
+                              : 'border-[#b5d8c1] bg-[#f4f9f5]'
                           }`}
-                        >
-                          {isRegistered(active, extraFridayEntry) ? (
-                            <Check size={12} aria-hidden="true" />
-                          ) : null}
-                          {isRegistered(active, extraFridayEntry)
-                            ? 'In your program'
-                            : 'Not saved yet'}
-                        </span>
+                        />
+                      </div>
+                      <div
+                        className={`relative min-h-[83px] rounded-[14px] border border-[#dce8e0] bg-white p-[9px_10px] shadow-[0_1px_3px_rgba(16,57,38,0.05)] ${
+                          detail?.stage === active && detail.entry === extraFridayEntry
+                            ? 'ring-2 ring-[#16824f]/25'
+                            : ''
+                        }`}
+                      >
                         <button
                           type="button"
-                          onClick={() => toggleRegistration(active, extraFridayEntry)}
-                          className={`min-h-[32px] rounded-full px-3 text-[10px] font-bold ${
-                            isRegistered(active, extraFridayEntry)
-                              ? 'bg-[#EFF3F0] text-[#6B7B72]'
-                              : 'bg-[#E6F3EA] text-[#15532E]'
+                          onClick={() => setDetail({ stage: active, entry: extraFridayEntry })}
+                          className={`block w-full text-left ${
+                            isRegistered(active, extraFridayEntry) ? 'pr-6' : ''
                           } ${focusOnLight}`}
+                          aria-label="View details for Tarteel"
                         >
-                          {isRegistered(active, extraFridayEntry) ? 'Remove' : 'Add'}
+                          <span className="block text-[7px] font-bold uppercase tracking-[0.7px] text-[#14804b]">
+                            {extraFridayEntry.category}
+                          </span>
+                          <strong className="mt-1 block text-[11px] font-bold text-[#254431]">
+                            {extraFridayEntry.title}
+                          </strong>
+                          <small className="mt-1 flex items-center gap-1 text-[8px] text-[#89978f]">
+                            <MapPin size={10} aria-hidden="true" /> {stageVenues[active]}
+                          </small>
                         </button>
+                        {isRegistered(active, extraFridayEntry) ? (
+                          <span className="absolute right-[9px] top-[9px] text-[#15774a]">
+                            <Check size={12} aria-hidden="true" />
+                          </span>
+                        ) : null}
+                        <div className="mt-2 flex items-center justify-between gap-2 border-t border-[#e6efe9] pt-2">
+                          <span
+                            className={`inline-flex items-center gap-1 text-[8px] font-bold ${
+                              isRegistered(active, extraFridayEntry)
+                                ? 'text-[#15774a]'
+                                : 'text-[#94a29a]'
+                            }`}
+                          >
+                            {isRegistered(active, extraFridayEntry) ? (
+                              <Check size={10} aria-hidden="true" />
+                            ) : null}
+                            {isRegistered(active, extraFridayEntry)
+                              ? 'In your program'
+                              : 'Not saved yet'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => toggleRegistration(active, extraFridayEntry)}
+                            className={`min-h-[30px] rounded-full px-3 text-[9px] font-bold ${
+                              isRegistered(active, extraFridayEntry)
+                                ? 'bg-[#eef3f0] text-[#61716a]'
+                                : 'bg-[#e6f5ea] text-[#166c43]'
+                            } ${focusOnLight}`}
+                          >
+                            {isRegistered(active, extraFridayEntry) ? 'Remove' : 'Add'}
+                          </button>
+                        </div>
                       </div>
                     </article>
                   </div>
@@ -367,17 +429,17 @@ export default function SchedulePage() {
           <div className="modal-card">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#8FA79A]">
+                <p className="ar-eyebrow">
                   {detail.stage} · {stageData[detail.stage].date}
                 </p>
-                <h2 className="mt-1 text-[18px] font-extrabold tracking-tight text-[#15532E]">
+                <h2 className="mt-1 text-[16px] font-bold tracking-[-0.4px] text-[#0b2118]">
                   {detail.entry.title}
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setDetail(null)}
-                className="icon-button"
+                className="ar-icon-button"
                 aria-label="Close event details"
               >
                 <X size={18} aria-hidden="true" />
@@ -385,18 +447,18 @@ export default function SchedulePage() {
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#e8f5eb] px-2.5 py-1 text-[9px] font-bold text-[#15774a]">
                 <Clock3 size={12} aria-hidden="true" /> {detail.entry.time}
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#e8f5eb] px-2.5 py-1 text-[9px] font-bold text-[#15774a]">
                 <MapPin size={12} aria-hidden="true" /> {stageVenues[detail.stage]}
               </span>
-              <span className="rounded-full bg-[#FDF6D4] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+              <span className="rounded-full bg-[#edf7f0] px-2.5 py-1 text-[9px] font-bold text-[#15774a]">
                 {detail.entry.category}
               </span>
             </div>
 
-            <p className="mt-4 text-[12px] leading-relaxed text-[#6B7B72]">
+            <p className="mt-4 text-[10px] leading-relaxed text-[#61716a]">
               {detail.entry.duration}. Held at {stageVenues[detail.stage]} as part of the {detail.stage}{' '}
               programme. Arrive a few minutes early and carry your participant card.
             </p>
@@ -404,10 +466,10 @@ export default function SchedulePage() {
             <button
               type="button"
               onClick={() => toggleRegistration(detail.stage, detail.entry)}
-              className={`mt-5 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full text-[12px] font-bold text-white transition-colors ${
+              className={`mt-5 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-full text-[11px] font-bold text-white transition-colors ${
                 detailRegistered
-                  ? 'bg-[#6B7B72] hover:bg-[#5B6B61]'
-                  : 'bg-[#15532E] hover:bg-[#0E3D21]'
+                  ? 'bg-[#6b7b72] hover:bg-[#5b6b61]'
+                  : 'bg-[#16824f] hover:bg-[#0b5038]'
               } ${focusOnLight}`}
             >
               {detailRegistered ? <Check size={15} aria-hidden="true" /> : null}
@@ -416,7 +478,7 @@ export default function SchedulePage() {
             <button
               type="button"
               onClick={() => setDetail(null)}
-              className={`mt-2 flex min-h-[42px] w-full items-center justify-center rounded-full border border-[#15532E]/15 text-[11px] font-bold text-[#15532E] ${focusOnLight}`}
+              className={`mt-2 flex min-h-[42px] w-full items-center justify-center rounded-full border border-[#dbe6df] text-[10px] font-bold text-[#166c43] ${focusOnLight}`}
             >
               Close
             </button>
