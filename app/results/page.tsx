@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle, Radio, RefreshCw, Search, Trophy } from 'lucide-react';
+import { AlertCircle, RefreshCw, Search, Trophy } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 
 type Tab = 'Leaderboard' | 'Event results';
@@ -11,9 +11,9 @@ const tabs: Tab[] = ['Leaderboard', 'Event results'];
 
 // Reference standings are kept exactly as shown in the design.
 const standings = [
-  { code: 'JM001C', points: '1,120' },
-  { code: 'JM001A', points: '1,071' },
-  { code: 'JM001B', points: '866' },
+  { code: 'JM001C', points: 1120 },
+  { code: 'JM001A', points: 1071 },
+  { code: 'JM001B', points: 866 },
 ];
 
 type EventResult = {
@@ -76,8 +76,8 @@ const eventResults: EventResult[] = [
 
 const categories = ['All', 'Competition', 'Cultural', 'Spiritual', 'Talk'];
 
-const focusOnLight =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0C801D]';
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b5038]';
 
 export default function ResultsPage() {
   const [tab, setTab] = useState<Tab>('Leaderboard');
@@ -123,209 +123,186 @@ export default function ResultsPage() {
 
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#F2F7F3] pb-8">
-        <header className="flex min-h-[64px] items-center justify-between px-5 pb-2 pt-[max(12px,env(safe-area-inset-top))]">
-          <h1 className="text-[18px] font-extrabold tracking-tight text-[#0C3523]">Results</h1>
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1 rounded-full bg-[#DCFCE7] px-3 py-1 text-[9px] font-extrabold uppercase tracking-widest text-[#15803D]">
-              <Radio size={11} aria-hidden="true" /> Live
-            </span>
-            <button
-              type="button"
-              onClick={refresh}
-              aria-label="Refresh results"
-              className={`flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#5B8A6C] shadow-sm transition-colors hover:bg-[#ECFDF3] ${focusOnLight}`}
-            >
-              <RefreshCw size={15} aria-hidden="true" />
-            </button>
-          </div>
-        </header>
-
-        <div
-          className="mx-4 mt-2 flex gap-2 rounded-full bg-[#E5F0EA] p-1"
-          role="tablist"
-          aria-label="Results sections"
-        >
-          {tabs.map((item) => (
-            <button
-              key={item}
-              type="button"
-              role="tab"
-              aria-selected={tab === item}
-              onClick={() => setTab(item)}
-              className={`min-h-[42px] flex-1 rounded-full text-[12px] font-extrabold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0C801D] ${
-                tab === item ? 'bg-white text-[#0C3523] shadow-sm' : 'text-[#6B7B72]'
-              }`}
-            >
-              {item}
-            </button>
-          ))}
+      <div className="ar-page">
+        <div className="px-4 pt-[max(17px,env(safe-area-inset-top))]">
+          <section className="res-header-card">
+            <div className="res-heading-row">
+              <h1 className="ar-heading">Results</h1>
+              <div className="flex items-center gap-2">
+                <span className="ar-live">Live</span>
+                <button
+                  type="button"
+                  onClick={refresh}
+                  aria-label="Refresh results"
+                  className={`ar-icon-button ${focusRing}`}
+                >
+                  <RefreshCw size={15} aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+            <div className="res-tabs ar-tabs" role="tablist" aria-label="Results sections">
+              {tabs.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === item}
+                  data-active={tab === item}
+                  onClick={() => setTab(item)}
+                  className={`ar-tab ${focusRing}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </section>
         </div>
 
         {loadState === 'loading' ? (
           <div className="px-4 pt-6" role="status" aria-label="Loading results">
             <span className="sr-only">Loading results…</span>
-            <div className="skeleton h-[150px] rounded-[24px]" />
+            <div className="skeleton h-[150px] rounded-[27px]" />
             <div className="mt-4 space-y-2">
-              <div className="skeleton h-[70px] rounded-[20px]" />
-              <div className="skeleton h-[70px] rounded-[20px]" />
-              <div className="skeleton h-[70px] rounded-[20px]" />
+              <div className="skeleton h-[62px] rounded-[14px]" />
+              <div className="skeleton h-[62px] rounded-[14px]" />
+              <div className="skeleton h-[62px] rounded-[14px]" />
             </div>
           </div>
         ) : loadState === 'error' ? (
           <div className="px-4 pt-6" role="alert">
-            <div className="rounded-[24px] bg-white px-6 py-10 text-center shadow-sm">
-              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FDECEA] text-[#B64235]">
+            <div className="ar-card px-6 py-10 text-center">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#fdecec] text-[#b64235]">
                 <AlertCircle size={22} aria-hidden="true" />
               </span>
-              <h2 className="mt-4 text-[14px] font-extrabold text-[#0C3523]">
+              <h2 className="mt-4 text-[14px] font-extrabold text-[#14241d]">
                 Couldn&apos;t refresh results
               </h2>
-              <p className="mx-auto mt-2 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
+              <p className="mx-auto mt-2 max-w-[260px] text-[11px] leading-relaxed text-[#61716a]">
                 The demo results are still available. Try again to load the latest standings.
               </p>
               <button
                 type="button"
                 onClick={retry}
-                className={`mx-auto mt-5 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#0C801D] px-6 text-[11px] font-bold text-white transition-colors hover:bg-[#0A6E19] ${focusOnLight}`}
+                className={`mx-auto mt-5 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#08754b] px-6 text-[11px] font-bold text-white transition-colors hover:bg-[#0b5038] ${focusRing}`}
               >
                 <RefreshCw size={14} aria-hidden="true" /> Retry
               </button>
             </div>
           </div>
         ) : tab === 'Leaderboard' ? (
-          <div className="px-4 pt-6" role="tabpanel">
-            <section className="overflow-hidden rounded-[24px] bg-[#ECFDF3] shadow-sm">
-              <div className="px-5 pt-5">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#5B8A6C]">
+          <div className="res-content px-4" role="tabpanel">
+            <section className="res-feature-card">
+              <div className="res-feature-orb" aria-hidden="true" />
+              <div className="res-feature-body">
+                <p className="ar-eyebrow flex items-center gap-2">
+                  <span className="grid h-[25px] w-[25px] place-items-center rounded-full bg-[#d7efdf]">
+                    <Trophy size={13} aria-hidden="true" />
+                  </span>
                   Currently leading
                 </p>
-              </div>
-              <div className="px-5 pb-4 pt-3">
-                <p className="text-[30px] font-extrabold leading-none tracking-tight text-[#0C3523]">
-                  JM001C
-                </p>
-                <div className="mt-3 flex items-end gap-2">
-                  <p className="text-[40px] font-extrabold leading-none text-[#0C801D]">1,120</p>
-                  <p className="pb-1 text-[12px] font-bold text-[#5B6B61]">points</p>
-                </div>
-              </div>
-              <div className="bg-white/70 px-5 py-3 text-center text-[11px] font-bold text-[#5B6B61]">
-                After 144 Results
+                <h2>JM001C</h2>
+                <strong className="res-feature-points">1,120</strong>
+                <p className="res-feature-caption">points</p>
               </div>
             </section>
 
-            <section className="mt-4 overflow-hidden rounded-[24px] bg-white shadow-sm">
+            <p className="res-update">After 144 Results</p>
+
+            <div className="flex flex-col gap-[7px]">
               {standings.map((row, index) => (
-                <div
-                  key={row.code}
-                  className={`flex items-center justify-between gap-3 px-5 py-5 ${
-                    index < standings.length - 1 ? 'border-b border-[#0C3523]/10' : ''
-                  }`}
-                >
-                  <p className="text-[14px] font-extrabold text-[#0C3523]">{row.code}</p>
-                  <p className="text-[15px] font-extrabold tabular-nums text-[#0C801D]">
-                    {row.points}
-                  </p>
+                <div key={row.code} className="res-rank" data-place={index + 1}>
+                  <span className="res-rank-num">{index + 1}</span>
+                  <div className="res-rank-body">
+                    <div className="res-rank-line">
+                      <span className="res-rank-name">{row.code}</span>
+                      <strong>{row.points.toLocaleString('en-US')}</strong>
+                    </div>
+                    <div className="res-rank-track">
+                      <i
+                        className="res-rank-fill"
+                        style={{ width: `${Math.round((row.points / standings[0].points) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
-            </section>
+            </div>
           </div>
         ) : (
-          <div className="px-4 pt-6" role="tabpanel">
-            <label className="flex min-h-[48px] items-center gap-2.5 rounded-[16px] bg-white px-4 shadow-sm focus-within:ring-2 focus-within:ring-[#0C801D]/25">
-              <Search className="h-[18px] w-[18px] shrink-0 text-[#8FA79A]" aria-hidden="true" />
+          <div className="res-content px-4" role="tabpanel">
+            <label className="ar-search">
+              <Search className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
               <span className="sr-only">Search events</span>
               <input
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search events"
-                className="w-full bg-transparent text-[12px] text-[#0C3523] outline-none placeholder:text-[#9AAEA3]"
               />
             </label>
 
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Result categories">
+            <div className="ar-chip-row mt-3" aria-label="Result categories">
               {categories.map((item) => (
                 <button
                   key={item}
                   type="button"
                   aria-pressed={category === item}
+                  data-active={category === item}
                   onClick={() => setCategory(item)}
-                  className={`min-h-[38px] shrink-0 rounded-full px-4 text-[10px] font-bold transition-colors ${focusOnLight} ${
-                    category === item
-                      ? 'bg-[#0C801D] text-white'
-                      : 'bg-white text-[#6B7B72] shadow-sm'
-                  }`}
+                  className={`ar-chip ${focusRing}`}
                 >
                   {item}
                 </button>
               ))}
             </div>
 
-            <div className="mt-3">
-              <span className="inline-flex rounded-full bg-[#E5F0EA] px-3 py-1 text-[10px] font-bold text-[#5B6B61]">
-                {filteredResults.length} announced events
-              </span>
-            </div>
+            <p className="ar-muted-caption ml-1 mt-3">{filteredResults.length} announced events</p>
 
             {filteredResults.length === 0 ? (
-              <div className="mt-16 text-center">
-                <p className="text-[14px] font-extrabold text-[#0C3523]">No events found</p>
-                <p className="mx-auto mt-2 max-w-[280px] text-[11px] leading-relaxed text-[#6B7B72]">
-                  Try another search term or category.
-                </p>
+              <div className="ar-empty" role="status">
+                <strong>No events found</strong>
+                <p>Try another search term or category.</p>
                 <button
                   type="button"
                   onClick={() => {
                     setQuery('');
                     setCategory('All');
                   }}
-                  className={`mx-auto mt-4 min-h-[40px] rounded-full bg-white px-5 text-[11px] font-bold text-[#0C801D] shadow-sm ${focusOnLight}`}
+                  className={`mt-4 min-h-[40px] rounded-full border border-[#dce8e0] bg-white px-5 text-[11px] font-bold text-[#08754b] ${focusRing}`}
                 >
                   Clear filters
                 </button>
               </div>
             ) : (
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="mt-3 grid grid-cols-1 gap-[9px] sm:grid-cols-2">
                 {filteredResults.map((result) => (
-                  <article key={result.id} className="rounded-[20px] bg-white p-4 shadow-sm">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <h2 className="text-[14px] font-extrabold text-[#0C3523]">{result.title}</h2>
-                        <p className="mt-1 text-[11px] text-[#6B7B72]">{result.detail}</p>
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide ${
-                          result.status === 'Awaiting'
-                            ? 'bg-[#FEF3C6] text-[#8A6A00]'
-                            : 'bg-[#DCFCE7] text-[#15803D]'
-                        }`}
-                      >
-                        {result.status}
+                  <article
+                    key={result.id}
+                    className="flex items-center gap-[11px] rounded-[16px] border border-[#dbe6df] bg-white p-[13px]"
+                  >
+                    <span className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[12px] bg-[#eaf6ed] text-[#16804c]">
+                      <Trophy size={17} aria-hidden="true" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <strong className="block text-[12px] font-bold text-[#14241d]">
+                        {result.title}
+                      </strong>
+                      <small className="mt-[3px] block text-[9px] not-italic text-[#829087]">
+                        {result.detail}
+                      </small>
+                      <span className="mt-1 block truncate text-[10px] font-bold text-[#15814b]">
+                        {result.winner} · {result.score}
                       </span>
                     </div>
-                    <div className="mt-3 flex items-center gap-3 border-t border-[#0C3523]/10 pt-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FDE047] text-[#0C3523]">
-                        <Trophy size={16} aria-hidden="true" />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#5B8A6C]">
-                          Winner
-                        </p>
-                        <p className="truncate text-[13px] font-extrabold text-[#0C3523]">
-                          {result.winner}
-                        </p>
-                      </div>
-                      <p className="text-[15px] font-extrabold tabular-nums text-[#0C801D]">
-                        {result.score}
-                      </p>
-                    </div>
-                    <div className="mt-3">
-                      <span className="inline-flex rounded-full bg-[#E5F0EA] px-2.5 py-1 text-[10px] font-bold text-[#5B6B61]">
-                        {result.category}
-                      </span>
-                    </div>
+                    <span
+                      className={`shrink-0 rounded-full px-2 py-1 text-[8px] font-extrabold uppercase tracking-wide ${
+                        result.status === 'Awaiting'
+                          ? 'bg-[#fef3c6] text-[#8a6a00]'
+                          : 'bg-[#e6f5ea] text-[#267c4f]'
+                      }`}
+                    >
+                      {result.status}
+                    </span>
                   </article>
                 ))}
               </div>
