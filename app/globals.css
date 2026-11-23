@@ -1110,25 +1110,10 @@ svg {
   color: #050807;
 }
 
-.brand-name {
-  transform: scaleX(0.78);
-  transform-origin: left center;
-  white-space: nowrap;
-  font-family: Impact, 'Arial Narrow', sans-serif;
-  font-size: 29px;
-  font-weight: 900;
-  letter-spacing: 0.4px;
-  line-height: 0.91;
-}
-
-.brand-name span { letter-spacing: 1px; }
-
-.brand-caption {
-  margin-top: 4px;
-  white-space: nowrap;
-  font-size: 7.6px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
+.brand-lockup img {
+  display: block;
+  width: 196px;
+  height: auto;
 }
 
 .header-round-button {

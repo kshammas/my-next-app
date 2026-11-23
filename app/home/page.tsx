@@ -213,9 +213,14 @@ function ParticipantHome({ session }: { session: Session }) {
     <AppShell showBottomNav>
       <div className="home-page" style={{ background: 'var(--page)' }}>
         <header className="home-header">
-          <div className="brand-lockup" aria-label="Rendezvous 26, Jamia Madeenathunnoor Life Festival">
-            <div className="brand-name">RENDEZVOUS <span>&apos;26</span></div>
-            <div className="brand-caption">JAMIA MADEENATHUNNOOR LIFE FESTIVAL</div>
+          <div className="brand-lockup">
+            <Image
+              src="/rend-logo-mobilesrc.png"
+              alt="Rendezvous 26 — Jamia Madeenathunoor Life Festival"
+              width={196}
+              height={40}
+              priority
+            />
           </div>
           <Link href="/notifications" className="header-round-button" aria-label="Notifications">
             <Bell size={21} strokeWidth={2} aria-hidden="true" />
