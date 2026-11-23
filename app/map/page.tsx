@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Check, ChevronLeft, MapPin, Navigation, Search } from 'lucide-react';
+import { Check, ChevronLeft, MapPin, Navigation, Search } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { demoVenues } from '@/lib/demo-data';
 import type { Venue } from '@/lib/types';

@@ -19,8 +19,8 @@ import {
   ShoppingBag,
   Ticket,
   X,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+} from '@/components/icons';
+import type { AppIcon } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';
 import type { TransactionKind } from '@/lib/types';
@@ -30,7 +30,7 @@ type Reward = {
   name: string;
   cost: number;
   description: string;
-  icon: LucideIcon;
+  icon: AppIcon;
   tag?: string;
 };
 

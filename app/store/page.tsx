@@ -18,8 +18,8 @@ import {
   Sparkles,
   Trash2,
   X,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+} from '@/components/icons';
+import type { AppIcon } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { demoStore } from '@/lib/demo-data';
 import { usePrototype } from '@/lib/prototype-store';
@@ -31,7 +31,7 @@ type CafeItem = StoreItem & {
   description: string;
   category: Category;
   label?: string;
-  icon: LucideIcon;
+  icon: AppIcon;
 };
 
 type CheckoutResult = { ok: boolean; message: string; orderId?: string };
@@ -39,7 +39,7 @@ type CheckoutResult = { ok: boolean; message: string; orderId?: string };
 const categories: Category[] = ['All', 'Tea & Coffee', 'Snacks', 'Meals', 'Cold Drinks'];
 
 // The prototype catalogue is a small demo feed. Map its entries onto the
-// festival cafe menu from the walkthrough, with lucide icons instead of glyphs.
+// festival cafe menu from the walkthrough, with Heroicons instead of glyphs.
 type CafeMeta = Pick<CafeItem, 'name' | 'description' | 'category' | 'label' | 'icon'>;
 
 const cafeMenu: Record<string, CafeMeta> = {
@@ -80,7 +80,7 @@ const cafeCosts: Record<string, number> = {
   's-4': 15,
 };
 
-function iconFor(name: string): LucideIcon {
+function iconFor(name: string): AppIcon {
   const value = name.toLowerCase();
   if (/cold|soda|juice|drink|lemonade|shake/.test(value)) return CupSoda;
   if (/snack|samosa|cookie|biscuit|cake|pastry|chip/.test(value)) return Cookie;
@@ -142,7 +142,7 @@ export default function StorePage() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartTotal = cart.reduce((sum, item) => sum + item.cost * item.quantity, 0);
 
-  function iconForCartItem(item: CartItem): LucideIcon {
+  function iconForCartItem(item: CartItem): AppIcon {
     return cafeMenu[item.id]?.icon ?? iconFor(item.name);
   }
 

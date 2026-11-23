@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Bell, ChevronLeft } from 'lucide-react';
+import { Bell, ChevronLeft } from '@/components/icons';
 
 export function PageHeader({
   title,

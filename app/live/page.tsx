@@ -11,7 +11,7 @@ import {
   Radio,
   RefreshCw,
   X,
-} from 'lucide-react';
+} from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 
 type LoadState = 'loading' | 'ready' | 'error';

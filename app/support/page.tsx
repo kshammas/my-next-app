@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronLeft, Mail, MessageCircle, Phone } from 'lucide-react';
+import { ChevronDown, ChevronLeft, Mail, MessageCircle, Phone } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 
 const contacts = [

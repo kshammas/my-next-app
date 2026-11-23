@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertCircle, Check, RotateCcw, ScanLine, X } from 'lucide-react';
+import { AlertCircle, Check, RotateCcw, ScanLine, X } from '@/components/icons';
 import { usePrototype } from '@/lib/prototype-store';
 
 type Phase = 'scanning' | 'success' | 'error';

@@ -16,8 +16,8 @@ import {
   SlidersHorizontal,
   Volume2,
   X,
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+} from '@/components/icons';
+import type { AppIcon } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';
 
@@ -37,7 +37,7 @@ const rowIcon =
   'grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#eaf7ef] text-[#187b4b]';
 const rowChevron = 'shrink-0 text-[#84918b]';
 
-const settingsRows: { key: ToggleKey; label: string; hint: string; icon: LucideIcon }[] = [
+const settingsRows: { key: ToggleKey; label: string; hint: string; icon: AppIcon }[] = [
   { key: 'notifications', label: 'Notifications', hint: 'Festival updates & alerts', icon: Bell },
   { key: 'sound', label: 'Sound alerts', hint: 'Play a tone for new activity', icon: Volume2 },
   { key: 'compact', label: 'Compact layout', hint: 'Show more on each screen', icon: SlidersHorizontal },

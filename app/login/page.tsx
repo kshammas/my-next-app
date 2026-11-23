@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ArrowUpRight, ScanLine, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ScanLine, UserRound } from '@/components/icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

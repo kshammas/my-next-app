@@ -1,4 +1,4 @@
-import { Home, Trophy, User } from 'lucide-react';
+import { Home, Trophy, User } from '@/components/icons';
 
 export const navItems = [
   { href: '/home', label: 'Home', icon: Home },

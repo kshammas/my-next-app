@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Check, CheckCheck, ChevronRight, Trash2, X } from 'lucide-react';
+import { Bell, Check, CheckCheck, ChevronRight, Trash2, X } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { PageHeader } from '@/components/PageHeader';
 import { usePrototype } from '@/lib/prototype-store';

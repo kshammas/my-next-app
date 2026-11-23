@@ -15,7 +15,7 @@ import {
   ShoppingBag,
   Trophy,
   Wallet,
-} from 'lucide-react';
+} from '@/components/icons';
 import { useState, type ReactNode } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';

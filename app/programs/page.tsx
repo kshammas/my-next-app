@@ -10,7 +10,7 @@ import {
   RotateCcw,
   Trash2,
   X,
-} from 'lucide-react';
+} from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';
 import type { Program } from '@/lib/types';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle, RefreshCw, Search, Trophy } from 'lucide-react';
+import { AlertCircle, RefreshCw, Search, Trophy } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 
 type Tab = 'Leaderboard' | 'Event results';

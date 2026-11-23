@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { AlertCircle, Check, ChevronLeft, Clock3, Coins, ScanLine } from 'lucide-react';
+import { AlertCircle, Check, ChevronLeft, Clock3, Coins, ScanLine } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { QrScanner } from '@/components/QrScanner';
 import { usePrototype } from '@/lib/prototype-store';

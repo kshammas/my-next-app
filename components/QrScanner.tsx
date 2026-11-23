@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle, Check, RotateCcw, ScanLine, X } from 'lucide-react';
+import { AlertCircle, Check, RotateCcw, ScanLine, X } from '@/components/icons';
 
 const DEFAULT_ACTIVITY_ID = 'welcome-reward';
 
