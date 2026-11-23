@@ -53,73 +53,76 @@ export default function SupportPage() {
 
   return (
     <AppShell>
-      <div className="app-content !px-0 !pt-0">
-        <header className="flex items-center gap-3 bg-white px-4 pb-4 pt-4">
-          <Link href="/home" className="icon-button" aria-label="Go back">
+      <div className="ar-page">
+        <header className="flex items-center gap-3 px-4 pb-3 pt-[max(17px,env(safe-area-inset-top))]">
+          <Link href="/home" className="ar-icon-button" aria-label="Go back">
             <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
           </Link>
-          <h1 className="text-[20px] font-extrabold text-[#04251a]">Help &amp; Support</h1>
+          <h1 className="ar-heading">Help &amp; Support</h1>
         </header>
 
-        <div className="bg-[#F3F8F4] px-4 pb-10 pt-5">
-          <section className="rounded-[22px] bg-[#09301E] p-4 text-white">
-            <h2 className="text-[19px] font-extrabold">Need help during Rendezvous?</h2>
-            <p className="mt-1.5 text-[12px] leading-snug text-white/80">
+        <div className="px-4 pb-10 pt-1">
+          <section className="rounded-[16px] bg-[linear-gradient(115deg,#15593c,#0c452f)] p-4 shadow-[0_2px_8px_rgba(20,52,37,0.06)]">
+            <h2 className="text-[14px] font-bold leading-snug text-white">Need help during Rendezvous?</h2>
+            <p className="mt-1.5 text-[10px] leading-snug text-[#c1d8c9]">
               Reach out to our organizing committee or check quick answers below.
             </p>
           </section>
 
-          <h2 className="mt-4 text-[17px] font-extrabold text-[#1A2E23]">Contact Us</h2>
-          <div className="mt-2 space-y-2">
+          <h2 className="mb-2.5 mt-5 text-[13px] font-[730] text-[#27563b]">Contact Us</h2>
+          <div className="space-y-2">
             {contacts.map(({ label, detail, icon: Icon }) => (
               <article
                 key={label}
-                className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-white px-4 py-2 shadow-sm"
+                className="flex min-h-[62px] items-center gap-3 rounded-[15px] border border-[#dce7e0] bg-white px-3 py-2 shadow-[0_2px_8px_rgba(20,52,37,0.05)]"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EFF9F4] text-[#0B3424]">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[12px] bg-[#eaf7ef] text-[#187b4b]">
                   <Icon size={19} aria-hidden="true" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[14px] font-bold text-[#1A2E23]">{label}</span>
-                  <span className="block truncate text-[11px] text-slate-500">{detail}</span>
+                  <span className="block text-[11px] font-[680] text-[#27563d]">{label}</span>
+                  <span className="block truncate text-[9px] text-[#83918a]">{detail}</span>
                 </span>
-                <span className="flex min-h-[36px] shrink-0 items-center rounded-full bg-[#EFF9F4] px-4 text-[12px] font-bold text-[#0B3424]">
+                <span className="flex min-h-[30px] shrink-0 items-center rounded-full bg-[#eaf7ef] px-3.5 text-[9px] font-semibold text-[#187b4b]">
                   Connect
                 </span>
               </article>
             ))}
           </div>
 
-          <h2 className="mt-5 text-[17px] font-extrabold text-[#1A2E23]">
+          <h2 className="mb-2.5 mt-6 text-[13px] font-[730] text-[#27563b]">
             Frequently Asked Questions
           </h2>
-          <div className="mt-2 space-y-2">
+          <div className="overflow-hidden rounded-[15px] border border-[#dce7e0] bg-white shadow-[0_2px_8px_rgba(20,52,37,0.05)]">
             {faqs.map(({ question, answer }, index) => {
               const expanded = open === index;
               return (
-                <div key={question} className="overflow-hidden rounded-[16px] bg-white shadow-sm">
+                <div
+                  key={question}
+                  className={`${index > 0 ? 'border-t border-[#e5ece7] ' : ''}${expanded ? 'bg-[#eef8f1]' : 'bg-white'}`}
+                >
                   <button
                     type="button"
                     onClick={() => setOpen(expanded ? null : index)}
                     aria-expanded={expanded}
-                    className="flex min-h-[42px] w-full items-center justify-between gap-3 px-3 py-2 text-left"
+                    className="flex min-h-[46px] w-full items-start justify-between gap-2.5 px-3 py-2.5 text-left"
                   >
-                    <span className="text-[12px] font-bold text-[#1A2E23]">{question}</span>
+                    <span className="text-[10px] font-[680] leading-snug text-[#315640]">{question}</span>
                     <ChevronDown
                       size={18}
                       aria-hidden="true"
-                      className={`shrink-0 text-[#0B3424] transition-transform ${expanded ? 'rotate-180' : ''}`}
+                      className={`mt-0.5 shrink-0 text-[#187b4b] transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
                     />
                   </button>
                   {expanded ? (
-                    <p className="px-4 pb-3 text-[10px] leading-snug text-slate-600">{answer}</p>
+                    <p className="px-3 pb-3 text-[9px] leading-[1.55] text-[#61716a]">{answer}</p>
                   ) : null}
                 </div>
               );
             })}
           </div>
 
-          <p className="mt-5 rounded-[14px] bg-[#F7F3F1] p-4 text-center text-[11px] leading-relaxed text-[#6b514a]">
+          <p className="mt-6 border-t border-[#e5ece7] px-2 pt-4 text-center text-[9px] leading-relaxed text-[#9aa59e]">
             For medical or campus security emergencies, contact the nearest volunteer in a green vest
             immediately.
           </p>

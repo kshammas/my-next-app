@@ -28,6 +28,15 @@ type ToggleKey = 'notifications' | 'sound' | 'compact';
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
+const groupCard = 'overflow-hidden rounded-[15px] border border-[#dce7e0] bg-white';
+const rowBase =
+  'flex min-h-[48px] w-full items-center gap-[9px] px-[12px] py-[9px] text-left';
+const rowLabel = 'text-[11px] font-[650] leading-tight text-[#275b3f]';
+const rowHint = 'text-[8px] leading-tight text-[#87948d]';
+const rowIcon =
+  'grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#eaf7ef] text-[#187b4b]';
+const rowChevron = 'shrink-0 text-[#84918b]';
+
 const settingsRows: { key: ToggleKey; label: string; hint: string; icon: LucideIcon }[] = [
   { key: 'notifications', label: 'Notifications', hint: 'Festival updates & alerts', icon: Bell },
   { key: 'sound', label: 'Sound alerts', hint: 'Play a tone for new activity', icon: Volume2 },
@@ -100,115 +109,113 @@ export default function ProfilePage() {
 
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#F5FAF6] pb-6 pt-[max(32px,env(safe-area-inset-top))]">
-        <section className="px-4 pb-1 text-center">
+      <div className="min-h-full bg-[#f3f8f5] px-[15px] pb-[35px] pt-[8px]">
+        <section
+          className="relative -mx-[15px] -mt-px mb-[9px] flex min-h-[181px] flex-col items-center justify-center rounded-b-[30px] px-[10px] pb-[17px] pt-[22px]"
+          style={{ background: 'linear-gradient(112deg,#eff9f2,#fffced)' }}
+        >
           <h1 className="sr-only">Profile</h1>
-          <div className="relative mx-auto w-fit">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#FDF6D4] bg-[#15532E] text-[24px] font-extrabold text-[#EECE2D] shadow-sm">
-              {initials || 'G'}
-            </div>
-            <button
-              type="button"
-              onClick={openEdit}
-              aria-label="Edit profile"
-              className={`absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#FDF6D4] text-[#15532E] shadow-sm transition-colors hover:bg-[#F3E6A8] ${focusOnLight}`}
-            >
-              <PencilLine size={16} aria-hidden="true" />
-            </button>
+          <button
+            type="button"
+            onClick={openEdit}
+            aria-label="Edit profile"
+            className={`absolute right-[18px] top-[13px] grid h-[31px] w-[31px] place-items-center rounded-full border border-[rgba(25,103,61,0.08)] bg-[rgba(255,255,255,0.58)] text-[#1c7447] ${focusOnLight}`}
+          >
+            <PencilLine size={16} aria-hidden="true" />
+          </button>
+          <div className="grid h-[72px] w-[72px] place-items-center rounded-full border-4 border-white bg-[#155d3d] text-[23px] font-[760] leading-none text-[#f2d633] shadow-[0_1px_2px_rgba(20,90,54,0.1)]">
+            {initials || 'G'}
           </div>
-          <h2 className="mt-3 text-[19px] font-extrabold text-[#15532E]">{session.name}</h2>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-            <span className="inline-block rounded-full bg-[#FDF6D4] px-3.5 py-1 text-[11px] font-bold text-[#15532E]">
+          <h2 className="mb-[8px] mt-[12px] text-center text-[19px] font-[750] tracking-[-0.5px] text-[#14583a]">
+            {session.name}
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-[7px]">
+            <span className="rounded-[20px] border border-[#c9e3d2] bg-[#e3f3e8] px-[12px] py-[6px] text-[9px] font-[650] leading-none text-[#247747]">
               Jamia No. {session.jamiaId}
             </span>
             {guestMode ? (
-              <span className="inline-block rounded-full bg-white px-3.5 py-1 text-[10px] font-bold text-[#6B7B72] shadow-sm">
+              <span className="rounded-[20px] border border-[#c9e3d2] bg-white px-[12px] py-[6px] text-[9px] font-[650] leading-none text-[#6b7b72]">
                 Guest preview
               </span>
             ) : null}
           </div>
         </section>
 
-        <section className="mx-4 mt-5 rounded-[22px] bg-white p-4 shadow-sm" aria-label="Your details">
-          <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[10px] font-extrabold tracking-[0.14em] text-[#8FA79A]">
-              YOUR DETAILS
-            </h3>
-            <button
-              type="button"
-              onClick={openEdit}
-              className={`flex min-h-[36px] items-center gap-1.5 rounded-full bg-[#EAF4ED] px-3 text-[10px] font-extrabold text-[#15532E] ${focusOnLight}`}
-            >
-              <PencilLine size={13} aria-hidden="true" /> Edit
-            </button>
+        <div className="mb-[7px] mt-[12px] flex items-center justify-between gap-[9px] px-[2px]">
+          <h3 className="text-[8px] font-[740] tracking-[1.4px] text-[#82938a]">YOUR DETAILS</h3>
+          <button
+            type="button"
+            onClick={openEdit}
+            className={`flex min-h-[28px] items-center gap-[5px] rounded-full px-[10px] text-[9px] font-[700] text-[#1c7447] transition-colors hover:bg-[#eaf7ef] ${focusOnLight}`}
+          >
+            <PencilLine size={13} aria-hidden="true" /> Edit
+          </button>
+        </div>
+
+        <section className={groupCard} aria-label="Your details">
+          <div className={`${rowBase} text-[11px]`}>
+            <span className="font-[650] text-[#275b3f]">Jamia ID</span>
+            <span className="ml-auto min-w-0 truncate text-[#83918a]">{session.jamiaId}</span>
           </div>
-          <div className="mt-3 flex items-center justify-between gap-3 border-b border-[#13512C]/10 pb-3 text-[13px]">
-            <span className="font-bold text-[#15532E]">Jamia ID</span>
-            <span className="text-[#6B7B72]">{session.jamiaId}</span>
-          </div>
-          <div className="mt-3 flex items-center justify-between gap-3 text-[13px]">
-            <span className="font-bold text-[#15532E]">Campus</span>
-            <span className="capitalize text-[#6B7B72]">{session.campus}</span>
+          <div className={`${rowBase} border-t border-[#e4ece7] text-[11px]`}>
+            <span className="font-[650] text-[#275b3f]">Campus</span>
+            <span className="ml-auto min-w-0 truncate capitalize text-[#83918a]">{session.campus}</span>
           </div>
         </section>
 
-        <section className="mx-4 mt-4 overflow-hidden rounded-[22px] bg-white shadow-sm" aria-label="Account menu">
+        <section className={`${groupCard} mt-[12px]`} aria-label="Account menu">
           <Link
             href="/wallet"
-            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FDF6D4] text-[#15532E]">
+            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fdf6d4] text-[#1c7447]">
               <Coins size={18} aria-hidden="true" />
             </span>
-            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">
-              Glocal Points
-            </span>
-            <span className="text-[12px] font-extrabold text-[#15532E]">{session.points} GP</span>
-            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+            <span className={`${rowLabel} min-w-0 flex-1`}>Glocal Points</span>
+            <span className="shrink-0 text-[11px] font-[700] text-[#247747]">{session.points} GP</span>
+            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
           </Link>
 
           <Link
             href="/notifications"
-            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+            <span className={rowIcon}>
               <Bell size={18} aria-hidden="true" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-[13px] font-bold text-[#15532E]">Notifications</span>
-              <span className="mt-0.5 block text-[11px] text-[#6B7B72]">Push notifications</span>
+              <span className="block text-[11px] font-[650] leading-tight text-[#275b3f]">Notifications</span>
+              <span className={`mt-[3px] block ${rowHint}`}>Push notifications</span>
             </span>
-            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
           </Link>
 
           <Link
             href="/support"
-            className={`flex min-h-[56px] items-center gap-3 border-b border-[#13512C]/10 px-4 py-3 transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+            <span className={rowIcon}>
               <LifeBuoy size={18} aria-hidden="true" />
             </span>
-            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">
-              Help &amp; support
-            </span>
-            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+            <span className={`${rowLabel} min-w-0 flex-1`}>Help &amp; support</span>
+            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
           </Link>
 
           <button
             type="button"
             onClick={() => void install()}
-            className={`flex min-h-[56px] w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+            className={`${rowBase} transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+            <span className={rowIcon}>
               <Download size={18} aria-hidden="true" />
             </span>
-            <span className="min-w-0 flex-1 text-[13px] font-bold text-[#15532E]">Install app</span>
-            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+            <span className={`${rowLabel} min-w-0 flex-1`}>Install app</span>
+            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
           </button>
         </section>
 
-        <section className="mx-4 mt-4 overflow-hidden rounded-[22px] bg-white shadow-sm" aria-label="Settings">
-          <h3 className="border-b border-[#13512C]/10 px-4 pb-3 pt-4 text-[10px] font-extrabold tracking-[0.14em] text-[#8FA79A]">
+        <section className={`${groupCard} mt-[12px]`} aria-label="Settings">
+          <h3 className="border-b border-[#e4ece7] px-[12px] pb-[7px] pt-[12px] text-[8px] font-[740] tracking-[1.4px] text-[#82938a]">
             SETTINGS
           </h3>
           {settingsRows.map((row, index) => {
@@ -217,16 +224,16 @@ export default function ProfilePage() {
             return (
               <div
                 key={row.key}
-                className={`flex min-h-[64px] items-center gap-3 px-4 py-3 ${
-                  index < settingsRows.length - 1 ? 'border-b border-[#13512C]/10' : ''
+                className={`${rowBase} ${
+                  index < settingsRows.length - 1 ? 'border-b border-[#e4ece7]' : ''
                 }`}
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#EAF4ED] text-[#15532E]">
+                <span className={rowIcon}>
                   <Icon size={18} aria-hidden="true" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[13px] font-bold text-[#15532E]">{row.label}</span>
-                  <span className="mt-0.5 block text-[10px] text-[#6B7B72]">{row.hint}</span>
+                  <span className="block text-[11px] font-[650] leading-tight text-[#275b3f]">{row.label}</span>
+                  <span className={`mt-[3px] block ${rowHint}`}>{row.hint}</span>
                 </span>
                 <button
                   type="button"
@@ -234,13 +241,13 @@ export default function ProfilePage() {
                   aria-checked={on}
                   aria-label={row.label}
                   onClick={() => toggleSetting(row.key)}
-                  className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${focusOnLight} ${
-                    on ? 'bg-[#15532E]' : 'bg-[#D5E1D8]'
+                  className={`relative ml-auto inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-[12px] transition-colors duration-[180ms] ${focusOnLight} ${
+                    on ? 'bg-[#16824c]' : 'bg-[#c7d1ca]'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-[left] duration-200 ${
-                      on ? 'left-6' : 'left-1'
+                    className={`absolute left-[1px] h-[16px] w-[16px] rounded-full bg-white shadow-[0_1px_3px_rgba(25,42,31,0.25)] transition-transform duration-[180ms] ${
+                      on ? 'translate-x-[14px]' : ''
                     }`}
                     aria-hidden="true"
                   />
@@ -250,45 +257,49 @@ export default function ProfilePage() {
           })}
         </section>
 
-        <section className="mx-4 mt-4 overflow-hidden rounded-[22px] bg-white shadow-sm" aria-label="Demo controls">
+        <section className={`${groupCard} mt-[12px]`} aria-label="Demo controls">
           <button
             type="button"
             onClick={() => setConfirm('reset')}
-            className={`flex min-h-[56px] w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#F5FAF6] ${focusOnLight}`}
+            className={`${rowBase} transition-colors hover:bg-[#fff0ef]`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FDF6D4] text-[#15532E]">
+            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fff0ef] text-[#c44a4a]">
               <RotateCcw size={18} aria-hidden="true" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-[13px] font-bold text-[#15532E]">Reset demo data</span>
-              <span className="mt-0.5 block text-[10px] text-[#6B7B72]">
+              <span className="block text-[11px] font-[650] leading-tight text-[#c34c4c]">Reset demo data</span>
+              <span className={`mt-[3px] block ${rowHint}`}>
                 Restore points, cart, program and notifications
               </span>
             </span>
-            <ChevronRight size={16} className="shrink-0 text-[#8FA79A]" aria-hidden="true" />
+            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
           </button>
         </section>
 
         {message ? (
           <p
             role="status"
-            className="mx-4 mt-4 rounded-[14px] bg-[#E7F4EA] px-4 py-3 text-[11px] font-semibold leading-relaxed text-[#0A5C2E]"
+            className="mt-[12px] rounded-[12px] border border-[#c9e3d2] bg-[#e3f3e8] px-[12px] py-[10px] text-[10px] font-[650] leading-relaxed text-[#247747]"
           >
             {message}
           </p>
         ) : null}
 
-        <div className="mx-4 mt-4">
+        <div className="mt-[2px]">
           <button
             type="button"
             onClick={() => setConfirm('signout')}
-            className={`flex min-h-[52px] w-full items-center justify-center gap-2 rounded-[18px] bg-white p-4 text-[13px] font-bold text-[#B64235] shadow-sm transition-colors hover:bg-[#FDECEA] ${focusOnLight}`}
+            className={`${rowBase} rounded-[15px] border border-[#dce7e0] bg-white text-[#c34c4c] transition-colors hover:bg-[#fff0ef] ${focusOnLight}`}
           >
-            <LogOut size={17} aria-hidden="true" /> Sign out
+            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fff0ef] text-[#c44a4a]">
+              <LogOut size={17} aria-hidden="true" />
+            </span>
+            <span className="text-[11px] font-[650] leading-tight text-[#c34c4c]">Sign out</span>
+            <ChevronRight size={16} className={`${rowChevron} ml-auto`} aria-hidden="true" />
           </button>
         </div>
 
-        <footer className="pb-6 pt-8 text-center text-[11px] font-semibold text-[#15532E]/60">
+        <footer className="mb-0 mt-[18px] text-center text-[10px] text-[#98a29c]">
           Rendezvous 26
         </footer>
       </div>
@@ -300,72 +311,82 @@ export default function ProfilePage() {
           aria-modal="true"
           aria-labelledby="edit-profile-title"
           onClick={() => setEditing(false)}
+          style={{ background: 'rgba(7, 33, 21, 0.42)' }}
         >
           <div
             className="modal-card animate-rise relative"
             onClick={(event) => event.stopPropagation()}
+            style={{
+              width: 'min(100%, 365px)',
+              maxWidth: '365px',
+              borderRadius: '22px',
+              border: '1px solid #e0ebe3',
+              background: '#fff',
+              padding: '22px 18px 17px',
+              boxShadow: '0 16px 50px rgba(3, 38, 21, 0.24)',
+            }}
           >
             <button
               type="button"
               onClick={() => setEditing(false)}
               aria-label="Close profile editor"
-              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#F5FAF6] text-[#15532E]"
+              className={`absolute right-[10px] top-[10px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#f0f6f2] text-[#72847a] ${focusOnLight}`}
             >
               <X size={17} aria-hidden="true" />
             </button>
-            <h2 id="edit-profile-title" className="text-[18px] font-extrabold text-[#15532E]">
+            <h2 id="edit-profile-title" className="text-[16px] font-[750] text-[#1b593b]">
               Edit profile
             </h2>
-            <p className="mt-1 text-[11px] text-[#6B7B72]">
+            <p className="mt-[8px] text-[10px] leading-relaxed text-[#819087]">
               Update how your name and campus appear in the app.
             </p>
             <form
-              className="mt-4 space-y-3"
+              className="mt-[12px] grid gap-[12px]"
               onSubmit={(event) => {
                 event.preventDefault();
                 saveEdit();
               }}
             >
-              <label className="block">
-                <span className="text-[10px] font-extrabold tracking-wide text-[#8FA79A]">NAME</span>
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[9px] font-[680] text-[#47624f]">NAME</span>
                 <input
                   type="text"
                   value={draft.name}
                   onChange={(event) => setDraft((previous) => ({ ...previous, name: event.target.value }))}
-                  className={`mt-1 min-h-[46px] w-full rounded-[14px] border border-[#13512C]/15 bg-white px-3.5 text-[13px] font-semibold text-[#15532E] outline-none focus:border-[#15532E] ${focusOnLight}`}
+                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
                 />
               </label>
-              <label className="block">
-                <span className="text-[10px] font-extrabold tracking-wide text-[#8FA79A]">
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[9px] font-[680] text-[#47624f]">
                   JAMIA NUMBER
                 </span>
                 <input
                   type="text"
                   value={draft.jamiaId}
                   onChange={(event) => setDraft((previous) => ({ ...previous, jamiaId: event.target.value }))}
-                  className={`mt-1 min-h-[46px] w-full rounded-[14px] border border-[#13512C]/15 bg-white px-3.5 text-[13px] font-semibold text-[#15532E] outline-none focus:border-[#15532E] ${focusOnLight}`}
+                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
                 />
               </label>
-              <label className="block">
-                <span className="text-[10px] font-extrabold tracking-wide text-[#8FA79A]">CAMPUS</span>
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[9px] font-[680] text-[#47624f]">CAMPUS</span>
                 <input
                   type="text"
                   value={draft.campus}
                   onChange={(event) => setDraft((previous) => ({ ...previous, campus: event.target.value }))}
-                  className={`mt-1 min-h-[46px] w-full rounded-[14px] border border-[#13512C]/15 bg-white px-3.5 text-[13px] font-semibold text-[#15532E] outline-none focus:border-[#15532E] ${focusOnLight}`}
+                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
                 />
               </label>
-              <div className="flex gap-3 pt-1">
+              <div className="flex gap-[8px] pt-[9px]">
                 <button
                   type="button"
                   onClick={() => setEditing(false)}
-                  className="min-h-[48px] flex-1 rounded-full border border-[#15532E]/15 bg-white px-4 text-[12px] font-bold text-[#15532E]"
+                  className="min-h-[37px] flex-1 rounded-[12px] border border-[#dce8e0] bg-white px-4 text-[10px] font-[700] text-[#31583f]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className={`min-h-[48px] flex-[1.4] rounded-full bg-[#15532E] px-4 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnLight}`}
+                  className={`min-h-[37px] flex-[1.4] rounded-[12px] bg-[#16824c] px-4 text-[10px] font-[700] text-white transition-colors hover:bg-[#0f6a3e] ${focusOnLight}`}
                 >
                   Save changes
                 </button>
@@ -376,34 +397,51 @@ export default function ProfilePage() {
       ) : null}
 
       {confirm ? (
-        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-          <div className="modal-card animate-rise text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FDF6D4] text-[#15532E]">
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-title"
+          style={{ background: 'rgba(7, 33, 21, 0.42)' }}
+        >
+          <div
+            className="modal-card animate-rise text-center"
+            style={{
+              width: 'min(100%, 365px)',
+              maxWidth: '365px',
+              borderRadius: '22px',
+              border: '1px solid #e0ebe3',
+              background: '#fff',
+              padding: '22px 18px 17px',
+              boxShadow: '0 16px 50px rgba(3, 38, 21, 0.24)',
+            }}
+          >
+            <span className="mx-auto grid h-[45px] w-[45px] place-items-center rounded-[15px] bg-[#e9f5ed] text-[#177c4a]">
               <CircleAlert size={26} strokeWidth={1.8} aria-hidden="true" />
             </span>
-            <h2 id="confirm-title" className="mt-4 text-[18px] font-extrabold text-[#15532E]">
+            <h2 id="confirm-title" className="mt-[10px] text-[16px] font-[750] text-[#1b593b]">
               {confirm === 'signout' ? 'Sign out of Rendezvous?' : 'Reset demo data?'}
             </h2>
-            <p className="mt-1.5 text-[12px] leading-relaxed text-[#6B7B72]">
+            <p className="mx-auto mb-[15px] mt-[8px] max-w-[290px] text-[10px] leading-relaxed text-[#819087]">
               {confirm === 'signout'
                 ? 'You will be returned to the welcome screen. Your profile stays on this device in the demo.'
                 : 'Your points, cart, program and notifications will return to their starting state.'}
             </p>
-            <div className="mt-5 flex gap-3">
+            <div className="flex justify-center gap-[8px]">
               <button
                 type="button"
                 onClick={() => setConfirm(null)}
-                className={`min-h-[48px] flex-1 rounded-full border border-[#15532E]/15 bg-white px-4 text-[12px] font-bold text-[#15532E] ${focusOnLight}`}
+                className={`min-h-[37px] flex-1 rounded-[12px] border border-[#dce8e0] bg-white px-4 text-[10px] font-[700] text-[#31583f] ${focusOnLight}`}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={runConfirmedAction}
-                className={`min-h-[48px] flex-[1.2] rounded-full px-4 text-[12px] font-bold text-white transition-colors ${focusOnLight} ${
+                className={`min-h-[37px] flex-[1.2] rounded-[12px] px-4 text-[10px] font-[700] text-white transition-colors ${focusOnLight} ${
                   confirm === 'signout'
-                    ? 'bg-[#B64235] hover:bg-[#9C352A]'
-                    : 'bg-[#15532E] hover:bg-[#0E3D21]'
+                    ? 'bg-[#c34c4c] hover:bg-[#a83c3c]'
+                    : 'bg-[#16824c] hover:bg-[#0f6a3e]'
                 }`}
               >
                 {confirm === 'signout' ? 'Sign out' : 'Reset demo'}
