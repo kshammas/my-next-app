@@ -10,8 +10,8 @@ import {
   ClipboardList,
   LifeBuoy,
   MapPin,
+  QrCode,
   Radio,
-  ScanLine,
   ShoppingBag,
   Trophy,
   Wallet,
@@ -243,7 +243,7 @@ function ParticipantHome({ session }: { session: Session }) {
           </div>
           <div className="wallet-actions">
             <Link href="/points" className="redeem-button">
-              <ScanLine size={19} strokeWidth={2} aria-hidden="true" /> Scan to redeem
+              <QrCode size={19} strokeWidth={2} aria-hidden="true" /> Scan to redeem
             </Link>
             <Link href="/points" className="earn-button">
               Earn points <ChevronRight size={18} strokeWidth={2} aria-hidden="true" />
