@@ -10,7 +10,9 @@ import {
   ArrowUturnLeftIcon,
   BeakerIcon,
   BellIcon,
+  BuildingLibraryIcon,
   CakeIcon,
+  ChartBarIcon,
   CalendarDaysIcon,
   CalendarIcon,
   ChatBubbleLeftRightIcon,
@@ -103,6 +105,7 @@ export const CupSoda = adapt(BeakerIcon, 'CupSoda');
 export const Download = adapt(ArrowDownTrayIcon, 'Download');
 export const Gift = adapt(GiftIcon, 'Gift');
 export const Home = adapt(HomeIcon, 'Home');
+export const HomeNav = adapt(BuildingLibraryIcon, 'HomeNav');
 export const LifeBuoy = adapt(LifebuoyIcon, 'LifeBuoy');
 export const LogOut = adapt(ArrowRightEndOnRectangleIcon, 'LogOut');
 export const Mail = adapt(EnvelopeIcon, 'Mail');
@@ -119,6 +122,7 @@ export const Plus = adapt(PlusIcon, 'Plus');
 export const QrCode = adapt(QrCodeIcon, 'QrCode');
 export const Radio = adapt(RadioIcon, 'Radio');
 export const RefreshCw = adapt(ArrowPathIcon, 'RefreshCw');
+export const ResultsNav = adapt(ChartBarIcon, 'ResultsNav');
 export const RotateCcw = adapt(ArrowUturnLeftIcon, 'RotateCcw');
 export const ScanLine = adapt(QrCodeIcon, 'ScanLine');
 export const Search = adapt(MagnifyingGlassIcon, 'Search');
