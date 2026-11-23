@@ -2,43 +2,27 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Check, ChevronLeft, Clock3, Coins, ScanLine } from 'lucide-react';
+import { AlertCircle, Check, ChevronLeft, Clock3, Coins, ScanLine } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
 import { QrScanner } from '@/components/QrScanner';
-import { demoActivities, demoSession } from '@/lib/demo-data';
-import { apiSend, useApi } from '@/lib/use-api';
-import type { PointActivity, Session } from '@/lib/types';
+import { usePrototype } from '@/lib/prototype-store';
 
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0C801D]';
 
 export default function PointsPage() {
-  const { data: activities, setData } = useApi<PointActivity[]>('/api/points', demoActivities);
-  const { data: session, setData: setSession } = useApi<Session>('/api/session', demoSession);
+  const { activities, session, claimActivity } = usePrototype();
   const [selectedId, setSelectedId] = useState('prochat');
   const [scanning, setScanning] = useState(false);
-  const [notice, setNotice] = useState('');
+  const [notice, setNotice] = useState<{ text: string; ok: boolean } | null>(null);
 
   const selected = activities.find((item) => item.id === selectedId) ?? activities[0];
   const claimedCount = activities.filter((item) => item.claimed).length;
   const progress = activities.length ? (claimedCount / activities.length) * 100 : 0;
 
-  async function claim(code: string) {
-    if (!selected) return;
-    setNotice('');
-    try {
-      const updated = await apiSend<Session>('/api/points', 'POST', {
-        activityId: selected.id,
-        code,
-      });
-      setSession(updated);
-      setData((previous) =>
-        previous.map((item) => (item.id === selected.id ? { ...item, claimed: true } : item)),
-      );
-      setNotice(`+${selected.reward} Coins added to your wallet.`);
-    } catch (cause) {
-      setNotice(cause instanceof Error ? cause.message : 'Could not claim this activity.');
-    }
+  function claim(activityId: string) {
+    const result = claimActivity(activityId);
+    setNotice({ text: result.message, ok: result.ok });
   }
 
   return (
@@ -74,12 +58,21 @@ export default function PointsPage() {
         </section>
 
         {notice ? (
-          <p
+          <div
             role="status"
-            className="mx-4 mt-4 rounded-[14px] bg-[#ECFDF3] px-4 py-3 text-[11px] font-semibold leading-relaxed text-[#0C801D]"
+            className={`mx-4 mt-4 flex items-start gap-2 rounded-[14px] px-4 py-3 text-[11px] font-semibold leading-relaxed ${
+              notice.ok
+                ? 'bg-[#ECFDF3] text-[#0C801D]'
+                : 'bg-[#FFF1F2] text-[#BE123C]'
+            }`}
           >
-            {notice}
-          </p>
+            {notice.ok ? (
+              <Check size={15} strokeWidth={2.8} className="mt-0.5 shrink-0" aria-hidden="true" />
+            ) : (
+              <AlertCircle size={15} strokeWidth={2.4} className="mt-0.5 shrink-0" aria-hidden="true" />
+            )}
+            <span>{notice.text}</span>
+          </div>
         ) : null}
 
         <section className="mt-5 space-y-3 px-4" aria-label="Points activities">
@@ -129,6 +122,7 @@ export default function PointsPage() {
                       type="button"
                       onClick={() => {
                         setSelectedId(activity.id);
+                        setNotice(null);
                         setScanning(true);
                       }}
                       className={`flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#0C801D] px-4 text-[11px] font-bold text-white transition-colors hover:bg-[#0A6E19] ${focusOnLight}`}
@@ -150,7 +144,11 @@ export default function PointsPage() {
         </div>
 
         {scanning ? (
-          <QrScanner onClose={() => setScanning(false)} onResult={(value) => void claim(value)} />
+          <QrScanner
+            activityId={selected?.id}
+            onClose={() => setScanning(false)}
+            onResult={(value) => claim(value)}
+          />
         ) : null}
       </div>
     </AppShell>

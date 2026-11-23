@@ -1,37 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CalendarCheck2, ChevronLeft, Clock3, MapPin, Trash2 } from 'lucide-react';
+import {
+  CalendarCheck2,
+  ChevronLeft,
+  Clock3,
+  MapPin,
+  RotateCcw,
+  Trash2,
+  X,
+} from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { apiSend, useApi } from '@/lib/use-api';
+import { usePrototype } from '@/lib/prototype-store';
 import type { Program } from '@/lib/types';
-
-const initial: Program[] = [];
 
 const focusOnDark =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FDF6D4]';
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
-export default function ProgramsPage() {
-  const { data: programs, setData } = useApi<Program[]>('/api/programs', initial);
-  const [busyId, setBusyId] = useState<string | null>(null);
+const statusById: Record<string, string> = {
+  'p-2': 'Upcoming',
+};
 
-  async function remove(program: Program) {
-    setBusyId(program.id);
-    setData((previous) => previous.filter((item) => item.id !== program.id));
-    try {
-      await apiSend('/api/programs', 'POST', { eventId: program.id, add: false });
-    } catch {
-      setData((previous) => [...previous, program]);
-    } finally {
-      setBusyId(null);
-    }
-  }
+export default function ProgramsPage() {
+  const { programs, removeProgram, toggleProgram } = usePrototype();
+  const [detailId, setDetailId] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [removed, setRemoved] = useState<Program | null>(null);
+
+  useEffect(() => {
+    if (!removed) return;
+    const timer = window.setTimeout(() => setRemoved(null), 6000);
+    return () => window.clearTimeout(timer);
+  }, [removed]);
+
+  const detail = detailId ? programs.find((item) => item.id === detailId) ?? null : null;
+  const confirmProgram = confirmId
+    ? programs.find((item) => item.id === confirmId) ?? null
+    : null;
 
   const target = Math.max(5, programs.length);
   const progress = (programs.length / target) * 100;
+
+  function confirmRemove() {
+    if (!confirmProgram) return;
+    removeProgram(confirmProgram.id);
+    setRemoved(confirmProgram);
+    if (detailId === confirmProgram.id) setDetailId(null);
+    setConfirmId(null);
+  }
+
+  function undoRemove() {
+    if (!removed) return;
+    toggleProgram(removed);
+    setRemoved(null);
+  }
 
   return (
     <AppShell showBottomNav>
@@ -78,6 +103,24 @@ export default function ProgramsPage() {
           </div>
         </section>
 
+        {removed ? (
+          <div
+            role="status"
+            className="mx-4 mt-4 flex items-center justify-between gap-3 rounded-[14px] bg-[#ECFDF3] px-4 py-3"
+          >
+            <p className="text-[11px] font-semibold leading-snug text-[#0C801D]">
+              {removed.title} removed from your program.
+            </p>
+            <button
+              type="button"
+              onClick={undoRemove}
+              className={`inline-flex min-h-[36px] shrink-0 items-center gap-1 rounded-full bg-white px-3 text-[10px] font-bold text-[#15532E] ${focusOnLight}`}
+            >
+              <RotateCcw size={12} aria-hidden="true" /> Undo
+            </button>
+          </div>
+        ) : null}
+
         <section className="mt-5 px-4" aria-label="Registered programs">
           <div className="mb-3 flex items-center justify-between gap-3">
             <h2 className="text-[15px] font-extrabold text-[#15532E]">Registered programs</h2>
@@ -99,7 +142,7 @@ export default function ProgramsPage() {
           ) : (
             <div className="grid grid-cols-1 gap-3">
               {programs.map((program) => {
-                const busy = busyId === program.id;
+                const status = statusById[program.id] ?? 'Confirmed';
                 return (
                   <article key={program.id} className="rounded-[20px] bg-white p-4 shadow-sm">
                     <div className="flex items-start gap-3">
@@ -107,7 +150,12 @@ export default function ProgramsPage() {
                         <span className="text-[14px] font-extrabold leading-none">{program.start}</span>
                         <span className="mt-0.5 text-[9px] font-bold">{program.day}</span>
                       </div>
-                      <div className="min-w-0 flex-1">
+                      <button
+                        type="button"
+                        onClick={() => setDetailId(program.id)}
+                        className={`min-w-0 flex-1 text-left ${focusOnLight}`}
+                        aria-label={`View details for ${program.title}`}
+                      >
                         <h3 className="text-[14px] font-extrabold leading-snug text-[#15532E]">
                           {program.title}
                         </h3>
@@ -119,16 +167,15 @@ export default function ProgramsPage() {
                             <MapPin size={12} aria-hidden="true" /> {program.venue}
                           </span>
                           <span className="rounded-full bg-[#FDF6D4] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
-                            {program.day}
+                            {status}
                           </span>
                         </div>
-                      </div>
+                      </button>
                       <button
                         type="button"
-                        onClick={() => void remove(program)}
-                        disabled={busy}
+                        onClick={() => setConfirmId(program.id)}
                         aria-label={`Remove ${program.title} from my program`}
-                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FDECEA] text-[#B64235] transition-colors hover:bg-[#FBD9D5] disabled:opacity-50 ${focusOnLight}`}
+                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#FDECEA] text-[#B64235] transition-colors hover:bg-[#FBD9D5] ${focusOnLight}`}
                       >
                         <Trash2 size={16} aria-hidden="true" />
                       </button>
@@ -147,6 +194,108 @@ export default function ProgramsPage() {
           </Link>
         </section>
       </div>
+
+      {detail ? (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${detail.title} details`}
+        >
+          <div className="modal-card">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#8FA79A]">
+                  Registered event
+                </p>
+                <h2 className="mt-1 text-[18px] font-extrabold leading-snug tracking-tight text-[#15532E]">
+                  {detail.title}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDetailId(null)}
+                className="icon-button"
+                aria-label="Close event details"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+                <Clock3 size={12} aria-hidden="true" /> {detail.start}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+                <MapPin size={12} aria-hidden="true" /> {detail.venue}
+              </span>
+              <span className="rounded-full bg-[#FDF6D4] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+                {statusById[detail.id] ?? 'Confirmed'}
+              </span>
+            </div>
+
+            <p className="mt-4 text-[12px] leading-relaxed text-[#6B7B72]">
+              Saved for {detail.day}. This session is in your program — carry your participant card
+              and arrive a few minutes early.
+            </p>
+
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                onClick={() => setDetailId(null)}
+                className={`min-h-[44px] flex-1 rounded-full border border-[#15532E]/15 text-[11px] font-bold text-[#15532E] ${focusOnLight}`}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmId(detail.id);
+                  setDetailId(null);
+                }}
+                className={`min-h-[44px] flex-1 rounded-full bg-[#FDECEA] text-[11px] font-bold text-[#B64235] ${focusOnLight}`}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {confirmProgram ? (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Remove registered event"
+        >
+          <div className="modal-card">
+            <h2 className="text-[17px] font-extrabold text-[#15532E]">
+              Remove from my program?
+            </h2>
+            <p className="mt-2 text-[12px] leading-relaxed text-[#6B7B72]">
+              {confirmProgram.title} will be removed from your saved sessions. You can undo this
+              right after.
+            </p>
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirmId(null)}
+                className={`min-h-[44px] flex-1 rounded-full border border-[#15532E]/15 text-[11px] font-bold text-[#15532E] ${focusOnLight}`}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmRemove}
+                className={`min-h-[44px] flex-1 rounded-full bg-[#B64235] text-[11px] font-bold text-white ${focusOnLight}`}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </AppShell>
   );
 }

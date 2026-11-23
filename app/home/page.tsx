@@ -8,6 +8,7 @@ import {
   CalendarDays,
   ChevronRight,
   ClipboardList,
+  Clock3,
   Gift,
   LifeBuoy,
   MapPin,
@@ -20,9 +21,8 @@ import {
 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { AppShell } from '@/components/AppShell';
-import { demoSession } from '@/lib/demo-data';
-import type { Session } from '@/lib/types';
-import { useApi } from '@/lib/use-api';
+import { usePrototype } from '@/lib/prototype-store';
+import type { AppNotification, Program, Session } from '@/lib/types';
 
 const guestTiles: { label: string; href: string; icon: ReactNode; badge?: string }[] = [
   { label: 'Map', href: '/map', icon: <MapPin className="h-7 w-7 text-[#3F4B55]" /> },
@@ -67,7 +67,93 @@ function BrandHeader() {
   );
 }
 
-function GuestHome() {
+function Announcements({ notifications }: { notifications: AppNotification[] }) {
+  return (
+    <section className="mx-4 mb-6 mt-5 rounded-[20px] bg-white px-5 py-4 shadow-sm" aria-label="Announcements">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#E6F3EA]">
+            <Bell size={14} strokeWidth={2.4} className="text-[#13512C]" aria-hidden="true" />
+          </span>
+          <h2 className="text-[14px] font-extrabold text-[#171717]">Announcements</h2>
+        </div>
+        <span className="flex items-center gap-1 rounded-full bg-[#FDE047] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wider text-[#0C3523]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#0C801D]" aria-hidden="true" /> Live updates
+        </span>
+      </div>
+
+      {notifications.length ? (
+        <div className="mt-3 divide-y divide-[#0C3523]/10">
+          {notifications.slice(0, 2).map((item) => (
+            <div key={item.id} className="flex gap-2.5 py-2.5 first:pt-0 last:pb-0">
+              <span className={`mt-1 h-1.5 w-1.5 shrink-0 rounded-full ${item.read ? 'bg-[#C6D4CA]' : 'bg-[#0C801D]'}`} aria-hidden="true" />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[11px] font-extrabold text-[#243B2E]">{item.title}</p>
+                <p className="mt-0.5 line-clamp-1 text-[10px] leading-relaxed text-[#7E7E80]">{item.body}</p>
+              </div>
+              <span className="shrink-0 text-[9px] font-semibold text-[#9AA7A0]">{item.time}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="mt-3 text-[11px] text-[#7E7E80]">No updates right now.</p>
+      )}
+
+      <Link
+        href="/notifications"
+        className="mt-1 flex items-center gap-1 text-[11px] font-bold text-[#13512C]"
+      >
+        View all <ChevronRight size={13} strokeWidth={2.6} aria-hidden="true" />
+      </Link>
+    </section>
+  );
+}
+
+function UpcomingEvents({ programs }: { programs: Program[] }) {
+  return (
+    <section className="mx-4 mb-6 mt-5 rounded-[20px] bg-white px-5 py-4 shadow-sm" aria-label="Upcoming events">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-[14px] font-extrabold text-[#171717]">Upcoming events</h2>
+        <Link href="/schedule" className="text-[11px] font-bold text-[#13512C]">
+          See schedule
+        </Link>
+      </div>
+
+      {programs.length ? (
+        <div className="mt-3 space-y-2">
+          {programs.slice(0, 2).map((event) => (
+            <div
+              key={event.id}
+              className="flex items-center gap-3 rounded-[14px] bg-[#F5FAF6] px-3 py-2.5"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[11px] bg-white text-[#13512C]">
+                <CalendarDays size={17} strokeWidth={2.2} aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[11px] font-extrabold text-[#243B2E]">{event.title}</p>
+                <p className="mt-0.5 flex items-center gap-2 text-[10px] text-[#7E7E80]">
+                  <span className="inline-flex items-center gap-1">
+                    <Clock3 size={10} aria-hidden="true" /> {event.start}
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin size={10} aria-hidden="true" /> {event.venue}
+                  </span>
+                </p>
+              </div>
+              <span className="shrink-0 rounded-full bg-[#E6F3EA] px-2 py-0.5 text-[9px] font-extrabold text-[#13512C]">
+                {event.day}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="mt-3 text-[11px] text-[#7E7E80]">Nothing in your program yet.</p>
+      )}
+    </section>
+  );
+}
+
+function GuestHome({ notifications }: { notifications: AppNotification[] }) {
   return (
     <AppShell>
       <div className="min-h-full bg-[#F6F8F5] pb-8">
@@ -82,7 +168,7 @@ function GuestHome() {
               <p className="mt-1 text-[11px] text-[#A1C8B3]/80">Limited Access Mode</p>
             </div>
             <Link
-              href="/welcome"
+              href="/login"
               className="flex min-h-[38px] shrink-0 items-center justify-center rounded-full bg-[#2E4E41] px-5 text-[12px] font-bold text-white"
             >
               Sign In
@@ -120,14 +206,18 @@ function GuestHome() {
           ))}
         </div>
 
-        <section className="mx-4 mb-6 mt-5 rounded-[20px] bg-white px-5 py-4 text-center shadow-sm">
+        <div className="mt-5">
+          <Announcements notifications={notifications} />
+        </div>
+
+        <section className="mx-4 rounded-[20px] bg-white px-5 py-4 text-center shadow-sm">
           <h2 className="text-[14px] font-extrabold text-[#171717]">Guest Browsing Mode</h2>
           <p className="mx-auto mt-3 max-w-xs text-[11px] leading-relaxed text-[#7E7E80]">
             You&apos;re browsing as a guest. Log in with your participant card to unlock more
             features
           </p>
           <Link
-            href="/welcome"
+            href="/login"
             className="mx-auto mt-3 flex min-h-[44px] w-full max-w-[190px] items-center justify-center rounded-full bg-[#075F47] text-[12px] font-bold text-white"
           >
             Back to Login
@@ -138,7 +228,15 @@ function GuestHome() {
   );
 }
 
-function ParticipantHome({ session }: { session: Session }) {
+function ParticipantHome({
+  session,
+  notifications,
+  programs,
+}: {
+  session: Session;
+  notifications: AppNotification[];
+  programs: Program[];
+}) {
   return (
     <AppShell showBottomNav>
       <div className="min-h-full bg-[#F6F8F5] pb-8">
@@ -181,7 +279,7 @@ function ParticipantHome({ session }: { session: Session }) {
 
         <div className="mx-4 mt-3 grid grid-cols-2 gap-3">
           <Link
-            href="/scan?mode=claim"
+            href="/points"
             className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-[#FDE047] px-4 shadow-sm transition-transform duration-150 active:scale-[0.98]"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-white/50 text-[#0C3523]">
@@ -242,14 +340,20 @@ function ParticipantHome({ session }: { session: Session }) {
             </div>
           </Link>
         </section>
+
+        <Announcements notifications={notifications} />
+        <UpcomingEvents programs={programs} />
       </div>
     </AppShell>
   );
 }
 
 export default function HomePage() {
-  const { data: session } = useApi<Session>('/api/session', demoSession);
-  const isGuest = session.id === 'guest' || session.campus === 'guest' || session.name === 'GUEST';
+  const { guestMode, session, notifications, programs } = usePrototype();
 
-  return isGuest ? <GuestHome /> : <ParticipantHome session={session} />;
+  return guestMode ? (
+    <GuestHome notifications={notifications} />
+  ) : (
+    <ParticipantHome session={session} notifications={notifications} programs={programs} />
+  );
 }

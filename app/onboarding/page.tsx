@@ -4,9 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { AppShell } from '@/components/AppShell';
-import { demoSession } from '@/lib/demo-data';
-import type { Session } from '@/lib/types';
-import { useApi } from '@/lib/use-api';
+import { usePrototype } from '@/lib/prototype-store';
 
 const STORAGE_KEY = 'hr26_onboarded';
 
@@ -65,7 +63,7 @@ const slides: Slide[] = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { data: session } = useApi<Session>('/api/session', demoSession);
+  const { session } = usePrototype();
   const [index, setIndex] = useState(0);
   const [ready, setReady] = useState(false);
 

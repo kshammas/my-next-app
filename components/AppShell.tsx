@@ -18,7 +18,12 @@ export function AppShell({
       <div className="app-shell">
         {showNav ? <SideNav /> : null}
         <div className="phone-frame">
-          <div className="phone-scroll" id="main-content">{children}</div>
+          <div
+            className={`phone-scroll${showBottomNav ? ' phone-scroll-docked' : ''}`}
+            id="main-content"
+          >
+            {children}
+          </div>
           {showBottomNav ? <BottomNav /> : null}
         </div>
       </div>

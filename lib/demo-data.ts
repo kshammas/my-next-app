@@ -6,7 +6,6 @@ import type {
   ScheduleDay,
   Session,
   StoreItem,
-  StreamItem,
   Venue,
 } from './types';
 
@@ -82,31 +81,6 @@ export const demoResults: Results = {
     { rank: 5, name: 'Amina Shahida', score: 140, detail: 'Jamia 2021JM092' },
   ],
 };
-
-export const demoStreams: StreamItem[] = [
-  {
-    id: 'live-1',
-    title: 'Main Stage · Live',
-    subtitle: 'Inauguration and expert talks',
-    url: 'https://www.youtube.com/results?search_query=Rendezvous+26+Jamia+Madeenathunoor',
-    live: true,
-    viewers: '1.2k watching',
-  },
-  {
-    id: 'live-2',
-    title: 'Urse Ajmer',
-    subtitle: 'Spiritual gathering',
-    url: 'https://www.youtube.com/results?search_query=Urse+Ajmer+Jamia+Madeenathunoor',
-    live: false,
-  },
-  {
-    id: 'live-3',
-    title: 'Cultural Night',
-    subtitle: 'Highlights and performances',
-    url: 'https://www.youtube.com/results?search_query=Rendezvous+26+Cultural+Night',
-    live: false,
-  },
-];
 
 export const demoVenues: Venue[] = [
   { id: 'v-1', name: 'Main Ground', label: 'A', x: 48, y: 68, note: 'Inauguration · Cultural Night' },

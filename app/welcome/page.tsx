@@ -1,11 +1,21 @@
 'use client';
 
-import { ArrowUpRight, ScanLine } from 'lucide-react';
+import { ArrowUpRight, ScanLine, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/AppShell';
+import { usePrototype } from '@/lib/prototype-store';
 
 export default function WelcomePage() {
+  const router = useRouter();
+  const { setGuestMode } = usePrototype();
+
+  function enterAsGuest() {
+    setGuestMode(true);
+    router.push('/home');
+  }
+
   return (
     <AppShell showNav={false}>
       <div className="flex min-h-full flex-col bg-white px-6 pb-5 pt-14">
@@ -38,11 +48,20 @@ export default function WelcomePage() {
           </Link>
 
           <Link
-            href="/home"
-            className="mt-2.5 flex min-h-[52px] w-full items-center justify-center rounded-[16px] border border-[#E3EAF0] bg-[#F7F9FB] text-[13px] font-semibold text-[#143A5E] transition duration-150 hover:border-[#CBD6E1] hover:bg-[#EEF3F8] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#113B61]"
+            href="/login"
+            className="mt-3 flex min-h-[40px] w-full items-center justify-center gap-1.5 rounded-[12px] text-[11px] font-bold text-[#143A5E] transition duration-150 hover:bg-[#F7F9FB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#113B61]"
+          >
+            <UserRound size={14} strokeWidth={2.2} aria-hidden="true" />
+            Enter Participant ID instead
+          </Link>
+
+          <button
+            type="button"
+            onClick={enterAsGuest}
+            className="mt-2 flex min-h-[52px] w-full items-center justify-center rounded-[16px] border border-[#E3EAF0] bg-[#F7F9FB] text-[13px] font-semibold text-[#143A5E] transition duration-150 hover:border-[#CBD6E1] hover:bg-[#EEF3F8] active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#113B61]"
           >
             Continue as guest
-          </Link>
+          </button>
 
           <p className="mt-3 text-center text-[10px] leading-relaxed text-[#7C8791]">
             By continuing you agree to our Terms &amp; Privacy Policy

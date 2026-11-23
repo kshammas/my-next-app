@@ -7,31 +7,31 @@ import {
   ArrowUpRight,
   Check,
   ChevronLeft,
+  CircleAlert,
   Coins,
+  Coffee,
+  Cookie,
   Gift,
   QrCode,
   RefreshCw,
   ScanLine,
   ShieldCheck,
+  ShoppingBag,
   Ticket,
+  X,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { demoSession } from '@/lib/demo-data';
-import { useApi } from '@/lib/use-api';
-import type { Session, Transaction, TransactionKind } from '@/lib/types';
+import { usePrototype } from '@/lib/prototype-store';
+import type { TransactionKind } from '@/lib/types';
 
-type WalletPayload = {
-  balance: number;
-  earned: number;
-  redeemed: number;
-  transactions: Transaction[];
-};
-
-const fallback: WalletPayload = {
-  balance: 0,
-  earned: 0,
-  redeemed: 0,
-  transactions: [],
+type Reward = {
+  id: string;
+  name: string;
+  cost: number;
+  description: string;
+  icon: LucideIcon;
+  tag?: string;
 };
 
 const filters: { label: string; kind: TransactionKind | 'all' }[] = [
@@ -39,6 +39,32 @@ const filters: { label: string; kind: TransactionKind | 'all' }[] = [
   { label: 'Earned', kind: 'earned' },
   { label: 'Redeemed', kind: 'redeemed' },
   { label: 'Adjustments', kind: 'adjustment' },
+];
+
+const rewards: Reward[] = [
+  {
+    id: 'r-1',
+    name: 'Milk Tea',
+    cost: 15,
+    description: 'Classic tea with creamy milk — the festival favourite.',
+    icon: Coffee,
+    tag: 'FAVOURITE',
+  },
+  {
+    id: 'r-2',
+    name: 'Cafe Snack Combo',
+    cost: 30,
+    description: 'A savoury snack paired with a refreshing cold drink.',
+    icon: Cookie,
+    tag: 'POPULAR',
+  },
+  {
+    id: 'r-3',
+    name: 'Festival Tee',
+    cost: 80,
+    description: 'Take home a Rendezvous 26 souvenir tee.',
+    icon: ShoppingBag,
+  },
 ];
 
 const focusOnDark =
@@ -129,7 +155,7 @@ function QrMosaic({ seed }: { seed: number }) {
 const redeemSteps = [
   {
     title: 'Show your QR',
-    body: 'Present the QR code to the merchant.',
+    body: 'Present the QR code to the Glocal Store merchant.',
     icon: QrCode,
   },
   {
@@ -139,21 +165,29 @@ const redeemSteps = [
   },
   {
     title: 'Enjoy your rewards',
-    body: 'Your wallet balance updates after successful redemption.',
+    body: 'Your wallet balance updates after a successful redemption.',
     icon: Gift,
   },
 ];
 
 export default function WalletPage() {
-  const { data: wallet } = useApi<WalletPayload>('/api/wallet', fallback);
-  const { data: session } = useApi<Session>('/api/session', demoSession);
+  const { session } = usePrototype();
   const [filter, setFilter] = useState<TransactionKind | 'all'>('all');
   const [showCode, setShowCode] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [qrSeed, setQrSeed] = useState(1);
   const [generatedAt, setGeneratedAt] = useState('');
+  const [selectedReward, setSelectedReward] = useState<Reward | null>(null);
+  const [redeemed, setRedeemed] = useState<{ reward: Reward; code: string } | null>(null);
 
-  const transactions = wallet.transactions.filter(
+  const earned = session.transactions
+    .filter((transaction) => transaction.points > 0)
+    .reduce((sum, transaction) => sum + transaction.points, 0);
+  const redeemedPoints = session.transactions
+    .filter((transaction) => transaction.points < 0)
+    .reduce((sum, transaction) => sum + Math.abs(transaction.points), 0);
+
+  const transactions = session.transactions.filter(
     (transaction) => filter === 'all' || transaction.kind === filter,
   );
 
@@ -181,6 +215,14 @@ export default function WalletPage() {
     regenerateQr();
     setShowCode(true);
   };
+
+  function redeemReward(reward: Reward) {
+    setSelectedReward(null);
+    setRedeemed({
+      reward,
+      code: `RW-${reward.id.toUpperCase()}-${String(Date.now()).slice(-4)}`,
+    });
+  }
 
   if (showCode) {
     const minutes = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
@@ -282,10 +324,7 @@ export default function WalletPage() {
             <div className="mt-5 rounded-[18px] bg-[#FDF6D4] p-4">
               <p className="flex gap-2 text-[10px] leading-relaxed text-[#5B4E1A]">
                 <ShieldCheck size={14} className="mt-0.5 shrink-0" aria-hidden="true" />
-                <span>
-                  Your QR is temporary and can only be used according to the server&apos;s redemption
-                  rules. Never share screenshots of your QR
-                </span>
+                <span>Your QR is temporary. Never share screenshots of your QR.</span>
               </p>
             </div>
           </div>
@@ -320,7 +359,7 @@ export default function WalletPage() {
 
           <div className="mt-3 flex items-baseline gap-2">
             <Coins size={22} className="self-center text-[#EECE2D]" aria-hidden="true" />
-            <span className="text-[42px] font-extrabold leading-none">{wallet.balance}</span>
+            <span className="text-[42px] font-extrabold leading-none">{session.points}</span>
             <span className="text-[16px] font-bold text-[#DCEBDD]">Glocal Coins</span>
           </div>
           <p className="mt-2 text-[12px] text-[#A1C8B3]">Your Glocal Points balance</p>
@@ -331,14 +370,14 @@ export default function WalletPage() {
                 <ArrowDownLeft size={18} aria-hidden="true" />
               </span>
               <p className="mt-2 text-[10px] text-[#A1C8B3]">Total earned</p>
-              <p className="mt-0.5 text-[15px] font-extrabold">{wallet.earned} GP</p>
+              <p className="mt-0.5 text-[15px] font-extrabold">{earned} GP</p>
             </div>
             <div className="rounded-[18px] bg-white/10 p-3">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FDF6D4]/20 text-[#FDF6D4]">
                 <ArrowUpRight size={18} aria-hidden="true" />
               </span>
               <p className="mt-2 text-[10px] text-[#A1C8B3]">Total redeemed</p>
-              <p className="mt-0.5 text-[15px] font-extrabold">{wallet.redeemed} GP</p>
+              <p className="mt-0.5 text-[15px] font-extrabold">{redeemedPoints} GP</p>
             </div>
           </div>
         </section>
@@ -370,6 +409,90 @@ export default function WalletPage() {
             </span>
           </Link>
         </div>
+
+        <section className="mx-4 mt-6" aria-label="Rewards">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <h2 className="text-[15px] font-extrabold text-[#15532E]">Rewards</h2>
+              <p className="mt-0.5 text-[11px] text-[#6B7B72]">Treats you can pick up around the fest</p>
+            </div>
+            <span className="flex shrink-0 items-center gap-1 text-[11px] font-extrabold text-[#15532E]">
+              <Coins size={13} aria-hidden="true" /> {session.points}
+            </span>
+          </div>
+
+          {session.points === 0 ? (
+            <div className="mt-3 flex flex-col items-center rounded-[20px] bg-white px-5 py-7 text-center shadow-sm">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF4ED] text-[#15532E]">
+                <Gift size={22} aria-hidden="true" />
+              </span>
+              <p className="mt-3 text-[14px] font-extrabold text-[#15532E]">No coins yet</p>
+              <p className="mx-auto mt-1 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
+                Join festival activities to earn your first Glocal Coins and unlock these rewards.
+              </p>
+              <Link
+                href="/points"
+                className={`mt-4 flex min-h-[44px] w-full max-w-[180px] items-center justify-center rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
+              >
+                Explore activities
+              </Link>
+            </div>
+          ) : rewards.length === 0 ? (
+            <div className="mt-3 flex flex-col items-center rounded-[20px] bg-white px-5 py-9 text-center shadow-sm">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF4ED] text-[#15532E]">
+                <Gift size={22} aria-hidden="true" />
+              </span>
+              <p className="mt-3 text-[14px] font-extrabold text-[#15532E]">No rewards right now</p>
+              <p className="mt-1 text-[11px] text-[#6B7B72]">Check back soon for festival treats.</p>
+            </div>
+          ) : (
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {rewards.map((reward) => {
+                const Icon = reward.icon;
+                const affordable = session.points >= reward.cost;
+                return (
+                  <button
+                    key={reward.id}
+                    type="button"
+                    onClick={() => setSelectedReward(reward)}
+                    className="flex items-start gap-3 rounded-[20px] bg-white p-4 text-left shadow-sm transition-transform duration-150 active:scale-[0.99]"
+                  >
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-[#FDF6D4] text-[#15532E]">
+                      <Icon className="h-6 w-6" strokeWidth={1.7} aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-start justify-between gap-2">
+                        <span className="truncate text-[13px] font-extrabold text-[#15532E]">
+                          {reward.name}
+                        </span>
+                        {reward.tag ? (
+                          <span className="shrink-0 rounded-full bg-[#EECE2D] px-2 py-0.5 text-[9px] font-extrabold tracking-wide text-[#15532E]">
+                            {reward.tag}
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="mt-1 block text-[11px] leading-snug text-[#6B7B72]">
+                        {reward.description}
+                      </span>
+                      <span className="mt-2 flex items-center gap-1.5 text-[11px] font-extrabold text-[#15532E]">
+                        <Coins size={13} className="text-[#B88900]" aria-hidden="true" />
+                        {reward.cost} coins
+                        {!affordable ? (
+                          <span className="ml-1 text-[10px] font-bold text-[#B64235]">
+                            · need {reward.cost - session.points} more
+                          </span>
+                        ) : null}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <p className="mt-2 text-center text-[10px] text-[#8A9A90]">
+            Rewards are a demo preview — no coins are deducted here.
+          </p>
+        </section>
 
         <section className="mx-4 mt-6">
           <h2 className="text-[15px] font-extrabold text-[#15532E]">Transaction history</h2>
@@ -450,10 +573,106 @@ export default function WalletPage() {
           </div>
 
           <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[10px] text-[#6B7B72]">
-            <ShieldCheck size={13} aria-hidden="true" /> Your Glocal Points are securely recorded.
+            <ShieldCheck size={13} aria-hidden="true" /> Your Glocal Points are recorded in this demo.
           </p>
         </section>
       </div>
+
+      {selectedReward ? (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="reward-detail-title"
+          onClick={() => setSelectedReward(null)}
+        >
+          <div
+            className="modal-card animate-rise relative"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedReward(null)}
+              aria-label="Close reward details"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-[#F5FAF6] text-[#15532E]"
+            >
+              <X size={17} aria-hidden="true" />
+            </button>
+            <div className="flex flex-col items-center text-center">
+              <span className="flex h-20 w-20 items-center justify-center rounded-[24px] bg-[#FDF6D4] text-[#15532E]">
+                <selectedReward.icon className="h-9 w-9" strokeWidth={1.6} aria-hidden="true" />
+              </span>
+              <h2 id="reward-detail-title" className="mt-4 text-[19px] font-extrabold text-[#15532E]">
+                {selectedReward.name}
+              </h2>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-[#6B7B72]">
+                {selectedReward.description}
+              </p>
+              <p className="mt-4 flex items-center gap-1.5 text-[16px] font-extrabold text-[#15532E]">
+                <Coins className="h-5 w-5 text-[#B88900]" aria-hidden="true" />
+                {selectedReward.cost} Glocal Coins
+              </p>
+              <p className="mt-1 text-[11px] font-semibold text-[#6B7B72]">
+                Your balance: {session.points} coins
+              </p>
+            </div>
+            <div className="mt-5 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setSelectedReward(null)}
+                className="min-h-[48px] flex-1 rounded-full border border-[#15532E]/15 bg-white px-4 text-[12px] font-bold text-[#15532E]"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => redeemReward(selectedReward)}
+                disabled={session.points < selectedReward.cost}
+                className={`min-h-[48px] flex-[1.4] rounded-full bg-[#15532E] px-4 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] disabled:opacity-40 ${focusOnDark}`}
+              >
+                {session.points >= selectedReward.cost
+                  ? `Redeem · ${selectedReward.cost} coins`
+                  : `Need ${selectedReward.cost - session.points} more`}
+              </button>
+            </div>
+            <p className="mt-3 text-center text-[10px] text-[#8A9A90]">
+              Demo redemption — shows a code, no coins are spent.
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      {redeemed ? (
+        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reward-success-title">
+          <div className="modal-card animate-rise text-center">
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#E7F4EA] text-[#0A5C2E]">
+              <Check size={30} strokeWidth={1.8} aria-hidden="true" />
+            </span>
+            <h2 id="reward-success-title" className="mt-4 text-[19px] font-extrabold text-[#15532E]">
+              Reward ready!
+            </h2>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-[#6B7B72]">
+              Show this at the counter to collect your {redeemed.reward.name}.
+            </p>
+            <div className="mt-4 rounded-[18px] bg-[#FDF6D4] p-4">
+              <p className="text-[10px] font-extrabold tracking-[0.14em] text-[#8A731A]">DEMO CODE</p>
+              <p className="mt-1 font-mono text-[18px] font-black tracking-wide text-[#15532E]">
+                {redeemed.code}
+              </p>
+            </div>
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-[#8A9A90]">
+              <CircleAlert size={12} aria-hidden="true" /> Prototype only — no coins were deducted.
+            </p>
+            <button
+              type="button"
+              onClick={() => setRedeemed(null)}
+              className={`mt-5 flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#15532E] px-5 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] ${focusOnDark}`}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      ) : null}
     </AppShell>
   );
 }

@@ -1,4 +1,4 @@
-const CACHE = 'hr26-v1';
+const CACHE = 'hr26-v2';
 const SHELL = ['/', '/login', '/home', '/icon-192x192.png'];
 
 self.addEventListener('install', (event) => {
@@ -23,9 +23,6 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  // Session and API data are personalised — never serve them from a cache.
-  if (url.pathname.startsWith('/api/')) return;
-
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)

@@ -58,15 +58,6 @@ export type Results = {
   individuals: ResultRow[];
 };
 
-export type StreamItem = {
-  id: string;
-  title: string;
-  subtitle: string;
-  url: string;
-  live: boolean;
-  viewers?: string;
-};
-
 export type Venue = {
   id: string;
   name: string;
@@ -82,6 +73,10 @@ export type StoreItem = {
   cost: number;
   emoji: string;
   tag?: string;
+};
+
+export type CartItem = StoreItem & {
+  quantity: number;
 };
 
 export type AppNotification = {

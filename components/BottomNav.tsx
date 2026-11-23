@@ -17,7 +17,7 @@ export function BottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className="bottom-nav-item"
+            className={`bottom-nav-item ${active ? 'bottom-nav-item-active' : ''}`}
             aria-current={active ? 'page' : undefined}
           >
             <span className={`bottom-nav-icon ${active ? 'bottom-nav-icon-active' : ''}`}>

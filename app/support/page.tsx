@@ -10,19 +10,16 @@ const contacts = [
     label: 'WhatsApp',
     detail: 'Fastest response (10AM–12PM)',
     icon: MessageCircle,
-    href: 'https://wa.me/918592955776',
   },
   {
     label: 'Helpline Call',
     detail: '+918592955776',
     icon: Phone,
-    href: 'tel:+918592955776',
   },
   {
     label: 'Email Support',
     detail: 'rend26.home@gmail.com',
     icon: Mail,
-    href: 'mailto:rend26.home@gmail.com',
   },
 ];
 
@@ -74,16 +71,13 @@ export default function SupportPage() {
 
           <h2 className="mt-4 text-[17px] font-extrabold text-[#1A2E23]">Contact Us</h2>
           <div className="mt-2 space-y-2">
-            {contacts.map(({ label, detail, icon: Icon, href }) => (
-              <a
+            {contacts.map(({ label, detail, icon: Icon }) => (
+              <article
                 key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
                 className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-white px-4 py-2 shadow-sm"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EFF9F4] text-[#0B3424]">
-                  <Icon size={19} />
+                  <Icon size={19} aria-hidden="true" />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[14px] font-bold text-[#1A2E23]">{label}</span>
@@ -92,7 +86,7 @@ export default function SupportPage() {
                 <span className="flex min-h-[36px] shrink-0 items-center rounded-full bg-[#EFF9F4] px-4 text-[12px] font-bold text-[#0B3424]">
                   Connect
                 </span>
-              </a>
+              </article>
             ))}
           </div>
 

@@ -157,6 +157,7 @@ svg {
 }
 
 .phone-frame {
+  position: relative;
   display: flex;
   flex: 1;
   min-width: 0;
@@ -173,6 +174,10 @@ svg {
   scrollbar-width: thin;
   scrollbar-color: var(--brand-200) transparent;
   padding-top: env(safe-area-inset-top);
+}
+
+.phone-scroll-docked {
+  padding-bottom: calc(86px + env(safe-area-inset-bottom));
 }
 
 /* Shared page padding — replaces per-screen px/pt/pb utilities. */
@@ -228,38 +233,50 @@ svg {
    Navigation
    --------------------------------------------------------------------------- */
 .bottom-nav {
+  position: absolute;
+  z-index: 30;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 50%;
   display: flex;
-  flex-shrink: 0;
-  justify-content: space-around;
-  gap: var(--space-1);
-  border-top: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.94);
-  padding: var(--space-2) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
-  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-  backdrop-filter: blur(12px);
+  width: min(calc(100% - 28px), 340px);
+  transform: translateX(-50%);
+  justify-content: space-between;
+  gap: 4px;
+  border: 1px solid rgba(21, 83, 46, 0.12);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 7px;
+  box-shadow: 0 14px 38px rgba(4, 48, 25, 0.16), 0 2px 8px rgba(4, 48, 25, 0.06);
+  backdrop-filter: blur(16px);
 }
 
 .bottom-nav-item {
   display: flex;
-  min-width: 72px;
-  min-height: 48px;
+  min-width: 0;
+  min-height: 52px;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
-  border-radius: var(--radius-sm);
+  gap: 2px;
+  border-radius: var(--radius-full);
   text-decoration: none;
-  transition: background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+  transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease),
+    opacity var(--dur-fast) var(--ease);
 }
 
 .bottom-nav-item:active {
+  transform: scale(0.96);
+}
+
+.bottom-nav-item-active {
   background: var(--brand-50);
 }
 
 .bottom-nav-icon {
   display: flex;
-  min-width: 56px;
-  min-height: 34px;
+  min-width: 44px;
+  min-height: 30px;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
@@ -273,14 +290,22 @@ svg {
 }
 
 .bottom-nav-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
   color: var(--text-subtle);
 }
 
 .bottom-nav-label-active {
   color: var(--brand-900);
-  font-weight: 800;
+  font-weight: 850;
+}
+
+@media (min-width: 640px) {
+  .bottom-nav {
+    bottom: 18px;
+    width: min(calc(100% - 44px), 340px);
+  }
 }
 
 .side-nav {

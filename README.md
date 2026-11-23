@@ -1,6 +1,8 @@
 # Rendezvous 26 — Web App
 
-A web version of the Rendezvous 26 (Jamia Madeenathunoor Life Festival) app, built on Next.js 16 App Router. Same phone-shaped UI and green/yellow festival styling, with a server-side API-key layer.
+A responsive, frontend-only UI/UX prototype of the Rendezvous 26 (Jamia Madeenathunoor Life Festival) app. It reproduces the reference app's green/yellow visual identity, phone-shaped mobile layout and festival flows using mock data and simulated interactions.
+
+This is a design prototype: there is no backend, database, API, real authentication, QR camera scanning or payment processing.
 
 ## Getting started
 
@@ -9,35 +11,21 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Sign in by scanning/entering a participant ID, or continue as a guest.
+Open [http://localhost:3000](http://localhost:3000). The splash screen leads to the welcome flow; participant identification and scanning are visual simulations. Guest browsing and a demo participant session are available throughout.
 
-The app runs with built-in sample data out of the box — no credentials needed.
+## Prototype state
 
-## Backend / API key
+All demo interactions are held in `lib/prototype-store.tsx`, a client-side React context. It manages the guest/participant session, activities and point claims, notifications, programs, cart and simulated checkout, profile edits and reset. Mock content lives in `lib/demo-data.ts`.
 
-The browser never sees the upstream key. It calls local `/api/*` route handlers, and `lib/api.ts` (a `server-only` module) attaches the key to upstream requests.
-
-Set both variables together in `.env.local` to use a real backend:
-
-```bash
-API_BASE_URL=https://your-api.example.com/v1
-API_KEY=your-secret-key
-# Optional: API_KEY_HEADER=x-api-key  API_AUTH_SCHEME=bearer
-```
-
-- Default auth header: `x-api-key: <key>`
-- `API_AUTH_SCHEME=bearer` sends `Authorization: Bearer <key>` instead
-- Setting only one of `API_BASE_URL` / `API_KEY` throws a config error; setting neither uses the demo fixtures in `lib/demo-data.ts`
-
-Upstream endpoint paths are centralized in the route handlers under `app/api/`. Adjust them there to match your API.
+Refreshing the page resets the prototype to its initial demo state.
 
 ## Screens
 
-Welcome, Home, Schedule, My Program, Results, Live & Videos, Campus Map, Glocal Store, Notifications, Glocal Points, Glocal Wallet, Profile. `/login` redirects to `/welcome`.
+Welcome, login/participant identification, visual QR scan, onboarding, Home, Schedule, My Program, Results, Live, Campus Map, Glocal Store, Notifications, Glocal Points, Glocal Wallet, Profile and Support, with loading, empty, error, dialog, sheet, filter and search states. `/login` is a visual entry screen.
 
 ## PWA
 
-A web manifest (`app/manifest.ts`) and a small service worker (`public/sw.js`) make the app installable. Personalized `/api/*` responses are never cached by the service worker.
+A web manifest (`app/manifest.ts`) and a small service worker (`public/sw.js`) provide the installable PWA-style experience. Since the app is frontend-only, the service worker caches static app assets only.
 
 ## Scripts
 
