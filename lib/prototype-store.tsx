@@ -36,6 +36,11 @@ type PrototypeValue = {
   removeFromCart: (id: string) => void;
   clearCart: () => void;
   checkout: () => { ok: boolean; message: string; orderId?: string };
+  redeemReward: (
+    rewardId: string,
+    cost: number,
+    name: string,
+  ) => { ok: boolean; message: string; code?: string };
   toggleProgram: (event: Program) => void;
   removeProgram: (id: string) => void;
   markNotificationRead: (id: string) => void;
@@ -165,6 +170,39 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     return { ok: true, message: 'Order placed. Show this at the counter.', orderId };
   }, [cart, session.points]);
 
+  const redeemReward = useCallback(
+    (rewardId: string, cost: number, name: string) => {
+      if (session.points < cost) {
+        return {
+          ok: false,
+          message: `You need ${cost - session.points} more Glocal Coins for this reward.`,
+        };
+      }
+
+      const code = `RW-${rewardId.toUpperCase()}-${String(Date.now()).slice(-4)}`;
+      setSession((previous) => {
+        if (previous.points < cost) return previous;
+        return {
+          ...previous,
+          points: previous.points - cost,
+          transactions: [
+            {
+              id: code,
+              title: `${name} reward`,
+              points: -cost,
+              date: 'Just now',
+              kind: 'redeemed',
+            },
+            ...previous.transactions,
+          ],
+        };
+      });
+
+      return { ok: true, message: `${cost} Glocal Coins spent on ${name}.`, code };
+    },
+    [session.points],
+  );
+
   const toggleProgram = useCallback((event: Program) => {
     setPrograms((previous) => {
       const exists = previous.some((item) => item.id === event.id);
@@ -233,6 +271,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       removeFromCart,
       clearCart,
       checkout,
+      redeemReward,
       toggleProgram,
       removeProgram,
       markNotificationRead,
@@ -253,6 +292,7 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       removeFromCart,
       clearCart,
       checkout,
+      redeemReward,
       toggleProgram,
       removeProgram,
       markNotificationRead,

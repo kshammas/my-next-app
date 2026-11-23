@@ -678,7 +678,7 @@ svg {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  padding: 0 4px 0 8px;
+  padding: 0 4px 0 15px;
 }
 
 .brand-lockup {
@@ -841,13 +841,22 @@ svg {
 .glocal-coin:first-child { top: 0; left: 4px; }
 .glocal-coin:last-child { top: 7px; right: 0; width: 49px; height: 49px; }
 
+/* Subtle idle float, staggered so the two coins never move in lockstep. */
+@keyframes coin-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.glocal-coin { animation: coin-float 3.2s ease-in-out infinite; }
+.glocal-coin:last-child { animation-delay: -1.6s; }
+
 .wallet-actions {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-  margin-top: 16px;
+  margin-top: 13px;
 }
 
 .wallet-actions a {
@@ -870,13 +879,13 @@ svg {
 .shortcut-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 11px;
+  gap: 7px 8px;
   margin-top: 10px;
 }
 
 .shortcut-tile {
   display: flex;
-  min-height: 95px;
+  min-height: 80px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -909,7 +918,7 @@ svg {
   position: relative;
   display: block;
   width: 100%;
-  height: 150px;
+  height: 116px;
   overflow: hidden;
   border-radius: 23px;
   background: #032c20;
@@ -1032,6 +1041,8 @@ svg {
   .home-header { margin-bottom: 20px; }
   .participant-wallet-card { min-height: 178px; padding: 21px; }
   .wallet-actions { margin-top: 16px; }
+  .shortcut-tile { min-height: 95px; }
+  .home-banner { height: 150px; }
 }
 
 @media (max-width: 380px) {

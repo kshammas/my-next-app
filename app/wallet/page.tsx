@@ -171,7 +171,7 @@ const redeemSteps = [
 ];
 
 export default function WalletPage() {
-  const { session } = usePrototype();
+  const { session, redeemReward } = usePrototype();
   const [filter, setFilter] = useState<TransactionKind | 'all'>('all');
   const [showCode, setShowCode] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
@@ -216,12 +216,11 @@ export default function WalletPage() {
     setShowCode(true);
   };
 
-  function redeemReward(reward: Reward) {
+  function handleRedeem(reward: Reward) {
+    const result = redeemReward(reward.id, reward.cost, reward.name);
+    if (!result.ok || !result.code) return;
     setSelectedReward(null);
-    setRedeemed({
-      reward,
-      code: `RW-${reward.id.toUpperCase()}-${String(Date.now()).slice(-4)}`,
-    });
+    setRedeemed({ reward, code: result.code });
   }
 
   if (showCode) {
@@ -490,7 +489,7 @@ export default function WalletPage() {
             </div>
           )}
           <p className="mt-2 text-center text-[10px] text-[#8A9A90]">
-            Rewards are a demo preview — no coins are deducted here.
+            Redeeming a reward deducts demo coins from your wallet balance.
           </p>
         </section>
 
@@ -626,7 +625,7 @@ export default function WalletPage() {
               </button>
               <button
                 type="button"
-                onClick={() => redeemReward(selectedReward)}
+                onClick={() => handleRedeem(selectedReward)}
                 disabled={session.points < selectedReward.cost}
                 className={`min-h-[48px] flex-[1.4] rounded-full bg-[#15532E] px-4 text-[12px] font-bold text-white transition-colors hover:bg-[#0E3D21] disabled:opacity-40 ${focusOnDark}`}
               >
@@ -636,7 +635,7 @@ export default function WalletPage() {
               </button>
             </div>
             <p className="mt-3 text-center text-[10px] text-[#8A9A90]">
-              Demo redemption — shows a code, no coins are spent.
+              Demo redemption — deducts {selectedReward.cost} coins and shows a code.
             </p>
           </div>
         </div>
@@ -659,9 +658,13 @@ export default function WalletPage() {
               <p className="mt-1 font-mono text-[18px] font-black tracking-wide text-[#15532E]">
                 {redeemed.code}
               </p>
+              <p className="mt-2 text-[11px] font-bold text-[#5B4E1A]">
+                −{redeemed.reward.cost} Glocal Coins · balance {session.points}
+              </p>
             </div>
             <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-[#8A9A90]">
-              <CircleAlert size={12} aria-hidden="true" /> Prototype only — no coins were deducted.
+              <CircleAlert size={12} aria-hidden="true" /> Prototype only — coins were deducted from
+              your demo balance.
             </p>
             <button
               type="button"
