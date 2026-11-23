@@ -4,25 +4,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowUpRight,
+  BatteryFull,
   Bell,
   CalendarDays,
   ChevronRight,
   ClipboardList,
-  Clock3,
-  Gift,
+  Headphones,
   LifeBuoy,
   MapPin,
-  Play,
   Radio,
   ScanLine,
+  Signal,
   ShoppingBag,
   Trophy,
   Wallet,
+  Wifi,
 } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';
-import type { AppNotification, Program, Session } from '@/lib/types';
+import type { AppNotification, Session } from '@/lib/types';
 
 const guestTiles: { label: string; href: string; icon: ReactNode; badge?: string }[] = [
   { label: 'Map', href: '/map', icon: <MapPin className="h-7 w-7 text-[#3F4B55]" /> },
@@ -43,12 +44,36 @@ const guestTiles: { label: string; href: string; icon: ReactNode; badge?: string
 ];
 
 const participantTiles: { label: string; href: string; icon: ReactNode }[] = [
-  { label: 'My Program', href: '/programs', icon: <ClipboardList className="h-7 w-7 text-[#13512C]" /> },
-  { label: 'Live', href: '/live', icon: <Radio className="h-7 w-7 text-[#13512C]" /> },
-  { label: 'Schedule', href: '/schedule', icon: <CalendarDays className="h-7 w-7 text-[#13512C]" /> },
-  { label: 'Map', href: '/map', icon: <MapPin className="h-7 w-7 text-[#13512C]" /> },
-  { label: 'Store', href: '/store', icon: <ShoppingBag className="h-7 w-7 text-[#13512C]" /> },
-  { label: 'Glocal Wallet', href: '/wallet', icon: <Wallet className="h-7 w-7 text-[#13512C]" /> },
+  { label: 'My Program', href: '/programs', icon: <ClipboardList className="h-7 w-7 text-[#16824C]" /> },
+  { label: 'Live', href: '/live', icon: <Radio className="h-7 w-7 text-[#16824C]" /> },
+  { label: 'Schedule', href: '/schedule', icon: <CalendarDays className="h-7 w-7 text-[#16824C]" /> },
+  { label: 'Map', href: '/map', icon: <MapPin className="h-7 w-7 text-[#16824C]" /> },
+  { label: 'Store', href: '/store', icon: <ShoppingBag className="h-7 w-7 text-[#16824C]" /> },
+  { label: 'Glocal Wallet', href: '/wallet', icon: <Wallet className="h-7 w-7 text-[#16824C]" /> },
+];
+
+const highlights = [
+  {
+    title: 'Earn Glocal Points',
+    subtitle: 'Participate and claim your rewards',
+    image: '/images/glocal-coins.jpg',
+    href: '/points',
+    action: false,
+  },
+  {
+    title: 'Watch Live',
+    subtitle: 'Catch every moment, live',
+    image: '/images/live-fingerprint.jpg',
+    href: '/live',
+    action: true,
+  },
+  {
+    title: 'Your festival, your story',
+    subtitle: "See what's happening around you",
+    image: '/images/glocal-coins.jpg',
+    href: '/map',
+    action: false,
+  },
 ];
 
 function BrandHeader() {
@@ -105,50 +130,6 @@ function Announcements({ notifications }: { notifications: AppNotification[] }) 
       >
         View all <ChevronRight size={13} strokeWidth={2.6} aria-hidden="true" />
       </Link>
-    </section>
-  );
-}
-
-function UpcomingEvents({ programs }: { programs: Program[] }) {
-  return (
-    <section className="mx-4 mb-6 mt-5 rounded-[20px] bg-white px-5 py-4 shadow-sm" aria-label="Upcoming events">
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="text-[14px] font-extrabold text-[#171717]">Upcoming events</h2>
-        <Link href="/schedule" className="text-[11px] font-bold text-[#13512C]">
-          See schedule
-        </Link>
-      </div>
-
-      {programs.length ? (
-        <div className="mt-3 space-y-2">
-          {programs.slice(0, 2).map((event) => (
-            <div
-              key={event.id}
-              className="flex items-center gap-3 rounded-[14px] bg-[#F5FAF6] px-3 py-2.5"
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[11px] bg-white text-[#13512C]">
-                <CalendarDays size={17} strokeWidth={2.2} aria-hidden="true" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[11px] font-extrabold text-[#243B2E]">{event.title}</p>
-                <p className="mt-0.5 flex items-center gap-2 text-[10px] text-[#7E7E80]">
-                  <span className="inline-flex items-center gap-1">
-                    <Clock3 size={10} aria-hidden="true" /> {event.start}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin size={10} aria-hidden="true" /> {event.venue}
-                  </span>
-                </p>
-              </div>
-              <span className="shrink-0 rounded-full bg-[#E6F3EA] px-2 py-0.5 text-[9px] font-extrabold text-[#13512C]">
-                {event.day}
-              </span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="mt-3 text-[11px] text-[#7E7E80]">Nothing in your program yet.</p>
-      )}
     </section>
   );
 }
@@ -228,132 +209,108 @@ function GuestHome({ notifications }: { notifications: AppNotification[] }) {
   );
 }
 
-function ParticipantHome({
-  session,
-  notifications,
-  programs,
-}: {
-  session: Session;
-  notifications: AppNotification[];
-  programs: Program[];
-}) {
+function ParticipantHome({ session }: { session: Session }) {
+  const [highlight, setHighlight] = useState(1);
+  const current = highlights[highlight];
+
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#F6F8F5] pb-8">
-        <BrandHeader />
-
-        <section className="mx-4 rounded-[22px] bg-[#0C3523] px-5 py-4 text-white shadow-sm">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <p className="truncate text-[17px] font-extrabold tracking-tight">{session.name}</p>
-              <p className="mt-1 text-[11px] text-[#B9D8C6]">ID:{session.jamiaId}</p>
-            </div>
-            <Link
-              href="/profile"
-              aria-label="Open profile"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/12 text-white transition hover:bg-white/20"
-            >
-              <ChevronRight size={22} strokeWidth={2.6} aria-hidden="true" />
-            </Link>
+      <div className="home-page" style={{ background: 'var(--page)' }}>
+        <div className="status-bar" aria-hidden="true">
+          <div className="status-left">
+            <span className="status-time">10:21</span>
+            <span className="status-service"><Wifi size={13} strokeWidth={2.5} /></span>
+            <span className="status-mini"><Radio size={10} strokeWidth={2.4} /></span>
           </div>
+          <div className="status-right">
+            <Headphones size={14} strokeWidth={2.2} />
+            <span className="status-net">Vo LTE</span>
+            <Signal size={14} strokeWidth={2.2} />
+            <span className="status-net">4G</span>
+            <BatteryFull className="status-battery" size={21} strokeWidth={2.1} />
+          </div>
+        </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3 rounded-[16px] bg-black/20 px-4 py-3">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#A1C8B3]">
-                Glocal points
-              </p>
-              <p className="mt-1 text-[26px] font-extrabold leading-none">
-                {session.points}
-                <span className="ml-1.5 text-[12px] font-bold text-white/70">GP</span>
-              </p>
+        <header className="home-header">
+          <div className="brand-lockup" aria-label="Rendezvous 26, Jamia Madeenathunnoor Life Festival">
+            <div className="brand-name">RENDEZVOUS <span>&apos;26</span></div>
+            <div className="brand-caption">JAMIA MADEENATHUNNOOR LIFE FESTIVAL</div>
+          </div>
+          <Link href="/notifications" className="header-round-button" aria-label="Notifications">
+            <Bell size={21} strokeWidth={2} aria-hidden="true" />
+          </Link>
+          <span className="notification-dot" aria-hidden="true" />
+        </header>
+
+        <section className="participant-wallet-card">
+          <div className="wallet-card-rings" aria-hidden="true" />
+          <div className="participant-copy">
+            <p className="participant-name">{session.name}</p>
+            <p className="participant-id">ID: {session.jamiaId}</p>
+            <div className="home-points">
+              <strong>{session.points}</strong><span>GP</span>
             </div>
-            <Link
-              href="/wallet"
-              className="flex min-h-[38px] items-center gap-1 rounded-full bg-[#FDE047] px-4 text-[11px] font-extrabold text-[#0C3523] transition hover:bg-[#F7DF5B]"
-            >
-              Wallet
-              <ArrowUpRight size={14} strokeWidth={2.6} aria-hidden="true" />
+          </div>
+          <div className="coin-pair" aria-label="Glocal points coins">
+            <span className="glocal-coin">G</span>
+            <span className="glocal-coin">G</span>
+          </div>
+          <div className="wallet-actions">
+            <Link href="/points" className="redeem-button">
+              <ScanLine size={19} strokeWidth={2} aria-hidden="true" /> Scan to redeem
+            </Link>
+            <Link href="/points" className="earn-button">
+              Earn points <ChevronRight size={18} strokeWidth={2} aria-hidden="true" />
             </Link>
           </div>
         </section>
 
-        <div className="mx-4 mt-3 grid grid-cols-2 gap-3">
-          <Link
-            href="/points"
-            className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-[#FDE047] px-4 shadow-sm transition-transform duration-150 active:scale-[0.98]"
-          >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-white/50 text-[#0C3523]">
-              <ScanLine size={20} strokeWidth={2.4} aria-hidden="true" />
-            </span>
-            <span className="text-[12px] font-extrabold leading-tight text-[#0C3523]">
-              Scan to redeem
-            </span>
-          </Link>
-          <Link
-            href="/points"
-            className="flex min-h-[64px] items-center gap-3 rounded-[18px] bg-white px-4 shadow-sm transition-transform duration-150 active:scale-[0.98]"
-          >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#E6F3EA] text-[#13512C]">
-              <Gift size={20} strokeWidth={2.4} aria-hidden="true" />
-            </span>
-            <span className="text-[12px] font-extrabold leading-tight text-[#243B2E]">
-              Earn points
-            </span>
-          </Link>
-        </div>
+        <section className="shortcut-grid" aria-label="Festival shortcuts">
+          {participantTiles.map(({ label, href, icon }) => (
+            <Link key={label} href={href} className="shortcut-tile">
+              <span aria-hidden="true">{icon}</span>
+              <span>{label}</span>
+            </Link>
+          ))}
+        </section>
 
-        <section className="mx-4 mt-5" aria-label="Explore">
-          <div className="grid grid-cols-3 gap-2.5">
-            {participantTiles.map(({ label, href, icon }) => (
-              <Link
-                key={label}
-                href={href}
-                className="flex min-h-[86px] flex-col items-center justify-center gap-2 rounded-[18px] bg-white px-1 text-center shadow-sm transition-transform duration-150 active:scale-[0.98]"
-              >
-                <span aria-hidden="true">{icon}</span>
-                <span className="text-[11px] font-bold leading-tight text-[#3F4B55]">{label}</span>
-              </Link>
+        <section className="home-banner-wrap" aria-label="Festival highlights">
+          <Link href={current.href} className="home-banner" aria-label={current.title}>
+            <Image src={current.image} alt="" fill sizes="(max-width: 640px) 100vw, 540px" priority />
+            <span className="banner-vignette" />
+            <span className="banner-copy">
+              <strong>{current.title}</strong>
+              <small>{current.subtitle}</small>
+            </span>
+            {current.action ? (
+              <span className="banner-action">
+                Watch Live <ArrowUpRight size={17} strokeWidth={2} aria-hidden="true" />
+              </span>
+            ) : null}
+          </Link>
+          <div className="banner-dots" aria-label="Choose highlight">
+            {highlights.map((item, index) => (
+              <button
+                key={item.title}
+                type="button"
+                aria-label={`Show highlight ${index + 1}`}
+                className={index === highlight ? 'banner-dot-active' : ''}
+                onClick={() => setHighlight(index)}
+              />
             ))}
           </div>
         </section>
-
-        <section className="mx-4 mb-6 mt-5 overflow-hidden rounded-[22px] bg-white shadow-sm">
-          <Link href="/live" className="block">
-            <div className="relative flex h-[116px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#00130D] via-[#09301E] to-[#15532E]">
-              <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full border border-white/10" />
-              <div className="absolute -bottom-16 right-0 h-44 w-44 rounded-full border border-white/10" />
-              <span className="absolute right-3 top-3 rounded-full bg-[#FDE047] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest text-[#0C3523]">
-                Live
-              </span>
-              <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/30">
-                <Play size={24} fill="currentColor" aria-hidden="true" />
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-3 px-5 py-4">
-              <div>
-                <h2 className="text-[15px] font-extrabold text-[#171717]">Watch Live</h2>
-                <p className="mt-1 text-[11px] text-[#7E7E80]">Catch every moment, live</p>
-              </div>
-              <span className="flex min-h-[36px] shrink-0 items-center rounded-full bg-[#FDE047] px-4 text-[10px] font-extrabold text-[#0C3523]">
-                Watch Live
-              </span>
-            </div>
-          </Link>
-        </section>
-
-        <Announcements notifications={notifications} />
-        <UpcomingEvents programs={programs} />
       </div>
     </AppShell>
   );
 }
 
 export default function HomePage() {
-  const { guestMode, session, notifications, programs } = usePrototype();
+  const { guestMode, session, notifications } = usePrototype();
 
   return guestMode ? (
     <GuestHome notifications={notifications} />
   ) : (
-    <ParticipantHome session={session} notifications={notifications} programs={programs} />
+    <ParticipantHome session={session} />
   );
 }
