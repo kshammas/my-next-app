@@ -147,43 +147,47 @@ export default function LivePage() {
 
   return (
     <AppShell>
-      <div className="min-h-full bg-[#F5FAF6]">
-        <header className="flex items-center gap-3 bg-[#15532E] px-4 py-4 text-white">
+      <div className="min-h-full bg-[#f3f8f5]">
+        <header className="relative flex h-[94px] items-center justify-center bg-[#15563A] text-white">
           <Link
             href="/home"
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 ${focusOnDark}`}
+            className={`absolute left-[15px] flex h-[53px] w-[53px] items-center justify-center rounded-full bg-white/10 ${focusOnDark}`}
             aria-label="Go back"
           >
             <ChevronLeft size={22} strokeWidth={2.6} aria-hidden="true" />
           </Link>
-          <h1 className="flex-1 pr-10 text-center text-[18px] font-extrabold">Live Screen</h1>
+          <h1 className="text-[20px] font-[730] tracking-[-0.4px]">Live Screen</h1>
           <button
             type="button"
             onClick={refresh}
             aria-label="Refresh live updates"
-            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15 ${focusOnDark}`}
+            className={`absolute right-[15px] flex h-[53px] w-[53px] items-center justify-center rounded-full bg-white/10 ${focusOnDark}`}
           >
             <RefreshCw size={17} aria-hidden="true" />
           </button>
         </header>
 
         {loadState === 'loading' ? (
-          <div className="px-4 pb-8 pt-4" role="status" aria-label="Loading live screen">
+          <div
+            className="px-3 pb-[35px] pt-[18px] sm:px-[18px]"
+            role="status"
+            aria-label="Loading live screen"
+          >
             <span className="sr-only">Loading live screen…</span>
-            <div className="skeleton h-[290px] rounded-[20px]" />
-            <div className="mt-4 space-y-2">
-              <div className="skeleton h-[56px] rounded-[18px]" />
-              <div className="skeleton h-[56px] rounded-[18px]" />
-              <div className="skeleton h-[56px] rounded-[18px]" />
+            <div className="skeleton aspect-[1.18/1] rounded-[19px]" />
+            <div className="mt-4 space-y-[9px] px-[10px]">
+              <div className="skeleton h-[75px] rounded-[25px]" />
+              <div className="skeleton h-[75px] rounded-[25px]" />
+              <div className="skeleton h-[75px] rounded-[25px]" />
             </div>
           </div>
         ) : loadState === 'error' ? (
-          <div className="px-4 pb-8 pt-6" role="alert">
-            <div className="rounded-[24px] bg-white px-6 py-10 text-center shadow-sm">
-              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FDECEA] text-[#B64235]">
+          <div className="px-3 pb-[35px] pt-6 sm:px-[18px]" role="alert">
+            <div className="rounded-[25px] border border-[#D7E6DC] bg-white px-6 py-10 text-center shadow-sm">
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FDE5E3] text-[#B73331]">
                 <AlertCircle size={22} aria-hidden="true" />
               </span>
-              <h2 className="mt-4 text-[14px] font-extrabold text-[#15532E]">
+              <h2 className="mt-4 text-[15px] font-[750] text-[#16583B]">
                 Couldn&apos;t refresh live updates
               </h2>
               <p className="mx-auto mt-2 max-w-[270px] text-[11px] leading-relaxed text-[#6B7B72]">
@@ -192,69 +196,87 @@ export default function LivePage() {
               <button
                 type="button"
                 onClick={retry}
-                className={`mx-auto mt-5 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#15532E] px-6 text-[11px] font-bold text-white ${focusOnDark}`}
+                className={`mx-auto mt-5 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[linear-gradient(100deg,#22A972,#08764B)] px-6 text-[11px] font-bold text-white ${focusOnDark}`}
               >
                 <RefreshCw size={14} aria-hidden="true" /> Retry
               </button>
             </div>
           </div>
         ) : (
-          <div className="px-4 pb-8 pt-4">
-            <div className="rounded-[20px] bg-white p-4 shadow-sm">
-              <div className="relative flex h-[190px] items-center justify-center overflow-hidden rounded-[14px] bg-gradient-to-br from-[#15532E] to-[#0A3320] sm:h-[230px]">
-                <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full border border-white/10" />
-                <div className="absolute -bottom-16 right-4 h-44 w-44 rounded-full border border-white/10" />
-                <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/40">
+          <div className="px-3 pb-[35px] pt-[18px] sm:px-[18px]">
+            <div className="relative flex aspect-[1.18/1] flex-col items-center justify-center overflow-hidden rounded-[19px] bg-black text-[#F6D124]">
+              <span className="relative flex h-[35px] w-[35px] items-center justify-center">
+                <span className="absolute inset-0 animate-spin rounded-full border-4 border-b-[#F0CD1D] border-l-[#F0CD1D] border-r-transparent border-t-transparent" />
+                <span className="relative text-[#F6D124]">
                   {selected.tone === 'active' ? (
-                    <Play size={24} aria-hidden="true" />
+                    <Play size={14} aria-hidden="true" />
                   ) : (
-                    <Radio size={24} aria-hidden="true" />
+                    <Radio size={14} aria-hidden="true" />
                   )}
                 </span>
-                <p className="absolute bottom-3 left-0 right-0 text-center text-[10px] font-semibold text-white/70">
-                  Preview only · no live stream in this prototype
+              </span>
+              <p className="mt-3 text-center text-[9px] text-[#919191]">
+                Preview only · no live stream in this prototype
+              </p>
+            </div>
+
+            <div className="mb-[26px] mt-[17px] flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <h2 className="m-0 mb-1 text-[23px] font-[750] leading-tight tracking-[-0.7px] text-[#16583B]">
+                  {selected.name}
+                </h2>
+                <p className="m-0 flex items-center gap-[5px] text-[12px] text-[#7E8C84]">
+                  @ {selected.place}
                 </p>
               </div>
-              <div className="mt-4 flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[17px] font-extrabold text-[#15532E]">{selected.name}</p>
-                  <p className="mt-1 text-[12px] text-[#15532E]/70">@ {selected.place}</p>
-                </div>
-                {selected.tone === 'active' ? (
-                  <span className="flex items-center gap-1.5 rounded-full bg-[#FEE2E1] px-3 py-1.5 text-[10px] font-extrabold uppercase text-[#AF2120]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#AF2120]" /> LIVE
-                  </span>
-                ) : (
-                  <span className="rounded-full bg-[#EFF3F0] px-3 py-1.5 text-[10px] font-extrabold uppercase text-[#6B7B72]">
-                    {selected.status}
-                  </span>
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => setDetailName(selected.name)}
-                className={`mt-4 flex min-h-[42px] w-full items-center justify-center rounded-full bg-[#EAF4ED] text-[11px] font-bold text-[#15532E] transition-colors hover:bg-[#DDEBDE] ${focusOnLight}`}
-              >
-                View stage details
-              </button>
+              {selected.tone === 'active' ? (
+                <span className="inline-flex min-h-[27px] shrink-0 items-center gap-[7px] rounded-[18px] bg-[#FDE5E3] px-[11px] text-[11px] font-[750] text-[#B73331]">
+                  <span className="h-[7px] w-[7px] rounded-full bg-[#DC2B28]" /> LIVE
+                </span>
+              ) : (
+                <span
+                  className={`inline-flex min-h-[27px] shrink-0 items-center gap-[7px] rounded-[18px] px-[11px] text-[11px] font-[750] ${
+                    selected.tone === 'soon'
+                      ? 'bg-[#FFF4C9] text-[#8A5A17]'
+                      : 'bg-[#EDF5EF] text-[#82978A]'
+                  }`}
+                >
+                  <span
+                    className={`h-[7px] w-[7px] rounded-full ${
+                      selected.tone === 'soon' ? 'bg-[#D59D16]' : 'bg-[#95AA9C]'
+                    }`}
+                  />{' '}
+                  {selected.status}
+                </span>
+              )}
             </div>
 
-            <div className="mt-5 flex items-center justify-between">
-              <h2 className="text-[15px] font-extrabold text-[#15532E]">All stages</h2>
-              <span className="text-[12px] text-[#15532E]/70">{visibleStages.length} stages</span>
+            <button
+              type="button"
+              onClick={() => setDetailName(selected.name)}
+              className={`flex min-h-[38px] w-full items-center justify-center rounded-[17px] bg-[#E5F1E9] text-[10px] font-bold text-[#245D40] transition-colors hover:bg-[#D6EADB] ${focusOnLight}`}
+            >
+              View stage details
+            </button>
+
+            <div className="mb-3 mt-6 flex items-center justify-between">
+              <h2 className="text-[17px] font-[750] tracking-[-0.4px] text-[#16583B]">
+                All stages
+              </h2>
+              <span className="text-[11px] text-[#7E8C84]">{visibleStages.length} stages</span>
             </div>
 
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Stage filters">
+            <div className="flex gap-[7px] overflow-x-auto pb-1" aria-label="Stage filters">
               {stageFilters.map((filter) => (
                 <button
                   key={filter}
                   type="button"
                   aria-pressed={stageFilter === filter}
                   onClick={() => setStageFilter(filter)}
-                  className={`min-h-[36px] shrink-0 rounded-full px-3.5 text-[10px] font-bold transition-colors ${focusOnLight} ${
+                  className={`inline-flex h-[28px] shrink-0 items-center rounded-[22px] px-[14px] text-[10px] font-bold transition-colors ${focusOnLight} ${
                     stageFilter === filter
-                      ? 'bg-[#15532E] text-white'
-                      : 'bg-white text-[#6B7B72] shadow-sm'
+                      ? 'bg-[linear-gradient(100deg,#22A972,#08764B)] text-white'
+                      : 'bg-[#E5F1E9] text-[#245D40]'
                   }`}
                 >
                   {filter}
@@ -262,7 +284,7 @@ export default function LivePage() {
               ))}
             </div>
 
-            <div className="mt-2 space-y-2">
+            <div className="mt-3 grid gap-[9px] px-[10px]">
               {visibleStages.map((stage) => {
                 const active = stage.tone === 'active';
                 const soon = stage.tone === 'soon';
@@ -277,27 +299,31 @@ export default function LivePage() {
                     }}
                     aria-pressed={selectedStage}
                     aria-label={`Select ${stage.name}, ${stage.place}`}
-                    className={`flex min-h-[56px] w-full items-center justify-between gap-3 rounded-[18px] px-4 py-2 text-left transition-shadow ${focusOnLight} ${
-                      active ? 'bg-[#15532E] text-white' : 'bg-white text-[#15532E] shadow-sm'
-                    } ${selectedStage && !active ? 'ring-2 ring-[#15532E]/30' : ''}`}
+                    className={`flex min-h-[75px] w-full items-center justify-between gap-3 rounded-[25px] border px-[14px] py-3 text-left text-[#185B3B] transition-colors ${focusOnLight} ${
+                      selectedStage
+                        ? 'border-[#155B3B] bg-[#155B3B] text-white'
+                        : 'border-[#D7E6DC] bg-white hover:bg-[#F7FBF8]'
+                    } ${stage.tone === 'offline' ? 'opacity-60' : ''}`}
                   >
-                    <span className="min-w-0">
-                      <span className="block text-[14px] font-extrabold">{stage.name}</span>
+                    <span className="flex min-w-0 flex-col gap-[3px]">
+                      <span className="text-[16px] font-[740]">{stage.name}</span>
                       <span
-                        className={`mt-0.5 block truncate text-[11px] ${
-                          active ? 'text-white/70' : 'text-[#15532E]/60'
+                        className={`truncate text-[12px] ${
+                          selectedStage ? 'text-[#ADCAB8]' : 'text-[#829187]'
                         }`}
                       >
                         {stage.place}
                       </span>
                     </span>
                     <span
-                      className={`shrink-0 rounded-full px-3 py-1.5 text-[10px] font-extrabold ${
-                        active
-                          ? 'bg-[#EECE2D] text-[#15532E]'
-                          : soon
-                            ? 'bg-[#FEF3C6] text-[#8A6A00]'
-                            : 'bg-[#EFF3F0] text-[#6B7B72]'
+                      className={`shrink-0 rounded-[17px] ${
+                        selectedStage
+                          ? 'bg-transparent p-0 text-[12px] font-[750] normal-case text-[#F0DC44]'
+                          : `px-3 py-[7px] text-[10px] font-[750] uppercase ${
+                              soon || active
+                                ? 'bg-[#FFF4C7] text-[#89521A]'
+                                : 'bg-[#ECF5EE] text-[#82968A]'
+                            }`
                       }`}
                     >
                       {stage.status}
@@ -309,23 +335,23 @@ export default function LivePage() {
 
             <section className="mt-6" aria-label="Important announcements">
               <div className="flex items-center gap-2">
-                <Megaphone size={16} className="text-[#15532E]" aria-hidden="true" />
-                <h2 className="text-[15px] font-extrabold text-[#15532E]">
+                <Megaphone size={16} className="text-[#15563A]" aria-hidden="true" />
+                <h2 className="text-[17px] font-[750] tracking-[-0.4px] text-[#16583B]">
                   Important announcements
                 </h2>
               </div>
 
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Update categories">
+              <div className="mt-3 flex gap-[7px] overflow-x-auto pb-1" aria-label="Update categories">
                 {updateFilters.map((filter) => (
                   <button
                     key={filter}
                     type="button"
                     aria-pressed={updateFilter === filter}
                     onClick={() => setUpdateFilter(filter)}
-                    className={`min-h-[36px] shrink-0 rounded-full px-3.5 text-[10px] font-bold transition-colors ${focusOnLight} ${
+                    className={`inline-flex h-[28px] shrink-0 items-center rounded-[22px] px-[14px] text-[10px] font-bold transition-colors ${focusOnLight} ${
                       updateFilter === filter
-                        ? 'bg-[#15532E] text-white'
-                        : 'bg-white text-[#6B7B72] shadow-sm'
+                        ? 'bg-[linear-gradient(100deg,#22A972,#08764B)] text-white'
+                        : 'bg-[#E5F1E9] text-[#245D40]'
                     }`}
                   >
                     {filter}
@@ -334,37 +360,37 @@ export default function LivePage() {
               </div>
 
               {visibleUpdates.length === 0 ? (
-                <div className="mt-3 rounded-[18px] bg-white px-6 py-10 text-center shadow-sm">
-                  <h3 className="text-[14px] font-extrabold text-[#15532E]">No updates found</h3>
+                <div className="mt-3 rounded-[25px] border border-[#D7E6DC] bg-white px-6 py-10 text-center shadow-sm">
+                  <h3 className="text-[14px] font-[750] text-[#16583B]">No updates found</h3>
                   <p className="mx-auto mt-2 max-w-[260px] text-[11px] leading-relaxed text-[#6B7B72]">
                     Try another update category.
                   </p>
                   <button
                     type="button"
                     onClick={() => setUpdateFilter('All')}
-                    className={`mx-auto mt-4 min-h-[40px] rounded-full bg-[#EAF4ED] px-5 text-[11px] font-bold text-[#15532E] ${focusOnLight}`}
+                    className={`mx-auto mt-4 min-h-[40px] rounded-full bg-[#E5F1E9] px-5 text-[11px] font-bold text-[#245D40] ${focusOnLight}`}
                   >
                     Show all updates
                   </button>
                 </div>
               ) : (
-                <div className="mt-3 space-y-2">
+                <div className="mt-3 space-y-[9px]">
                   {visibleUpdates.map((update) => (
                     <article
                       key={update.id}
                       className={`rounded-[18px] bg-white p-4 shadow-sm ${
-                        update.pinned ? 'border-l-4 border-l-[#EECE2D]' : ''
+                        update.pinned
+                          ? 'border-y border-r border-y-[#D7E6DC] border-r-[#D7E6DC] border-l-4 border-l-[#F8E34D]'
+                          : 'border border-[#D7E6DC]'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#15532E]">
+                        <span className="inline-flex rounded-full bg-[#E6F5EA] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#286B48]">
                           {update.category}
                         </span>
-                        <span className="text-[10px] text-[#8C928E]">{update.time}</span>
+                        <span className="text-[10px] text-[#93A098]">{update.time}</span>
                       </div>
-                      <h3 className="mt-2 text-[13px] font-extrabold text-[#15532E]">
-                        {update.title}
-                      </h3>
+                      <h3 className="mt-2 text-[13px] font-[750] text-[#16583B]">{update.title}</h3>
                       <p className="mt-1 text-[11px] leading-relaxed text-[#6B7B72]">
                         {update.body}
                       </p>
@@ -387,13 +413,13 @@ export default function LivePage() {
           <div className="modal-card">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#8FA79A]">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#286B48]">
                   Stage details
                 </p>
-                <h2 className="mt-1 text-[18px] font-extrabold tracking-tight text-[#15532E]">
+                <h2 className="mt-1 text-[18px] font-[750] tracking-tight text-[#0B2118]">
                   {detailStage.name}
                 </h2>
-                <p className="mt-0.5 text-[11px] text-[#6B7B72]">@ {detailStage.place}</p>
+                <p className="mt-0.5 text-[11px] text-[#61716A]">@ {detailStage.place}</p>
               </div>
               <button
                 type="button"
@@ -407,47 +433,56 @@ export default function LivePage() {
 
             <div className="mt-4 flex flex-wrap gap-2">
               <span
-                className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase ${
+                className={`inline-flex min-h-[27px] items-center gap-[7px] rounded-[18px] px-[11px] text-[11px] font-[750] ${
                   detailStage.tone === 'active'
-                    ? 'bg-[#FEE2E1] text-[#AF2120]'
+                    ? 'bg-[#FDE5E3] text-[#B73331]'
                     : detailStage.tone === 'soon'
-                      ? 'bg-[#FEF3C6] text-[#8A6A00]'
-                      : 'bg-[#EFF3F0] text-[#6B7B72]'
+                      ? 'bg-[#FFF4C9] text-[#8A5A17]'
+                      : 'bg-[#EDF5EF] text-[#82978A]'
                 }`}
               >
+                <span
+                  className={`h-[7px] w-[7px] rounded-full ${
+                    detailStage.tone === 'active'
+                      ? 'bg-[#DC2B28]'
+                      : detailStage.tone === 'soon'
+                        ? 'bg-[#D59D16]'
+                        : 'bg-[#95AA9C]'
+                  }`}
+                />{' '}
                 {detailStage.status}
               </span>
-              <span className="rounded-full bg-[#EAF4ED] px-2.5 py-1 text-[10px] font-bold text-[#15532E]">
+              <span className="rounded-full bg-[#E6F5EA] px-2.5 py-1 text-[10px] font-bold text-[#286B48]">
                 {detailStage.place}
               </span>
             </div>
 
-            <div className="mt-4 space-y-3 rounded-[16px] bg-[#F5FAF6] p-4">
+            <div className="mt-4 space-y-3 rounded-[16px] bg-[#F3F8F5] p-4">
               <div className="flex items-start gap-2">
-                <Radio size={15} className="mt-0.5 shrink-0 text-[#15532E]" aria-hidden="true" />
+                <Radio size={15} className="mt-0.5 shrink-0 text-[#15563A]" aria-hidden="true" />
                 <div>
-                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#8FA79A]">
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#286B48]">
                     Now
                   </p>
-                  <p className="text-[12px] font-bold text-[#1A2E23]">
+                  <p className="text-[12px] font-bold text-[#14241D]">
                     {stageDetails[detailStage.name].now}
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
-                <Clock3 size={15} className="mt-0.5 shrink-0 text-[#15532E]" aria-hidden="true" />
+                <Clock3 size={15} className="mt-0.5 shrink-0 text-[#15563A]" aria-hidden="true" />
                 <div>
-                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#8FA79A]">
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#286B48]">
                     Up next
                   </p>
-                  <p className="text-[12px] font-bold text-[#1A2E23]">
+                  <p className="text-[12px] font-bold text-[#14241D]">
                     {stageDetails[detailStage.name].next}
                   </p>
                 </div>
               </div>
             </div>
 
-            <p className="mt-4 text-[12px] leading-relaxed text-[#6B7B72]">
+            <p className="mt-4 text-[12px] leading-relaxed text-[#61716A]">
               {stageDetails[detailStage.name].note}
             </p>
             <p className="mt-3 rounded-[14px] bg-[#FDF6D4] px-3 py-2.5 text-[11px] font-semibold leading-relaxed text-[#6B5A16]">
@@ -456,7 +491,7 @@ export default function LivePage() {
             <button
               type="button"
               onClick={() => setDetailName(null)}
-              className={`mt-5 flex min-h-[44px] w-full items-center justify-center rounded-full bg-[#15532E] text-[12px] font-bold text-white ${focusOnDark}`}
+              className={`mt-5 flex min-h-[44px] w-full items-center justify-center rounded-full bg-[linear-gradient(100deg,#22A972,#08764B)] text-[12px] font-bold text-white ${focusOnDark}`}
             >
               Close
             </button>

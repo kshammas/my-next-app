@@ -37,79 +37,104 @@ export default function NotificationsPage() {
       <div className="app-content">
         <PageHeader title="Notifications" unread={unread} />
 
-        <div className="mt-5 flex items-center justify-between gap-2">
-          <p className="text-[12px] text-slate-500">{unread} unread</p>
-          <div className="flex items-center gap-2">
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <p className="ar-muted-caption">{unread} unread</p>
+          <div className="flex items-center gap-[6px]">
             <button
               type="button"
               onClick={markAllNotificationsRead}
               disabled={unread === 0}
-              className={`flex min-h-[44px] items-center gap-1.5 rounded-full bg-white px-4 text-[11px] font-bold text-[#064e24] disabled:opacity-50 ${focusOnLight}`}
+              className={`flex min-h-[29px] items-center gap-[6px] rounded-full border border-[#DCE8E0] bg-white px-3 text-[9px] font-[650] text-[#1A7447] disabled:opacity-50 ${focusOnLight}`}
             >
-              <CheckCheck size={14} aria-hidden="true" /> Mark all read
+              <CheckCheck size={13} aria-hidden="true" /> Mark all read
             </button>
             <button
               type="button"
               onClick={() => setConfirmClear(true)}
               disabled={notifications.length === 0}
               aria-label="Clear all notifications"
-              className={`flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#B64235] disabled:opacity-50 ${focusOnLight}`}
+              className={`grid h-9 w-9 place-items-center rounded-full border border-[#DCE8E0] bg-white text-[#B64235] disabled:opacity-50 ${focusOnLight}`}
             >
-              <Trash2 size={16} aria-hidden="true" />
+              <Trash2 size={15} aria-hidden="true" />
             </button>
           </div>
         </div>
 
-        {notifications.length === 0 ? (
-          <div className="soft-card mt-3 flex flex-col items-center px-6 py-12 text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#EFF9F4] text-[#0a7a33]">
-              <Bell size={26} aria-hidden="true" />
+        <div className="my-3 flex gap-[6px] overflow-x-auto pb-1" aria-hidden="true">
+          {['All', 'Important', 'Schedule', 'Live update'].map((chip, index) => (
+            <span
+              key={chip}
+              className={`shrink-0 rounded-full border px-3 py-[6px] text-[9px] font-[650] ${
+                index === 0
+                  ? 'border-[#158452] bg-[#16824F] text-white'
+                  : 'border-[#DCE8E0] bg-white text-[#74857A]'
+              }`}
+            >
+              {chip}
             </span>
-            <h2 className="mt-4 text-[14px] font-extrabold text-[#073b1d]">
+          ))}
+        </div>
+
+        {notifications.length === 0 ? (
+          <div className="ar-card mt-3 flex flex-col items-center px-6 py-12 text-center">
+            <span className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#EAF7EF] text-[#187B4B]">
+              <Bell size={22} aria-hidden="true" />
+            </span>
+            <h2 className="mt-4 text-[12px] font-[730] text-[#14241D]">
               You&apos;re all caught up
             </h2>
-            <p className="mx-auto mt-2 max-w-[260px] text-[11px] leading-relaxed text-slate-500">
+            <p className="mx-auto mt-[6px] max-w-[260px] text-[10px] leading-[1.6] text-[#85928B]">
               New updates will appear here as the festival goes on.
             </p>
           </div>
         ) : (
-          <div className="grid-list mt-3">
+          <div className="mt-2 grid gap-[8px]">
             {notifications.map((item) => (
               <article
                 key={item.id}
-                className={`soft-card overflow-hidden ${item.read ? 'opacity-70' : 'border-l-4 border-l-[#f7e305]'}`}
+                className={`overflow-hidden rounded-[15px] border ${
+                  item.read ? 'border-[#E0E9E3] bg-white' : 'border-[#CCE2D3] bg-[#F8FCF9]'
+                }`}
               >
                 <button
                   type="button"
                   onClick={() => openDetail(item)}
-                  className={`flex w-full gap-3 p-4 text-left ${focusOnLight}`}
+                  className={`relative flex w-full items-start gap-[9px] p-[11px] text-left ${focusOnLight}`}
                   aria-label={`Open notification: ${item.title}`}
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e7f4ea]">
-                    <Bell size={17} className="text-[#0a7a33]" aria-hidden="true" />
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[11px] bg-[#EAF5ED] text-[#187D4A]">
+                    <Bell size={20} aria-hidden="true" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-start justify-between gap-2">
-                      <span className="text-[13px] font-extrabold text-[#073b1d]">{item.title}</span>
-                      <span className="shrink-0 text-[10px] text-slate-400">{item.time}</span>
+                      <span className="text-[10px] font-bold leading-[1.35] text-[#2A4634]">
+                        {item.title}
+                      </span>
+                      <span className="shrink-0 text-[8px] text-[#9AA49E]">{item.time}</span>
                     </span>
-                    <span className="mt-1 block text-[11.5px] leading-relaxed text-slate-500">
+                    <span className="mt-[5px] block text-[8.5px] leading-[1.5] text-[#849188]">
                       {item.body}
                     </span>
-                    <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-[#0a7a33]">
+                    <span className="mt-[5px] inline-flex items-center gap-1 text-[8px] font-bold text-[#18804C]">
                       {categoryFor(item.id)}
-                      <ChevronRight size={12} aria-hidden="true" />
+                      <ChevronRight size={11} aria-hidden="true" />
                     </span>
                   </span>
+                  {!item.read ? (
+                    <i
+                      aria-hidden="true"
+                      className="pointer-events-none absolute right-[12px] top-[9px] h-[7px] w-[7px] rounded-full border border-white bg-[#D94539]"
+                    />
+                  ) : null}
                 </button>
                 {!item.read ? (
-                  <div className="flex justify-end border-t border-[#064e24]/10 px-4 py-2">
+                  <div className="flex justify-end border-t border-[#E1EBE4] px-[11px] py-2">
                     <button
                       type="button"
                       onClick={() => markNotificationRead(item.id)}
-                      className={`inline-flex min-h-[32px] items-center gap-1 rounded-full bg-[#e7f4ea] px-3 text-[10px] font-bold text-[#0a7a33] ${focusOnLight}`}
+                      className={`inline-flex min-h-[28px] items-center gap-1 rounded-full bg-[#EAF7EF] px-3 text-[8px] font-bold text-[#18804C] ${focusOnLight}`}
                     >
-                      <Check size={12} aria-hidden="true" /> Mark as read
+                      <Check size={11} aria-hidden="true" /> Mark as read
                     </button>
                   </div>
                 ) : null}
@@ -129,10 +154,10 @@ export default function NotificationsPage() {
           <div className="modal-card">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <span className="inline-flex rounded-full bg-[#e7f4ea] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#0a7a33]">
+                <span className="inline-flex rounded-full bg-[#EAF7EF] px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-wide text-[#187B4B]">
                   {categoryFor(detail.id)}
                 </span>
-                <h2 className="mt-3 text-[18px] font-extrabold leading-snug tracking-tight text-[#073b1d]">
+                <h2 className="mt-3 text-[18px] font-extrabold leading-snug tracking-tight text-[#14241D]">
                   {detail.title}
                 </h2>
               </div>
@@ -145,12 +170,12 @@ export default function NotificationsPage() {
                 <X size={18} aria-hidden="true" />
               </button>
             </div>
-            <p className="mt-4 text-[12px] leading-relaxed text-slate-600">{detail.body}</p>
-            <p className="mt-4 text-[10px] font-semibold text-slate-400">Received {detail.time}</p>
+            <p className="mt-4 text-[12px] leading-relaxed text-[#61716A]">{detail.body}</p>
+            <p className="mt-4 text-[10px] font-semibold text-[#93A098]">Received {detail.time}</p>
             <button
               type="button"
               onClick={() => setDetailId(null)}
-              className={`mt-5 flex min-h-[44px] w-full items-center justify-center rounded-full bg-[#064e24] text-[12px] font-bold text-white ${focusOnLight}`}
+              className={`mt-5 flex min-h-[44px] w-full items-center justify-center rounded-full bg-[#16824F] text-[12px] font-bold text-white ${focusOnLight}`}
             >
               Close
             </button>
@@ -166,17 +191,17 @@ export default function NotificationsPage() {
           aria-label="Clear all notifications"
         >
           <div className="modal-card">
-            <h2 className="text-[17px] font-extrabold text-[#073b1d]">
+            <h2 className="text-[17px] font-extrabold text-[#14241D]">
               Clear all notifications?
             </h2>
-            <p className="mt-2 text-[12px] leading-relaxed text-slate-500">
+            <p className="mt-2 text-[12px] leading-relaxed text-[#61716A]">
               This removes every update from your notification list.
             </p>
             <div className="mt-5 flex gap-2">
               <button
                 type="button"
                 onClick={() => setConfirmClear(false)}
-                className={`min-h-[44px] flex-1 rounded-full border border-[#064e24]/15 text-[11px] font-bold text-[#064e24] ${focusOnLight}`}
+                className={`min-h-[44px] flex-1 rounded-full border border-[#DCE8E0] text-[11px] font-bold text-[#286B48] ${focusOnLight}`}
               >
                 Cancel
               </button>
