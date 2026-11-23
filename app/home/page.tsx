@@ -4,21 +4,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowUpRight,
-  BatteryFull,
   Bell,
   CalendarDays,
   ChevronRight,
   ClipboardList,
-  Headphones,
   LifeBuoy,
   MapPin,
   Radio,
   ScanLine,
-  Signal,
   ShoppingBag,
   Trophy,
   Wallet,
-  Wifi,
 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { AppShell } from '@/components/AppShell';
@@ -216,21 +212,6 @@ function ParticipantHome({ session }: { session: Session }) {
   return (
     <AppShell showBottomNav>
       <div className="home-page" style={{ background: 'var(--page)' }}>
-        <div className="status-bar" aria-hidden="true">
-          <div className="status-left">
-            <span className="status-time">10:21</span>
-            <span className="status-service"><Wifi size={13} strokeWidth={2.5} /></span>
-            <span className="status-mini"><Radio size={10} strokeWidth={2.4} /></span>
-          </div>
-          <div className="status-right">
-            <Headphones size={14} strokeWidth={2.2} />
-            <span className="status-net">Vo LTE</span>
-            <Signal size={14} strokeWidth={2.2} />
-            <span className="status-net">4G</span>
-            <BatteryFull className="status-battery" size={21} strokeWidth={2.1} />
-          </div>
-        </div>
-
         <header className="home-header">
           <div className="brand-lockup" aria-label="Rendezvous 26, Jamia Madeenathunnoor Life Festival">
             <div className="brand-name">RENDEZVOUS <span>&apos;26</span></div>
