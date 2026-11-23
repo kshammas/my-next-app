@@ -231,7 +231,7 @@ function ParticipantHome({ session }: { session: Session }) {
         <section className="participant-wallet-card">
           <div className="wallet-card-rings" aria-hidden="true" />
           <div className="participant-copy">
-            <p className="participant-name">{session.name}</p>
+            <p className="participant-name">{session.name.toUpperCase()}</p>
             <p className="participant-id">ID: {session.jamiaId}</p>
             <div className="home-points">
               <strong>{session.points}</strong><span>GP</span>

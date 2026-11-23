@@ -11,11 +11,9 @@ import {
   Download,
   LifeBuoy,
   LogOut,
-  PencilLine,
   RotateCcw,
   SlidersHorizontal,
   Volume2,
-  X,
 } from '@/components/icons';
 import type { AppIcon } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
@@ -45,10 +43,8 @@ const settingsRows: { key: ToggleKey; label: string; hint: string; icon: AppIcon
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { session, guestMode, updateProfile, resetPrototype, setGuestMode } = usePrototype();
+  const { session, guestMode, resetPrototype, setGuestMode } = usePrototype();
   const [message, setMessage] = useState('');
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState({ name: '', jamiaId: '', campus: '' });
   const [settings, setSettings] = useState<Record<ToggleKey, boolean>>({
     notifications: true,
     sound: true,
@@ -64,21 +60,6 @@ export default function ProfilePage() {
       return;
     }
     setMessage('Use your browser menu → “Install app” / “Add to Home Screen”.');
-  }
-
-  function openEdit() {
-    setDraft({ name: session.name, jamiaId: session.jamiaId, campus: session.campus });
-    setEditing(true);
-  }
-
-  function saveEdit() {
-    updateProfile({
-      name: draft.name.trim() || session.name,
-      jamiaId: draft.jamiaId.trim() || session.jamiaId,
-      campus: draft.campus.trim() || session.campus,
-    });
-    setEditing(false);
-    setMessage('Your profile has been updated.');
   }
 
   function toggleSetting(key: ToggleKey) {
@@ -111,18 +92,10 @@ export default function ProfilePage() {
     <AppShell showBottomNav>
       <div className="min-h-full bg-[#f3f8f5] px-[15px] pb-[35px] pt-[8px]">
         <section
-          className="relative -mx-[15px] -mt-px mb-[9px] flex min-h-[181px] flex-col items-center justify-center rounded-b-[30px] px-[10px] pb-[17px] pt-[22px]"
+          className="-mx-[15px] -mt-px mb-[9px] flex min-h-[181px] flex-col items-center justify-center rounded-b-[30px] px-[10px] pb-[17px] pt-[22px]"
           style={{ background: 'linear-gradient(112deg,#eff9f2,#fffced)' }}
         >
           <h1 className="sr-only">Profile</h1>
-          <button
-            type="button"
-            onClick={openEdit}
-            aria-label="Edit profile"
-            className={`absolute right-[18px] top-[13px] grid h-[31px] w-[31px] place-items-center rounded-full border border-[rgba(25,103,61,0.08)] bg-[rgba(255,255,255,0.58)] text-[#1c7447] ${focusOnLight}`}
-          >
-            <PencilLine size={16} aria-hidden="true" />
-          </button>
           <div className="grid h-[72px] w-[72px] place-items-center rounded-full border-4 border-white bg-[#155d3d] text-[23px] font-[760] leading-none text-[#f2d633] shadow-[0_1px_2px_rgba(20,90,54,0.1)]">
             {initials || 'G'}
           </div>
@@ -143,13 +116,6 @@ export default function ProfilePage() {
 
         <div className="mb-[7px] mt-[12px] flex items-center justify-between gap-[9px] px-[2px]">
           <h3 className="text-[8px] font-[740] tracking-[1.4px] text-[#82938a]">YOUR DETAILS</h3>
-          <button
-            type="button"
-            onClick={openEdit}
-            className={`flex min-h-[28px] items-center gap-[5px] rounded-full px-[10px] text-[9px] font-[700] text-[#1c7447] transition-colors hover:bg-[#eaf7ef] ${focusOnLight}`}
-          >
-            <PencilLine size={13} aria-hidden="true" /> Edit
-          </button>
         </div>
 
         <section className={groupCard} aria-label="Your details">
@@ -303,98 +269,6 @@ export default function ProfilePage() {
           Rendezvous 26
         </footer>
       </div>
-
-      {editing ? (
-        <div
-          className="modal-backdrop"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="edit-profile-title"
-          onClick={() => setEditing(false)}
-          style={{ background: 'rgba(7, 33, 21, 0.42)' }}
-        >
-          <div
-            className="modal-card animate-rise relative"
-            onClick={(event) => event.stopPropagation()}
-            style={{
-              width: 'min(100%, 365px)',
-              maxWidth: '365px',
-              borderRadius: '22px',
-              border: '1px solid #e0ebe3',
-              background: '#fff',
-              padding: '22px 18px 17px',
-              boxShadow: '0 16px 50px rgba(3, 38, 21, 0.24)',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => setEditing(false)}
-              aria-label="Close profile editor"
-              className={`absolute right-[10px] top-[10px] grid h-[30px] w-[30px] place-items-center rounded-full bg-[#f0f6f2] text-[#72847a] ${focusOnLight}`}
-            >
-              <X size={17} aria-hidden="true" />
-            </button>
-            <h2 id="edit-profile-title" className="text-[16px] font-[750] text-[#1b593b]">
-              Edit profile
-            </h2>
-            <p className="mt-[8px] text-[10px] leading-relaxed text-[#819087]">
-              Update how your name and campus appear in the app.
-            </p>
-            <form
-              className="mt-[12px] grid gap-[12px]"
-              onSubmit={(event) => {
-                event.preventDefault();
-                saveEdit();
-              }}
-            >
-              <label className="flex flex-col gap-[6px]">
-                <span className="text-[9px] font-[680] text-[#47624f]">NAME</span>
-                <input
-                  type="text"
-                  value={draft.name}
-                  onChange={(event) => setDraft((previous) => ({ ...previous, name: event.target.value }))}
-                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
-                />
-              </label>
-              <label className="flex flex-col gap-[6px]">
-                <span className="text-[9px] font-[680] text-[#47624f]">
-                  JAMIA NUMBER
-                </span>
-                <input
-                  type="text"
-                  value={draft.jamiaId}
-                  onChange={(event) => setDraft((previous) => ({ ...previous, jamiaId: event.target.value }))}
-                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
-                />
-              </label>
-              <label className="flex flex-col gap-[6px]">
-                <span className="text-[9px] font-[680] text-[#47624f]">CAMPUS</span>
-                <input
-                  type="text"
-                  value={draft.campus}
-                  onChange={(event) => setDraft((previous) => ({ ...previous, campus: event.target.value }))}
-                  className={`min-h-[42px] w-full rounded-[12px] border border-[#dce8e0] bg-white px-[12px] text-[11px] font-[600] text-[#365442] outline-none focus:border-[#16824c] ${focusOnLight}`}
-                />
-              </label>
-              <div className="flex gap-[8px] pt-[9px]">
-                <button
-                  type="button"
-                  onClick={() => setEditing(false)}
-                  className="min-h-[37px] flex-1 rounded-[12px] border border-[#dce8e0] bg-white px-4 text-[10px] font-[700] text-[#31583f]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className={`min-h-[37px] flex-[1.4] rounded-[12px] bg-[#16824c] px-4 text-[10px] font-[700] text-white transition-colors hover:bg-[#0f6a3e] ${focusOnLight}`}
-                >
-                  Save changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      ) : null}
 
       {confirm ? (
         <div
