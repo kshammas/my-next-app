@@ -17,7 +17,17 @@ Open [http://localhost:3000](http://localhost:3000). The splash screen leads to 
 
 All demo interactions are held in `lib/prototype-store.tsx`, a client-side React context. It manages the guest/participant session, activities and point claims, notifications, programs, cart and simulated checkout, profile edits and reset. Mock content lives in `lib/demo-data.ts`.
 
-Refreshing the page resets the prototype to its initial demo state.
+Refreshing the page resets the prototype to its initial demo state. Within a session, state is shared across every route: claiming a points activity updates the Home, Points, Store and Wallet balances; reward redemption and Store checkout both deduct demo Glocal Coins and prepend a transaction; program registration and notification read state stay in sync.
+
+## Design system
+
+Signed-in screens follow the Arena post-login reference as the visual authority. The shared tokens live in `app/globals.css` under the `--a-*` prefix: page `#f3f8f5`, ink `#14241d`, heading `#0b2118`, primary green `#15814b` (strong `#08754b`, deep `#0b5038`), soft green `#e6f5ea`, label `#286b48`, line `#dbe6df`, card line `#c3d9cd`, and yellow `#f8e34d`. Reusable primitives (`.ar-page`, `.ar-heading`, `.ar-eyebrow`, `.ar-live`, `.ar-tabs`, `.ar-card`, `.ar-chip`, `.ar-search`, `.ar-empty`) keep the same radii, type scale and spacing across screens. Guest Home remains visually distinct from the participant Home.
+
+Mobile and tablet use the floating bottom dock on the primary screens; from the desktop breakpoint the dock is hidden and a wide side-nav canvas is used — signed-in content is not capped at the Arena's 540px phone width.
+
+## Prototype limits
+
+There is no backend, database, API, real authentication, camera/QR scanning or payment processing. QR scanning, redemption codes, live streams and order confirmations are simulated. All state is in-memory React state, so a full page refresh restores the initial demo values; only the onboarding choice is kept in `localStorage`. No runtime request leaves the app — imagery is local under `public/images/`.
 
 ## Screens
 
