@@ -1148,7 +1148,7 @@ svg {
   margin-bottom: 12px;
   padding: 18px 17px 16px;
   border-radius: 24px;
-  background: linear-gradient(123deg, #12543a, #063e2c 76%);
+  background: radial-gradient(ellipse 85% 55% at 78% -8%, rgba(163, 230, 53, 0.07), transparent 58%), radial-gradient(ellipse 70% 55% at 15% 108%, rgba(130, 209, 40, 0.08), transparent 62%), radial-gradient(ellipse 100% 70% at 50% 118%, rgba(6, 35, 29, 0.55), transparent 70%), radial-gradient(ellipse 130% 85% at 50% -25%, rgba(12, 52, 44, 0.7), transparent 68%), linear-gradient(50deg, #030e03 0%, #030e03 42%, #1c5417 100%, #1c5417 100%);
   color: #fff;
 }
 
@@ -1188,22 +1188,22 @@ svg {
   max-width: 72%;
   margin: 0 0 3px;
   color: #d5e7dc;
-  font-size: 10px;
+  font-size: 0.7rem;
   font-weight: 650;
-  letter-spacing: 1.7px;
+  letter-spacing: 0.9px;
 }
 
 .participant-id {
   margin: 0;
   color: #c4d4cb;
-  font-size: 9.5px;
+  font-size: 0.6rem;
 }
 
 .home-points {
   display: flex;
   align-items: baseline;
   gap: 5px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .home-points strong {
@@ -1259,7 +1259,7 @@ svg {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-  margin-top: 13px;
+  margin-top: 17px;
 }
 
 .wallet-actions a {
@@ -1283,7 +1283,7 @@ svg {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px 8px;
-  margin-top: 10px;
+  margin-top: 1.6rem;
 }
 
 .shortcut-tile {
@@ -1328,6 +1328,7 @@ svg {
   box-shadow: 0 5px 13px rgba(14, 53, 35, 0.16);
   color: #fff;
   text-align: left;
+  margin-top: 1.6rem;
 }
 
 .home-banner img {
