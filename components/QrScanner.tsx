@@ -1,19 +1,19 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle, Check, RotateCcw, ScanLine, X } from '@/components/icons';
+import { AlertCircle, Check, RotateCcw, ScanLine, Sparkles, X } from '@/components/icons';
 
 const DEFAULT_ACTIVITY_ID = 'welcome-reward';
 
 const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0C801D]';
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFEA00]';
 
 type Phase = 'scanning' | 'success' | 'error';
 
 /**
- * Prototype-only scanner. There is no camera and no permission prompt: the
- * frame is a button that simulates a successful participant-card read and
- * returns a valid demo activity id.
+ * Prototype-only full-screen camera-style QR scanner. There is no real camera
+ * and no permission prompt: the viewfinder is a button that simulates reading
+ * a QR code and returns a valid demo activity id.
  */
 export function QrScanner({
   onResult,
@@ -40,152 +40,165 @@ export function QrScanner({
     timer.current = window.setTimeout(() => {
       onResult(activityId);
       onClose();
-    }, 700);
+    }, 900);
   }
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Scan participant card">
-      <style>{`
-        @keyframes hr26-qr-sweep {
-          0%   { top: 8%;  opacity: 0; }
-          12%  { opacity: 1; }
-          88%  { opacity: 1; }
-          100% { top: 92%; opacity: 0; }
-        }
-      `}</style>
+    <div className="camera-scanner" role="dialog" aria-modal="true" aria-label="Scan participant card">
+      <h1 className="sr-only">Scan participant card</h1>
 
-      <div className="modal-card">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h2 className="text-[17px] font-extrabold text-[#073b1d]">Scan participant card</h2>
-            <p className="mt-0.5 text-[11px] font-semibold text-[#6B7B72]">
-              Prototype scanner · no camera needed
-            </p>
-          </div>
+      <div className="camera-scanner-feed" aria-hidden="true">
+        <span className="camera-feed-glow camera-feed-glow-a" />
+        <span className="camera-feed-glow camera-feed-glow-b" />
+      </div>
+
+      <header className="camera-scanner-top">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close scanner"
+          className={`camera-control ${focusRing}`}
+        >
+          <X size={22} strokeWidth={2.4} aria-hidden="true" />
+        </button>
+        <div className="camera-scanner-heading">
+          <p className="camera-scanner-eyebrow">Rendezvous 26</p>
+          <h2>Scan QR code</h2>
+        </div>
+        <span className="camera-control camera-control-ghost" aria-hidden="true">
+          <ScanLine size={22} strokeWidth={2.2} />
+        </span>
+      </header>
+
+      <div className="camera-scanner-body">
+        <div className={`camera-viewfinder camera-viewfinder-${phase}`}>
           <button
             type="button"
-            onClick={onClose}
-            aria-label="Close scanner"
-            className={`icon-button ${focusRing}`}
+            onClick={simulateScan}
+            disabled={phase !== 'scanning'}
+            aria-label="Simulate a successful QR code scan"
+            className={`camera-viewfinder-hit ${focusRing} ${
+              phase === 'scanning' ? 'cursor-pointer' : 'cursor-default'
+            }`}
           >
-            <X size={18} strokeWidth={2.4} aria-hidden="true" />
+            <svg
+              viewBox="0 0 120 120"
+              className="camera-qr-motif"
+              aria-hidden="true"
+            >
+              <rect x="4" y="4" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
+              <rect x="14" y="14" width="8" height="8" fill="currentColor" />
+              <rect x="88" y="4" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
+              <rect x="98" y="14" width="8" height="8" fill="currentColor" />
+              <rect x="4" y="88" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
+              <rect x="14" y="98" width="8" height="8" fill="currentColor" />
+              <rect x="42" y="10" width="8" height="8" fill="currentColor" />
+              <rect x="58" y="10" width="8" height="8" fill="currentColor" />
+              <rect x="42" y="26" width="8" height="8" fill="currentColor" />
+              <rect x="70" y="26" width="8" height="8" fill="currentColor" />
+              <rect x="10" y="42" width="8" height="8" fill="currentColor" />
+              <rect x="26" y="58" width="8" height="8" fill="currentColor" />
+              <rect x="42" y="42" width="20" height="20" fill="currentColor" />
+              <rect x="72" y="42" width="8" height="8" fill="currentColor" />
+              <rect x="88" y="58" width="8" height="8" fill="currentColor" />
+              <rect x="42" y="72" width="8" height="8" fill="currentColor" />
+              <rect x="58" y="88" width="8" height="8" fill="currentColor" />
+              <rect x="72" y="72" width="20" height="20" fill="currentColor" />
+              <rect x="98" y="88" width="8" height="8" fill="currentColor" />
+            </svg>
+
+            <span className="camera-corner camera-corner-tl" aria-hidden="true" />
+            <span className="camera-corner camera-corner-tr" aria-hidden="true" />
+            <span className="camera-corner camera-corner-bl" aria-hidden="true" />
+            <span className="camera-corner camera-corner-br" aria-hidden="true" />
+
+            {phase === 'scanning' ? (
+              <span className="camera-scan-line" aria-hidden="true" />
+            ) : null}
+
+            {phase === 'success' ? (
+              <span className="camera-result-overlay">
+                <span className="camera-result-icon">
+                  <Check size={34} strokeWidth={3} aria-hidden="true" />
+                </span>
+                <strong>QR code recognised</strong>
+                <small>Adding your reward...</small>
+              </span>
+            ) : null}
+
+            {phase === 'error' ? (
+              <span className="camera-result-overlay camera-result-error">
+                <span className="camera-result-icon">
+                  <AlertCircle size={34} strokeWidth={2.6} aria-hidden="true" />
+                </span>
+                <strong>Code not recognised</strong>
+                <small>Hold the QR steady and try again</small>
+              </span>
+            ) : null}
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={simulateScan}
-          disabled={phase !== 'scanning'}
-          aria-label="Simulate a successful card scan"
-          className={`relative mt-4 block aspect-square w-full overflow-hidden rounded-[18px] bg-[#062017] shadow-inner ${focusRing} ${
-            phase === 'scanning' ? 'cursor-pointer' : 'cursor-default'
-          }`}
-        >
-          <span className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(24,187,70,0.16),transparent_58%)]" aria-hidden="true" />
-
-          {/* Faint, decorative QR motif — purely visual. */}
-          <svg
-            viewBox="0 0 120 120"
-            className="absolute left-1/2 top-1/2 h-[42%] w-[42%] -translate-x-1/2 -translate-y-1/2 text-[#A1C8B3]/25"
-            aria-hidden="true"
-          >
-            <rect x="4" y="4" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
-            <rect x="14" y="14" width="8" height="8" fill="currentColor" />
-            <rect x="88" y="4" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
-            <rect x="98" y="14" width="8" height="8" fill="currentColor" />
-            <rect x="4" y="88" width="28" height="28" rx="3" fill="none" stroke="currentColor" strokeWidth="6" />
-            <rect x="14" y="98" width="8" height="8" fill="currentColor" />
-            <rect x="42" y="10" width="8" height="8" fill="currentColor" />
-            <rect x="58" y="10" width="8" height="8" fill="currentColor" />
-            <rect x="42" y="26" width="8" height="8" fill="currentColor" />
-            <rect x="70" y="26" width="8" height="8" fill="currentColor" />
-            <rect x="10" y="42" width="8" height="8" fill="currentColor" />
-            <rect x="26" y="58" width="8" height="8" fill="currentColor" />
-            <rect x="42" y="42" width="20" height="20" fill="currentColor" />
-            <rect x="72" y="42" width="8" height="8" fill="currentColor" />
-            <rect x="88" y="58" width="8" height="8" fill="currentColor" />
-            <rect x="42" y="72" width="8" height="8" fill="currentColor" />
-            <rect x="58" y="88" width="8" height="8" fill="currentColor" />
-            <rect x="72" y="72" width="20" height="20" fill="currentColor" />
-            <rect x="98" y="88" width="8" height="8" fill="currentColor" />
-          </svg>
-
-          <span className="pointer-events-none absolute left-3 top-3 h-9 w-9 rounded-tl-[10px] border-l-4 border-t-4 border-[#FFEA00]" aria-hidden="true" />
-          <span className="pointer-events-none absolute right-3 top-3 h-9 w-9 rounded-tr-[10px] border-r-4 border-t-4 border-[#FFEA00]" aria-hidden="true" />
-          <span className="pointer-events-none absolute bottom-3 left-3 h-9 w-9 rounded-bl-[10px] border-b-4 border-l-4 border-[#FFEA00]" aria-hidden="true" />
-          <span className="pointer-events-none absolute bottom-3 right-3 h-9 w-9 rounded-br-[10px] border-b-4 border-r-4 border-[#FFEA00]" aria-hidden="true" />
-
-          {phase === 'scanning' ? (
-            <>
-              <span
-                className="pointer-events-none absolute left-6 right-6 h-[2px] rounded-full bg-[#FFEA00] shadow-[0_0_14px_3px_rgba(255,234,0,0.45)]"
-                style={{ animation: 'hr26-qr-sweep 1.9s ease-in-out infinite' }}
-                aria-hidden="true"
-              />
-              <span className="pointer-events-none absolute bottom-[18px] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/40 px-3 py-1 text-[10px] font-bold text-white/85">
-                Tap frame to simulate scan
-              </span>
-            </>
-          ) : null}
-
+        <div className="camera-scanner-status" aria-live="polite">
           {phase === 'success' ? (
-            <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[#062017]/75 text-white">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#18BB46]">
-                <Check size={28} strokeWidth={3} aria-hidden="true" />
-              </span>
-              <span className="text-[12px] font-bold">Card recognised</span>
-            </span>
-          ) : null}
-        </button>
-
-        <div className="mt-4 flex items-start gap-2" aria-live="polite">
-          {phase === 'success' ? (
-            <Check size={16} strokeWidth={2.6} className="mt-0.5 shrink-0 text-[#0C801D]" aria-hidden="true" />
+            <Check size={17} strokeWidth={2.8} className="text-[#6EE787]" aria-hidden="true" />
           ) : phase === 'error' ? (
-            <AlertCircle size={16} strokeWidth={2.4} className="mt-0.5 shrink-0 text-[#BE123C]" aria-hidden="true" />
+            <AlertCircle size={17} strokeWidth={2.5} className="text-rose-300" aria-hidden="true" />
           ) : (
-            <ScanLine size={16} strokeWidth={2.4} className="mt-0.5 shrink-0 text-[#0C801D]" aria-hidden="true" />
+            <ScanLine size={17} strokeWidth={2.5} className="text-[#FFEA00]" aria-hidden="true" />
           )}
-          <p className="text-[12px] font-semibold leading-relaxed text-[#5B6B61]">
+          <p>
             {phase === 'success'
-              ? 'Card recognised. Adding your reward...'
+              ? 'Card recognised'
               : phase === 'error'
-                ? "We couldn't read that card. Retry the demo scan below."
-                : 'Scanning for a participant card...'}
+                ? 'Card not recognised'
+                : 'Scanning for a QR code...'}
           </p>
         </div>
 
-        <div className="mt-4 flex items-center gap-2">
-          {phase === 'error' ? (
+        <p className="camera-scanner-hint">
+          {phase === 'success'
+            ? 'Your participant pass is ready.'
+            : phase === 'error'
+              ? 'Hold the QR code inside the frame and retry the demo scan.'
+              : 'Point your camera at the QR code on your participant card'}
+        </p>
+      </div>
+
+      <footer className="camera-scanner-footer">
+        {phase === 'error' ? (
+          <button
+            type="button"
+            onClick={() => setPhase('scanning')}
+            className={`camera-action camera-action-primary ${focusRing}`}
+          >
+            <RotateCcw size={17} strokeWidth={2.4} aria-hidden="true" /> Retry scan
+          </button>
+        ) : (
+          <>
             <button
               type="button"
-              onClick={() => setPhase('scanning')}
-              className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-[#0C801D] text-[12px] font-extrabold text-white transition-colors hover:bg-[#0A6E19] ${focusRing}`}
+              onClick={() => setPhase('error')}
+              disabled={phase !== 'scanning'}
+              className={`camera-action camera-action-secondary ${focusRing}`}
             >
-              <RotateCcw size={14} strokeWidth={2.4} aria-hidden="true" /> Retry scan
+              <AlertCircle size={17} strokeWidth={2.4} aria-hidden="true" /> Simulate error
             </button>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setPhase('error')}
-                disabled={phase !== 'scanning'}
-                className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full border border-[#E3EAF0] bg-white text-[12px] font-bold text-[#5B6B61] transition-colors hover:bg-[#F7F9FB] disabled:opacity-50 ${focusRing}`}
-              >
-                <AlertCircle size={14} strokeWidth={2.4} aria-hidden="true" /> Simulate error
-              </button>
-              <button
-                type="button"
-                onClick={simulateScan}
-                disabled={phase !== 'scanning'}
-                className={`flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-[#FDE047] text-[12px] font-extrabold text-[#0C3523] transition-colors hover:bg-[#F7DF5B] disabled:opacity-60 ${focusRing}`}
-              >
-                <ScanLine size={14} strokeWidth={2.4} aria-hidden="true" /> Simulate scan
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+            <button
+              type="button"
+              onClick={simulateScan}
+              disabled={phase !== 'scanning'}
+              className={`camera-action camera-action-primary ${focusRing}`}
+            >
+              {phase === 'success' ? (
+                <Check size={17} strokeWidth={2.8} aria-hidden="true" />
+              ) : (
+                <Sparkles size={17} strokeWidth={2.2} aria-hidden="true" />
+              )}
+              {phase === 'success' ? 'Scan complete' : 'Simulate scan'}
+            </button>
+          </>
+        )}
+      </footer>
     </div>
   );
 }
