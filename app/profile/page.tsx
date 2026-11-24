@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -26,6 +25,13 @@ type ToggleKey = 'notifications' | 'sound' | 'compact';
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+}
+
 const settingsRows: { key: ToggleKey; label: string; hint: string; icon: AppIcon }[] = [
   { key: 'notifications', label: 'Notifications', hint: 'Festival updates and alerts', icon: Bell },
   { key: 'sound', label: 'Sound alerts', hint: 'Play a tone for new activity', icon: Volume2 },
@@ -35,6 +41,7 @@ const settingsRows: { key: ToggleKey; label: string; hint: string; icon: AppIcon
 export default function ProfilePage() {
   const router = useRouter();
   const { session, guestMode, resetPrototype, setGuestMode } = usePrototype();
+  const initials = getInitials(session.name);
   const [message, setMessage] = useState('');
   const [settings, setSettings] = useState<Record<ToggleKey, boolean>>({
     notifications: true,
@@ -79,8 +86,8 @@ export default function ProfilePage() {
 
         <section className="profile-identity" aria-label="Your profile">
           <div className="profile-identity-inner">
-            <span className="profile-avatar">
-              <Image src="/rendezvous-logo.png" alt="Rendezvous 26" width={64} height={64} priority />
+            <span className="profile-avatar" aria-hidden="true">
+              {initials}
             </span>
             <div className="min-w-0">
               <p className="profile-eyebrow">Participant</p>
