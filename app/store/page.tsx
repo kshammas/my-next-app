@@ -39,7 +39,7 @@ type CheckoutResult = { ok: boolean; message: string; orderId?: string };
 const categories: Category[] = ['All', 'Tea & Coffee', 'Snacks', 'Meals', 'Cold Drinks'];
 
 // The prototype catalogue is a small demo feed. Map its entries onto the
-// festival cafe menu from the walkthrough, with Heroicons instead of glyphs.
+// festival cafe menu from the walkthrough, with Ionicons outlines instead of glyphs.
 type CafeMeta = Pick<CafeItem, 'name' | 'description' | 'category' | 'label' | 'icon'>;
 
 const cafeMenu: Record<string, CafeMeta> = {

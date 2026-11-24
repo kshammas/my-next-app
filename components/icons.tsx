@@ -1,59 +1,62 @@
 import type { ComponentType, SVGProps } from 'react';
 import {
-  AdjustmentsHorizontalIcon,
-  ArrowDownLeftIcon,
-  ArrowDownTrayIcon,
-  ArrowLeftIcon,
-  ArrowPathIcon,
-  ArrowRightEndOnRectangleIcon,
-  ArrowUpRightIcon,
-  ArrowUturnLeftIcon,
-  BeakerIcon,
-  BellIcon,
-  CakeIcon,
-  ChartBarIcon,
-  CalendarDaysIcon,
-  CalendarIcon,
-  ChatBubbleLeftRightIcon,
-  CheckCircleIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  CircleStackIcon,
-  ClipboardDocumentListIcon,
-  ClockIcon,
-  EnvelopeIcon,
-  ExclamationCircleIcon,
-  GiftIcon,
-  HomeIcon,
-  LifebuoyIcon,
-  MagnifyingGlassIcon,
-  MapPinIcon,
-  MegaphoneIcon,
-  MinusIcon,
-  PaperAirplaneIcon,
-  PencilSquareIcon,
-  PhoneIcon,
-  PlayIcon,
-  PlusIcon,
-  QrCodeIcon,
-  RadioIcon,
-  ShieldCheckIcon,
-  ShoppingBagIcon,
-  SparklesIcon,
-  SpeakerWaveIcon,
-  TicketIcon,
-  TrashIcon,
-  TrophyIcon,
-  UserCircleIcon,
-  UserIcon,
-  WalletIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+  IoAddOutline,
+  IoAlertCircleOutline,
+  IoArrowBackOutline,
+  IoArrowDownOutline,
+  IoArrowUpOutline,
+  IoBagCheckOutline,
+  IoBagHandleOutline,
+  IoBarChartOutline,
+  IoBeakerOutline,
+  IoCafeOutline,
+  IoCalendarClearOutline,
+  IoCalendarOutline,
+  IoCallOutline,
+  IoCashOutline,
+  IoChatbubbleOutline,
+  IoCheckmarkDoneOutline,
+  IoCheckmarkOutline,
+  IoChevronBackOutline,
+  IoChevronDownOutline,
+  IoChevronForwardOutline,
+  IoClipboardOutline,
+  IoCloseOutline,
+  IoDownloadOutline,
+  IoFastFoodOutline,
+  IoGiftOutline,
+  IoHelpBuoyOutline,
+  IoHomeOutline,
+  IoLocationOutline,
+  IoLogOutOutline,
+  IoMailOutline,
+  IoMegaphoneOutline,
+  IoNavigateOutline,
+  IoNotificationsOutline,
+  IoOptionsOutline,
+  IoPersonCircleOutline,
+  IoPersonOutline,
+  IoPencilOutline,
+  IoPlayOutline,
+  IoQrCodeOutline,
+  IoRadioOutline,
+  IoRefreshOutline,
+  IoReloadOutline,
+  IoRemoveOutline,
+  IoScanOutline,
+  IoSearchOutline,
+  IoShieldCheckmarkOutline,
+  IoSparklesOutline,
+  IoTicketOutline,
+  IoTimeOutline,
+  IoTrashOutline,
+  IoTrophyOutline,
+  IoVolumeHighOutline,
+  IoWalletOutline,
+} from 'react-icons/io5';
 
-type HeroIconComponent = ComponentType<
-  SVGProps<SVGSVGElement> & { title?: string; titleId?: string }
+type IonicIcon = ComponentType<
+  SVGProps<SVGSVGElement> & { size?: number | string; title?: string }
 >;
 
 export type AppIcon = ComponentType<IconProps>;
@@ -63,12 +66,13 @@ type IconProps = SVGProps<SVGSVGElement> & {
   strokeWidth?: number | string;
 };
 
-function adapt(Icon: HeroIconComponent, displayName: string) {
-  function AdaptedIcon({ size = 24, strokeWidth = 1.5, ...props }: IconProps) {
+function adapt(Icon: IonicIcon, displayName: string) {
+  function AdaptedIcon({ size = 24, strokeWidth, ...props }: IconProps) {
     const dimension = typeof size === 'number' ? `${size}px` : size;
 
     return (
       <Icon
+        size={dimension}
         width={dimension}
         height={dimension}
         strokeWidth={strokeWidth}
@@ -82,57 +86,57 @@ function adapt(Icon: HeroIconComponent, displayName: string) {
   return AdaptedIcon;
 }
 
-export const AlertCircle = adapt(ExclamationCircleIcon, 'AlertCircle');
-export const ArrowDownLeft = adapt(ArrowDownLeftIcon, 'ArrowDownLeft');
-export const ArrowLeft = adapt(ArrowLeftIcon, 'ArrowLeft');
-export const ArrowUpRight = adapt(ArrowUpRightIcon, 'ArrowUpRight');
-export const Bell = adapt(BellIcon, 'Bell');
-export const CalendarCheck2 = adapt(CalendarIcon, 'CalendarCheck2');
-export const CalendarDays = adapt(CalendarDaysIcon, 'CalendarDays');
-export const Check = adapt(CheckIcon, 'Check');
-export const CheckCheck = adapt(CheckIcon, 'CheckCheck');
-export const ChevronDown = adapt(ChevronDownIcon, 'ChevronDown');
-export const ChevronLeft = adapt(ChevronLeftIcon, 'ChevronLeft');
-export const ChevronRight = adapt(ChevronRightIcon, 'ChevronRight');
-export const CircleAlert = adapt(ExclamationCircleIcon, 'CircleAlert');
-export const ClipboardList = adapt(ClipboardDocumentListIcon, 'ClipboardList');
-export const Clock3 = adapt(ClockIcon, 'Clock3');
-export const Coffee = adapt(BeakerIcon, 'Coffee');
-export const Coins = adapt(CircleStackIcon, 'Coins');
-export const Cookie = adapt(CakeIcon, 'Cookie');
-export const CupSoda = adapt(BeakerIcon, 'CupSoda');
-export const Download = adapt(ArrowDownTrayIcon, 'Download');
-export const Gift = adapt(GiftIcon, 'Gift');
-export const Home = adapt(HomeIcon, 'Home');
-export const LifeBuoy = adapt(LifebuoyIcon, 'LifeBuoy');
-export const LogOut = adapt(ArrowRightEndOnRectangleIcon, 'LogOut');
-export const Mail = adapt(EnvelopeIcon, 'Mail');
-export const MapPin = adapt(MapPinIcon, 'MapPin');
-export const Megaphone = adapt(MegaphoneIcon, 'Megaphone');
-export const MessageCircle = adapt(ChatBubbleLeftRightIcon, 'MessageCircle');
-export const Minus = adapt(MinusIcon, 'Minus');
-export const Navigation = adapt(PaperAirplaneIcon, 'Navigation');
-export const PackageCheck = adapt(CheckCircleIcon, 'PackageCheck');
-export const PencilLine = adapt(PencilSquareIcon, 'PencilLine');
-export const Phone = adapt(PhoneIcon, 'Phone');
-export const Play = adapt(PlayIcon, 'Play');
-export const Plus = adapt(PlusIcon, 'Plus');
-export const QrCode = adapt(QrCodeIcon, 'QrCode');
-export const Radio = adapt(RadioIcon, 'Radio');
-export const RefreshCw = adapt(ArrowPathIcon, 'RefreshCw');
-export const ResultsNav = adapt(ChartBarIcon, 'ResultsNav');
-export const RotateCcw = adapt(ArrowUturnLeftIcon, 'RotateCcw');
-export const ScanLine = adapt(QrCodeIcon, 'ScanLine');
-export const Search = adapt(MagnifyingGlassIcon, 'Search');
-export const ShieldCheck = adapt(ShieldCheckIcon, 'ShieldCheck');
-export const ShoppingBag = adapt(ShoppingBagIcon, 'ShoppingBag');
-export const SlidersHorizontal = adapt(AdjustmentsHorizontalIcon, 'SlidersHorizontal');
-export const Sparkles = adapt(SparklesIcon, 'Sparkles');
-export const Ticket = adapt(TicketIcon, 'Ticket');
-export const Trash2 = adapt(TrashIcon, 'Trash2');
-export const Trophy = adapt(TrophyIcon, 'Trophy');
-export const User = adapt(UserIcon, 'User');
-export const UserRound = adapt(UserCircleIcon, 'UserRound');
-export const Volume2 = adapt(SpeakerWaveIcon, 'Volume2');
-export const Wallet = adapt(WalletIcon, 'Wallet');
-export const X = adapt(XMarkIcon, 'X');
+export const AlertCircle = adapt(IoAlertCircleOutline, 'AlertCircle');
+export const ArrowDownLeft = adapt(IoArrowDownOutline, 'ArrowDownLeft');
+export const ArrowLeft = adapt(IoArrowBackOutline, 'ArrowLeft');
+export const ArrowUpRight = adapt(IoArrowUpOutline, 'ArrowUpRight');
+export const Bell = adapt(IoNotificationsOutline, 'Bell');
+export const CalendarCheck2 = adapt(IoCalendarOutline, 'CalendarCheck2');
+export const CalendarDays = adapt(IoCalendarClearOutline, 'CalendarDays');
+export const Check = adapt(IoCheckmarkOutline, 'Check');
+export const CheckCheck = adapt(IoCheckmarkDoneOutline, 'CheckCheck');
+export const ChevronDown = adapt(IoChevronDownOutline, 'ChevronDown');
+export const ChevronLeft = adapt(IoChevronBackOutline, 'ChevronLeft');
+export const ChevronRight = adapt(IoChevronForwardOutline, 'ChevronRight');
+export const CircleAlert = adapt(IoAlertCircleOutline, 'CircleAlert');
+export const ClipboardList = adapt(IoClipboardOutline, 'ClipboardList');
+export const Clock3 = adapt(IoTimeOutline, 'Clock3');
+export const Coffee = adapt(IoCafeOutline, 'Coffee');
+export const Coins = adapt(IoCashOutline, 'Coins');
+export const Cookie = adapt(IoFastFoodOutline, 'Cookie');
+export const CupSoda = adapt(IoBeakerOutline, 'CupSoda');
+export const Download = adapt(IoDownloadOutline, 'Download');
+export const Gift = adapt(IoGiftOutline, 'Gift');
+export const Home = adapt(IoHomeOutline, 'Home');
+export const LifeBuoy = adapt(IoHelpBuoyOutline, 'LifeBuoy');
+export const LogOut = adapt(IoLogOutOutline, 'LogOut');
+export const Mail = adapt(IoMailOutline, 'Mail');
+export const MapPin = adapt(IoLocationOutline, 'MapPin');
+export const Megaphone = adapt(IoMegaphoneOutline, 'Megaphone');
+export const MessageCircle = adapt(IoChatbubbleOutline, 'MessageCircle');
+export const Minus = adapt(IoRemoveOutline, 'Minus');
+export const Navigation = adapt(IoNavigateOutline, 'Navigation');
+export const PackageCheck = adapt(IoBagCheckOutline, 'PackageCheck');
+export const PencilLine = adapt(IoPencilOutline, 'PencilLine');
+export const Phone = adapt(IoCallOutline, 'Phone');
+export const Play = adapt(IoPlayOutline, 'Play');
+export const Plus = adapt(IoAddOutline, 'Plus');
+export const QrCode = adapt(IoQrCodeOutline, 'QrCode');
+export const Radio = adapt(IoRadioOutline, 'Radio');
+export const RefreshCw = adapt(IoRefreshOutline, 'RefreshCw');
+export const ResultsNav = adapt(IoBarChartOutline, 'ResultsNav');
+export const RotateCcw = adapt(IoReloadOutline, 'RotateCcw');
+export const ScanLine = adapt(IoScanOutline, 'ScanLine');
+export const Search = adapt(IoSearchOutline, 'Search');
+export const ShieldCheck = adapt(IoShieldCheckmarkOutline, 'ShieldCheck');
+export const ShoppingBag = adapt(IoBagHandleOutline, 'ShoppingBag');
+export const SlidersHorizontal = adapt(IoOptionsOutline, 'SlidersHorizontal');
+export const Sparkles = adapt(IoSparklesOutline, 'Sparkles');
+export const Ticket = adapt(IoTicketOutline, 'Ticket');
+export const Trash2 = adapt(IoTrashOutline, 'Trash2');
+export const Trophy = adapt(IoTrophyOutline, 'Trophy');
+export const User = adapt(IoPersonOutline, 'User');
+export const UserRound = adapt(IoPersonCircleOutline, 'UserRound');
+export const Volume2 = adapt(IoVolumeHighOutline, 'Volume2');
+export const Wallet = adapt(IoWalletOutline, 'Wallet');
+export const X = adapt(IoCloseOutline, 'X');
