@@ -22,7 +22,7 @@ export function BottomNav() {
           >
             <span className={`bottom-nav-icon ${active ? 'bottom-nav-icon-active' : ''}`}>
               <Icon
-                size={24}
+                size={20}
                 fill={active && item.href === '/home' ? 'currentColor' : 'none'}
                 strokeWidth={active ? 2.6 : 2}
                 aria-hidden="true"

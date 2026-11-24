@@ -108,8 +108,11 @@ export const Download = adapt(IoDownloadOutline, 'Download');
 export const Gift = adapt(IoGiftOutline, 'Gift');
 // Flaticon "home" #1946488 — outlined house, tinted through currentColor with a CSS mask.
 // This keeps the nav's active/inactive colours working without a second SVG pipeline.
-export const Home: AppIcon = function HomeIcon({ size = 24, className, style }: IconProps) {
+export const Home: AppIcon = function HomeIcon({ size = 24, className, style, fill }: IconProps) {
   const dimension = typeof size === 'number' ? `${size}px` : size;
+  const mask = fill && fill !== 'none'
+    ? '/icons/home-flaticon-filled.png'
+    : '/icons/home-flaticon.png';
 
   return (
     <span
@@ -121,8 +124,8 @@ export const Home: AppIcon = function HomeIcon({ size = 24, className, style }: 
         width: dimension,
         height: dimension,
         backgroundColor: 'currentColor',
-        WebkitMaskImage: 'url(/icons/home-flaticon.png)',
-        maskImage: 'url(/icons/home-flaticon.png)',
+        WebkitMaskImage: `url(${mask})`,
+        maskImage: `url(${mask})`,
         WebkitMaskRepeat: 'no-repeat',
         maskRepeat: 'no-repeat',
         WebkitMaskPosition: 'center',

@@ -36,7 +36,12 @@ export function SideNav() {
                 className={`side-nav-link ${active ? 'side-nav-link-active' : ''}`}
                 aria-current={active ? 'page' : undefined}
               >
-                <Icon size={20} strokeWidth={active ? 2.5 : 2} aria-hidden="true" />
+                <Icon
+                  size={18}
+                  strokeWidth={active ? 2.5 : 2}
+                  fill={active && href === '/home' ? 'currentColor' : undefined}
+                  aria-hidden="true"
+                />
                 {label}
               </Link>
             );
