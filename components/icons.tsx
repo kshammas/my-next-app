@@ -26,7 +26,6 @@ import {
   IoFastFoodOutline,
   IoGiftOutline,
   IoHelpBuoyOutline,
-  IoHomeOutline,
   IoLocationOutline,
   IoLogOutOutline,
   IoMailOutline,
@@ -107,7 +106,34 @@ export const Cookie = adapt(IoFastFoodOutline, 'Cookie');
 export const CupSoda = adapt(IoBeakerOutline, 'CupSoda');
 export const Download = adapt(IoDownloadOutline, 'Download');
 export const Gift = adapt(IoGiftOutline, 'Gift');
-export const Home = adapt(IoHomeOutline, 'Home');
+// Flaticon "home" #1946488 — outlined house, tinted through currentColor with a CSS mask.
+// This keeps the nav's active/inactive colours working without a second SVG pipeline.
+export const Home: AppIcon = function HomeIcon({ size = 24, className, style }: IconProps) {
+  const dimension = typeof size === 'number' ? `${size}px` : size;
+
+  return (
+    <span
+      aria-hidden="true"
+      className={className}
+      style={{
+        display: 'inline-block',
+        flexShrink: 0,
+        width: dimension,
+        height: dimension,
+        backgroundColor: 'currentColor',
+        WebkitMaskImage: 'url(/icons/home-flaticon.png)',
+        maskImage: 'url(/icons/home-flaticon.png)',
+        WebkitMaskRepeat: 'no-repeat',
+        maskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition: 'center',
+        WebkitMaskSize: 'contain',
+        maskSize: 'contain',
+        ...style,
+      }}
+    />
+  );
+};
 export const LifeBuoy = adapt(IoHelpBuoyOutline, 'LifeBuoy');
 export const LogOut = adapt(IoLogOutOutline, 'LogOut');
 export const Mail = adapt(IoMailOutline, 'Mail');

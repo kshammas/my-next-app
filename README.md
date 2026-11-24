@@ -45,3 +45,7 @@ npm run build   # production build (includes lint + type check)
 npm run lint    # ESLint
 npm run start   # serve the production build
 ```
+
+## Icon credits
+
+The Home navigation icon is the free “home” icon from [Flaticon](https://www.flaticon.com/free-icon/home_1946488), used with attribution under the Flaticon License. All other interface icons are Ionicons outlines via `react-icons`.

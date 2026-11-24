@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Bell,
   ChevronRight,
   CircleAlert,
-  Coins,
   Download,
   LifeBuoy,
   LogOut,
@@ -26,17 +26,8 @@ type ToggleKey = 'notifications' | 'sound' | 'compact';
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
-const groupCard = 'overflow-hidden rounded-[15px] border border-[#dce7e0] bg-white';
-const rowBase =
-  'flex min-h-[48px] w-full items-center gap-[9px] px-[12px] py-[9px] text-left';
-const rowLabel = 'text-[11px] font-[650] leading-tight text-[#275b3f]';
-const rowHint = 'text-[8px] leading-tight text-[#87948d]';
-const rowIcon =
-  'grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#eaf7ef] text-[#187b4b]';
-const rowChevron = 'shrink-0 text-[#84918b]';
-
 const settingsRows: { key: ToggleKey; label: string; hint: string; icon: AppIcon }[] = [
-  { key: 'notifications', label: 'Notifications', hint: 'Festival updates & alerts', icon: Bell },
+  { key: 'notifications', label: 'Notifications', hint: 'Festival updates and alerts', icon: Bell },
   { key: 'sound', label: 'Sound alerts', hint: 'Play a tone for new activity', icon: Volume2 },
   { key: 'compact', label: 'Compact layout', hint: 'Show more on each screen', icon: SlidersHorizontal },
 ];
@@ -81,193 +72,165 @@ export default function ProfilePage() {
     }
   }
 
-  const initials = session.name
-    .split(' ')
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-
   return (
     <AppShell showBottomNav>
-      <div className="min-h-full bg-[#f3f8f5] px-[15px] pb-[35px] pt-[8px]">
-        <section
-          className="-mx-[15px] -mt-px mb-[9px] flex min-h-[181px] flex-col items-center justify-center rounded-b-[30px] px-[10px] pb-[17px] pt-[22px]"
-          style={{ background: 'linear-gradient(112deg,#eff9f2,#fffced)' }}
-        >
-          <h1 className="sr-only">Profile</h1>
-          <div className="grid h-[72px] w-[72px] place-items-center rounded-full border-4 border-white bg-[#155d3d] text-[23px] font-[760] leading-none text-[#f2d633] shadow-[0_1px_2px_rgba(20,90,54,0.1)]">
-            {initials || 'G'}
-          </div>
-          <h2 className="mb-[8px] mt-[12px] text-center text-[19px] font-[750] tracking-[-0.5px] text-[#14583a]">
-            {session.name}
-          </h2>
-          <div className="flex flex-wrap items-center justify-center gap-[7px]">
-            <span className="rounded-[20px] border border-[#c9e3d2] bg-[#e3f3e8] px-[12px] py-[6px] text-[9px] font-[650] leading-none text-[#247747]">
-              Jamia No. {session.jamiaId}
+      <div className="profile-page min-h-full px-[15px] pb-[34px] pt-[8px]">
+        <h1 className="sr-only">Profile</h1>
+
+        <section className="profile-identity" aria-label="Your profile">
+          <div className="profile-identity-inner">
+            <span className="profile-avatar">
+              <Image src="/rendezvous-logo.png" alt="Rendezvous 26" width={64} height={64} priority />
             </span>
-            {guestMode ? (
-              <span className="rounded-[20px] border border-[#c9e3d2] bg-white px-[12px] py-[6px] text-[9px] font-[650] leading-none text-[#6b7b72]">
-                Guest preview
-              </span>
-            ) : null}
+            <div className="min-w-0">
+              <p className="profile-eyebrow">Participant</p>
+              <p className="profile-name">{session.name}</p>
+              <p className="profile-id">Jamia No. {session.jamiaId}</p>
+            </div>
           </div>
+          {guestMode ? <span className="profile-guest-badge">Guest preview</span> : null}
         </section>
 
-        <div className="mb-[7px] mt-[12px] flex items-center justify-between gap-[9px] px-[2px]">
-          <h3 className="text-[8px] font-[740] tracking-[1.4px] text-[#82938a]">YOUR DETAILS</h3>
-        </div>
-
-        <section className={groupCard} aria-label="Your details">
-          <div className={`${rowBase} text-[11px]`}>
-            <span className="font-[650] text-[#275b3f]">Jamia ID</span>
-            <span className="ml-auto min-w-0 truncate text-[#83918a]">{session.jamiaId}</span>
-          </div>
-          <div className={`${rowBase} border-t border-[#e4ece7] text-[11px]`}>
-            <span className="font-[650] text-[#275b3f]">Campus</span>
-            <span className="ml-auto min-w-0 truncate capitalize text-[#83918a]">{session.campus}</span>
-          </div>
-        </section>
-
-        <section className={`${groupCard} mt-[12px]`} aria-label="Account menu">
-          <Link
-            href="/wallet"
-            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
-          >
-            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fdf6d4] text-[#1c7447]">
-              <Coins size={18} aria-hidden="true" />
+        <Link href="/wallet" className={`profile-points-card ${focusOnLight}`}>
+          <span>
+            <span className="profile-points-label">Glocal Points</span>
+            <span className="profile-points-value">
+              {session.points}
+              <span>GP</span>
             </span>
-            <span className={`${rowLabel} min-w-0 flex-1`}>Glocal Points</span>
-            <span className="shrink-0 text-[11px] font-[700] text-[#247747]">{session.points} GP</span>
-            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
-          </Link>
+            <span className="profile-points-note">Redeem for festival treats</span>
+          </span>
+          <span className="profile-points-action">
+            Open wallet <ChevronRight size={14} aria-hidden="true" />
+          </span>
+        </Link>
 
-          <Link
-            href="/notifications"
-            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
-          >
-            <span className={rowIcon}>
-              <Bell size={18} aria-hidden="true" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[11px] font-[650] leading-tight text-[#275b3f]">Notifications</span>
-              <span className={`mt-[3px] block ${rowHint}`}>Push notifications</span>
-            </span>
-            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
-          </Link>
+        <div className="profile-grid">
+          <div>
+            <section aria-label="Your details">
+              <h2 className="profile-section-title">Your details</h2>
+              <div className="profile-card">
+                <div className="profile-row profile-detail">
+                  <span className="profile-detail-label">Jamia ID</span>
+                  <span className="profile-detail-value">{session.jamiaId}</span>
+                </div>
+                <div className="profile-row profile-detail">
+                  <span className="profile-detail-label">Campus</span>
+                  <span className="profile-detail-value capitalize">{session.campus}</span>
+                </div>
+              </div>
+            </section>
 
-          <Link
-            href="/support"
-            className={`${rowBase} border-b border-[#e4ece7] transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
-          >
-            <span className={rowIcon}>
-              <LifeBuoy size={18} aria-hidden="true" />
-            </span>
-            <span className={`${rowLabel} min-w-0 flex-1`}>Help &amp; support</span>
-            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
-          </Link>
+            <section className="mt-[20px]" aria-label="Account">
+              <h2 className="profile-section-title">Account</h2>
+              <div className="profile-card">
+                <Link href="/notifications" className={`profile-row ${focusOnLight}`}>
+                  <span className="profile-row-tile">
+                    <Bell size={20} aria-hidden="true" />
+                  </span>
+                  <span className="profile-row-copy">
+                    <span className="profile-row-label">Notifications</span>
+                    <span className="profile-row-hint">Festival updates and alerts</span>
+                  </span>
+                  <ChevronRight size={17} className="profile-chevron" aria-hidden="true" />
+                </Link>
 
-          <button
-            type="button"
-            onClick={() => void install()}
-            className={`${rowBase} transition-colors hover:bg-[#f7faf8] ${focusOnLight}`}
-          >
-            <span className={rowIcon}>
-              <Download size={18} aria-hidden="true" />
-            </span>
-            <span className={`${rowLabel} min-w-0 flex-1`}>Install app</span>
-            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
-          </button>
-        </section>
+                <Link href="/support" className={`profile-row ${focusOnLight}`}>
+                  <span className="profile-row-tile">
+                    <LifeBuoy size={20} aria-hidden="true" />
+                  </span>
+                  <span className="profile-row-copy">
+                    <span className="profile-row-label">Help and support</span>
+                    <span className="profile-row-hint">Get help during the fest</span>
+                  </span>
+                  <ChevronRight size={17} className="profile-chevron" aria-hidden="true" />
+                </Link>
 
-        <section className={`${groupCard} mt-[12px]`} aria-label="Settings">
-          <h3 className="border-b border-[#e4ece7] px-[12px] pb-[7px] pt-[12px] text-[8px] font-[740] tracking-[1.4px] text-[#82938a]">
-            SETTINGS
-          </h3>
-          {settingsRows.map((row, index) => {
-            const Icon = row.icon;
-            const on = settings[row.key];
-            return (
-              <div
-                key={row.key}
-                className={`${rowBase} ${
-                  index < settingsRows.length - 1 ? 'border-b border-[#e4ece7]' : ''
-                }`}
-              >
-                <span className={rowIcon}>
-                  <Icon size={18} aria-hidden="true" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[11px] font-[650] leading-tight text-[#275b3f]">{row.label}</span>
-                  <span className={`mt-[3px] block ${rowHint}`}>{row.hint}</span>
-                </span>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={on}
-                  aria-label={row.label}
-                  onClick={() => toggleSetting(row.key)}
-                  className={`relative ml-auto inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-[12px] transition-colors duration-[180ms] ${focusOnLight} ${
-                    on ? 'bg-[#16824c]' : 'bg-[#c7d1ca]'
-                  }`}
-                >
-                  <span
-                    className={`absolute left-[1px] h-[16px] w-[16px] rounded-full bg-white shadow-[0_1px_3px_rgba(25,42,31,0.25)] transition-transform duration-[180ms] ${
-                      on ? 'translate-x-[14px]' : ''
-                    }`}
-                    aria-hidden="true"
-                  />
+                <button type="button" onClick={() => void install()} className={`profile-row ${focusOnLight}`}>
+                  <span className="profile-row-tile">
+                    <Download size={20} aria-hidden="true" />
+                  </span>
+                  <span className="profile-row-copy">
+                    <span className="profile-row-label">Install app</span>
+                    <span className="profile-row-hint">Add Rendezvous to your home screen</span>
+                  </span>
+                  <ChevronRight size={17} className="profile-chevron" aria-hidden="true" />
                 </button>
               </div>
-            );
-          })}
-        </section>
+            </section>
+          </div>
 
-        <section className={`${groupCard} mt-[12px]`} aria-label="Demo controls">
-          <button
-            type="button"
-            onClick={() => setConfirm('reset')}
-            className={`${rowBase} transition-colors hover:bg-[#fff0ef]`}
-          >
-            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fff0ef] text-[#c44a4a]">
-              <RotateCcw size={18} aria-hidden="true" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-[11px] font-[650] leading-tight text-[#c34c4c]">Reset demo data</span>
-              <span className={`mt-[3px] block ${rowHint}`}>
-                Restore points, cart, program and notifications
-              </span>
-            </span>
-            <ChevronRight size={16} className={rowChevron} aria-hidden="true" />
-          </button>
-        </section>
+          <div>
+            <section aria-label="Preferences">
+              <h2 className="profile-section-title">Preferences</h2>
+              <div className="profile-card">
+                {settingsRows.map((row) => {
+                  const Icon = row.icon;
+                  const on = settings[row.key];
+                  return (
+                    <div
+                      key={row.key}
+                      className="profile-row"
+                    >
+                      <span className="profile-row-tile">
+                        <Icon size={20} aria-hidden="true" />
+                      </span>
+                      <span className="profile-row-copy">
+                        <span className="profile-row-label">{row.label}</span>
+                        <span className="profile-row-hint">{row.hint}</span>
+                      </span>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={on}
+                        aria-label={row.label}
+                        onClick={() => toggleSetting(row.key)}
+                        className={`profile-toggle ${focusOnLight}`}
+                      >
+                        <span aria-hidden="true" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="mt-[20px]" aria-label="Demo controls">
+              <h2 className="profile-section-title">Demo controls</h2>
+              <div className="profile-card">
+                <button type="button" onClick={() => setConfirm('reset')} className={`profile-row ${focusOnLight}`}>
+                  <span className="profile-row-tile profile-row-tile-yellow">
+                    <RotateCcw size={20} aria-hidden="true" />
+                  </span>
+                  <span className="profile-row-copy">
+                    <span className="profile-row-label">Reset demo data</span>
+                    <span className="profile-row-hint">Restore points, cart, programs and alerts</span>
+                  </span>
+                  <ChevronRight size={17} className="profile-chevron" aria-hidden="true" />
+                </button>
+
+                <button type="button" onClick={() => setConfirm('signout')} className={`profile-row ${focusOnLight}`}>
+                  <span className="profile-row-tile profile-row-tile-red">
+                    <LogOut size={19} aria-hidden="true" />
+                  </span>
+                  <span className="profile-row-copy">
+                    <span className="profile-row-label">Sign out</span>
+                    <span className="profile-row-hint">Return to the welcome screen</span>
+                  </span>
+                  <ChevronRight size={17} className="profile-chevron" aria-hidden="true" />
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
 
         {message ? (
-          <p
-            role="status"
-            className="mt-[12px] rounded-[12px] border border-[#c9e3d2] bg-[#e3f3e8] px-[12px] py-[10px] text-[10px] font-[650] leading-relaxed text-[#247747]"
-          >
+          <p role="status" className="profile-note">
             {message}
           </p>
         ) : null}
 
-        <div className="mt-[2px]">
-          <button
-            type="button"
-            onClick={() => setConfirm('signout')}
-            className={`${rowBase} rounded-[15px] border border-[#dce7e0] bg-white text-[#c34c4c] transition-colors hover:bg-[#fff0ef] ${focusOnLight}`}
-          >
-            <span className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[11px] bg-[#fff0ef] text-[#c44a4a]">
-              <LogOut size={17} aria-hidden="true" />
-            </span>
-            <span className="text-[11px] font-[650] leading-tight text-[#c34c4c]">Sign out</span>
-            <ChevronRight size={16} className={`${rowChevron} ml-auto`} aria-hidden="true" />
-          </button>
-        </div>
-
-        <footer className="mb-0 mt-[18px] text-center text-[10px] text-[#98a29c]">
-          Rendezvous 26
-        </footer>
+        <footer className="profile-footer">Rendezvous 26</footer>
       </div>
 
       {confirm ? (
