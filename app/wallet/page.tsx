@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
@@ -363,6 +364,14 @@ export default function WalletPage() {
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-[18px] -top-[40px] h-[128px] w-[128px] rounded-full border border-white/10 shadow-[0_0_0_21px_rgba(255,255,255,0.024),0_0_0_41px_rgba(255,255,255,0.024)]"
+          />
+          <Image
+            src="/images/gcoins.png"
+            alt=""
+            aria-hidden="true"
+            width={138}
+            height={104}
+            className="pointer-events-none absolute -right-[10px] -top-[8px] h-auto w-[138px] object-contain opacity-95 drop-shadow-[0_10px_14px_rgba(0,0,0,0.35)]"
           />
           <div className="relative z-[1]">
             <p className="flex items-center gap-[7px] text-[9px] font-[700] tracking-[1.5px] text-[#d9eadf]">

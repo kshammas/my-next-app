@@ -52,21 +52,21 @@ const highlights = [
   {
     title: 'Earn Glocal Points',
     subtitle: 'Participate and claim your rewards',
-    image: '/images/glocal-coins.jpg',
+    image: '/images/1.jpg.jpeg',
     href: '/points',
     action: false,
   },
   {
     title: 'Watch Live',
     subtitle: 'Catch every moment, live',
-    image: '/images/live-fingerprint.jpg',
+    image: '/images/2.jpg.jpeg',
     href: '/live',
     action: true,
   },
   {
     title: 'Your festival, your story',
     subtitle: "See what's happening around you",
-    image: '/images/glocal-coins.jpg',
+    image: '/images/3.jpg.jpeg',
     href: '/map',
     action: false,
   },
@@ -237,9 +237,8 @@ function ParticipantHome({ session }: { session: Session }) {
               <strong>{session.points}</strong><span>GP</span>
             </div>
           </div>
-          <div className="coin-pair" aria-label="Glocal points coins">
-            <span className="glocal-coin">G</span>
-            <span className="glocal-coin">G</span>
+          <div className="coin-pair" aria-hidden="true">
+            <Image src="/images/gcoins.png" alt="" width={112} height={84} />
           </div>
           <div className="wallet-actions">
             <Link href="/points" className="redeem-button">

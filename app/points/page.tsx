@@ -1,8 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
-import { AlertCircle, Check, ChevronLeft, Clock3, Coins, ScanLine } from '@/components/icons';
+import { AlertCircle, Check, ChevronLeft, Clock3, ScanLine } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 import { QrScanner } from '@/components/QrScanner';
 import { usePrototype } from '@/lib/prototype-store';
@@ -45,7 +46,15 @@ export default function PointsPage() {
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-[21px] font-[750] tracking-[-0.6px] text-[#15583a]">Glocal Points</h2>
             <span className="inline-flex min-h-[34px] min-w-[46px] items-center justify-center gap-1.5 rounded-[22px] bg-[#14563a] px-[11px] text-[10px] font-[720] text-white">
-              <Coins size={13} aria-hidden="true" /> {session.points} GP
+              <Image
+                src="/images/glocal-coins-slow-circular-shine.gif"
+                alt=""
+                aria-hidden="true"
+                width={20}
+                height={15}
+                unoptimized
+              />
+              {session.points} GP
             </span>
           </div>
           <p className="mt-1 text-[10px] text-[#84928a]">
