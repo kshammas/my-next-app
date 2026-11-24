@@ -1,5 +1,5 @@
 const CACHE = 'hr26-v2';
-const SHELL = ['/', '/login', '/home', '/icon-192x192.png'];
+const SHELL = ['/', '/login', '/home'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
