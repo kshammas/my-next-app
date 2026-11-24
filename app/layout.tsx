@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [{ url: '/rendezvous-logo.png', type: 'image/png', sizes: 'any' }],
-    apple: [{ url: '/rendezvous-logo.png', type: 'image/png', sizes: '192x192' }],
+    apple: [{ url: '/icon-192x192.png', type: 'image/png', sizes: '192x192' }],
   },
 };
 

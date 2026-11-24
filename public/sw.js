@@ -1,5 +1,5 @@
-const CACHE = 'hr26-v2';
-const SHELL = ['/', '/login', '/home'];
+const CACHE = 'hr26-v3';
+const SHELL = ['/', '/login', '/home', '/manifest.webmanifest', '/icon-192x192.png', '/icon-512x512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -23,6 +23,22 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  // The manifest names the installed app and its icons, so always use the latest
+  // copy when online, with the precached version as the offline fallback.
+  if (url.pathname === '/manifest.webmanifest') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          void caches.open(CACHE).then((cache) => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => caches.match(request)),
+    );
+    return;
+  }
+
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
