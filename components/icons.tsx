@@ -7,6 +7,7 @@ import {
   IoArrowUpOutline,
   IoBagCheckOutline,
   IoBagHandleOutline,
+  IoBarChart,
   IoBarChartOutline,
   IoBeakerOutline,
   IoCafeOutline,
@@ -33,6 +34,7 @@ import {
   IoNavigateOutline,
   IoNotificationsOutline,
   IoOptionsOutline,
+  IoPerson,
   IoPersonCircleOutline,
   IoPersonOutline,
   IoPencilOutline,
@@ -154,6 +156,7 @@ export const QrCode = adapt(IoQrCodeOutline, 'QrCode');
 export const Radio = adapt(IoRadioOutline, 'Radio');
 export const RefreshCw = adapt(IoRefreshOutline, 'RefreshCw');
 export const ResultsNav = adapt(IoBarChartOutline, 'ResultsNav');
+export const ResultsNavFilled = adapt(IoBarChart, 'ResultsNavFilled');
 export const RotateCcw = adapt(IoReloadOutline, 'RotateCcw');
 export const ScanLine = adapt(IoScanOutline, 'ScanLine');
 export const Search = adapt(IoSearchOutline, 'Search');
@@ -165,6 +168,7 @@ export const Ticket = adapt(IoTicketOutline, 'Ticket');
 export const Trash2 = adapt(IoTrashOutline, 'Trash2');
 export const Trophy = adapt(IoTrophyOutline, 'Trophy');
 export const User = adapt(IoPersonOutline, 'User');
+export const UserFilled = adapt(IoPerson, 'UserFilled');
 export const UserRound = adapt(IoPersonCircleOutline, 'UserRound');
 export const Volume2 = adapt(IoVolumeHighOutline, 'Volume2');
 export const Wallet = adapt(IoWalletOutline, 'Wallet');

@@ -12,7 +12,7 @@ export function BottomNav() {
       {navItems.map((item) => {
         const active = pathname === item.href;
         const label = 'mobileLabel' in item ? item.mobileLabel : item.label;
-        const Icon = item.icon;
+        const Icon = active ? item.activeIcon : item.icon;
         return (
           <Link
             key={item.href}
@@ -23,7 +23,7 @@ export function BottomNav() {
             <span className={`bottom-nav-icon ${active ? 'bottom-nav-icon-active' : ''}`}>
               <Icon
                 size={20}
-                fill={active && item.href === '/home' ? 'currentColor' : 'none'}
+                fill={active ? 'currentColor' : 'none'}
                 strokeWidth={active ? 2.6 : 2}
                 aria-hidden="true"
               />

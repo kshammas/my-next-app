@@ -27,8 +27,9 @@ export function SideNav() {
       <div>
         <p className="side-nav-section">Explore</p>
         <nav className="side-nav-links">
-          {navItems.map(({ href, label, icon: Icon }) => {
+          {navItems.map(({ href, label, icon, activeIcon }) => {
             const active = pathname === href;
+            const Icon = active ? activeIcon : icon;
             return (
               <Link
                 key={href}
@@ -39,7 +40,7 @@ export function SideNav() {
                 <Icon
                   size={18}
                   strokeWidth={active ? 2.5 : 2}
-                  fill={active && href === '/home' ? 'currentColor' : undefined}
+                  fill={active ? 'currentColor' : undefined}
                   aria-hidden="true"
                 />
                 {label}
