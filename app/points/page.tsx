@@ -156,7 +156,10 @@ export default function PointsPage() {
           <QrScanner
             activityId={selected?.id}
             onClose={() => setScanning(false)}
-            onResult={(value) => claim(value)}
+            onResult={(value) => {
+              claim(value);
+              setScanning(false);
+            }}
           />
         ) : null}
       </div>
