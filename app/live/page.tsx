@@ -14,6 +14,9 @@ const stages = [
 
 type StageName = (typeof stages)[number]['name'];
 
+const SAMPLE_VIDEO_ID = 'aqz-KE-bpKQ';
+const sampleVideoSrc = `https://www.youtube.com/embed/${SAMPLE_VIDEO_ID}?autoplay=1&mute=1&loop=1&playlist=${SAMPLE_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1`;
+
 const focusOnDark =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FDF6D4]';
 const focusOnLight =
@@ -22,6 +25,7 @@ const focusOnLight =
 export default function LivePage() {
   const [selectedName, setSelectedName] = useState<StageName>('Stage 01');
   const selected = stages.find((stage) => stage.name === selectedName) ?? stages[0];
+  const isActive = selected.tone === 'active';
 
   return (
     <AppShell>
@@ -39,15 +43,30 @@ export default function LivePage() {
 
         <div className="pb-[40px]">
           <div
-            role="img"
-            aria-label="Live video preview loading"
+            role={isActive ? undefined : 'img'}
+            aria-label={isActive ? undefined : 'Live video preview loading'}
             className="relative mx-[6px] mt-[14px] flex aspect-video items-center justify-center overflow-hidden rounded-[14px] bg-black"
           >
-            <span
-              className="h-[26px] w-[26px] animate-spin rounded-full border-[3px] border-b-[#FACC16] border-l-[#FACC16] border-r-transparent border-t-transparent"
-              aria-hidden="true"
-            />
-            <span className="sr-only">Preview only — no live stream in this prototype.</span>
+            {isActive ? (
+              <iframe
+                className="absolute inset-0 h-full w-full border-0"
+                src={sampleVideoSrc}
+                title="Stage 01 sample live stream"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            ) : (
+              <>
+                <span
+                  className="h-[26px] w-[26px] animate-spin rounded-full border-[3px] border-b-[#FACC16] border-l-[#FACC16] border-r-transparent border-t-transparent"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">
+                  Preview only — no live stream in this prototype.
+                </span>
+              </>
+            )}
           </div>
 
           <div className="mx-[6px] mt-[15px] flex min-h-[31px] items-start justify-between gap-3">
