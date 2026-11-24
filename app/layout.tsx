@@ -14,22 +14,73 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://home-rendezvous26.vercel.app';
+const siteName = 'Rendezvous 26';
+const siteDescription =
+  'The official web app for Rendezvous 26 — Jamia Madeenathunoor Life Festival. Schedule, scores, live events and Glocal Points.';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: 'Rendezvous 26',
-    template: '%s · Rendezvous 26',
+    default: siteName,
+    template: `%s · ${siteName}`,
   },
-  description:
-    'The official web app for Rendezvous 26 — Jamia Madeenathunoor Life Festival. Schedule, scores, live events and Glocal Points.',
-  applicationName: 'Rendezvous 26',
+  description: siteDescription,
+  applicationName: siteName,
+  keywords: [
+    'Rendezvous 26',
+    'Rendezvous',
+    'Jamia Madeenathunoor',
+    'Life Festival',
+    'festival schedule',
+    'live events',
+    'Glocal Points',
+  ],
+  authors: [{ name: siteName }],
+  creator: siteName,
+  category: 'events',
+  alternates: { canonical: '/' },
+  manifest: '/manifest.webmanifest',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    url: '/',
+    siteName,
+    title: siteName,
+    description: siteDescription,
+    images: [
+      {
+        url: '/rendezvous-logo.png',
+        width: 1024,
+        height: 1024,
+        alt: 'Rendezvous 26 logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteName,
+    description: siteDescription,
+    images: ['/rendezvous-logo.png'],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Rendezvous 26',
+    title: siteName,
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/icon-192x192.png',
+    icon: [{ url: '/rendezvous-logo.png', type: 'image/png', sizes: 'any' }],
+    apple: [{ url: '/icon-192x192.png', type: 'image/png', sizes: '192x192' }],
   },
 };
 
