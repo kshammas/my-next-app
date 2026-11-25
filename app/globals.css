@@ -1785,7 +1785,7 @@ svg {
   .participant-wallet-card { padding-right: 13px; padding-left: 13px; }
   .participant-name { max-width: 60%; }
   .wallet-actions a { font-size: 9px; }
-  .coin-pair { right: 10px; width: 76px; height: 57px; }
+  .coin-pair { right: 10px; width: 110px; height: 80px; }
   .shortcut-tile span { font-size: 9px; }
 }
 
