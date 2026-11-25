@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, MapPin, Radio } from '@/components/icons';
+import { ChevronLeft, MapPin } from '@/components/icons';
 import { AppShell } from '@/components/AppShell';
 
 const stages = [
@@ -168,64 +168,43 @@ export default function LivePage() {
                   onClick={() => setSelectedName(stage.name)}
                   aria-pressed={selectedStage}
                   aria-label={`Select ${stage.name}, ${stage.place}`}
-                  className={`group relative flex min-h-[68px] w-full items-center gap-[12px] overflow-hidden rounded-[16px] border px-[13px] py-[12px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md ${focusOnLight} ${
+                  className={`flex min-h-[62px] w-full items-center gap-[12px] rounded-[14px] border px-[12px] py-[11px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md ${focusOnLight} ${
                     active
-                      ? 'border-[#15532E] bg-[#15532E] text-white shadow-[0_8px_20px_rgba(21,83,46,0.22)]'
+                      ? 'border-[#15532E] bg-[#15532E] text-white'
                       : soon
-                        ? 'border-[#E3E9E4] bg-white text-[#195030]'
+                        ? 'border-[#DDE7DF] bg-white text-[#195030]'
                         : 'border-[#EFF9F1] bg-[#FBFDFA] text-[#719780]'
                   } ${
                     selectedStage && !active ? 'border-[#15532E] ring-1 ring-[#15532E]' : ''
                   }`}
                 >
                   <span
-                    className={`absolute inset-y-[12px] left-0 w-[3px] rounded-r-full ${
-                      active ? 'bg-[#FACC16]' : soon ? 'bg-[#E2A93B]' : 'bg-[#C8D6CD]'
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <span
-                    className={`grid h-[34px] w-[34px] shrink-0 place-items-center rounded-[12px] text-[10px] font-[800] tabular-nums ${
+                    className={`grid h-[30px] w-[30px] shrink-0 place-items-center rounded-[10px] text-[9px] font-[800] ${
                       active
                         ? 'bg-white/15 text-[#FACC16]'
                         : soon
-                          ? 'bg-[#FFF3C6] text-[#8B4311]'
-                          : 'bg-[#EDF2EE] text-[#93A49A]'
+                          ? 'bg-[#E6F3EA] text-[#15532E]'
+                          : 'bg-[#F1F5F2] text-[#8AA094]'
                     }`}
                     aria-hidden="true"
                   >
-                    {active ? (
-                      <Radio size={16} strokeWidth={2.2} />
-                    ) : (
-                      String(index + 1).padStart(2, '0')
-                    )}
+                    {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="flex min-w-0 flex-1 flex-col gap-[4px]">
-                    <span className="flex min-w-0 items-center gap-[6px]">
-                      <span className="truncate text-[12px] font-[760] leading-[1.1]">
-                        {stage.name}
-                      </span>
-                      {active ? (
-                        <span
-                          className="h-[5px] w-[5px] shrink-0 animate-pulse rounded-full bg-[#FACC16]"
-                          aria-hidden="true"
-                        />
-                      ) : null}
-                    </span>
+                  <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
+                    <span className="text-[11px] font-[750] leading-[1.15]">{stage.name}</span>
                     <span
-                      className={`flex min-w-0 items-center gap-[4px] text-[9px] leading-[1.1] ${
+                      className={`truncate text-[8px] leading-[1.1] ${
                         active ? 'text-[#A3C9B2]' : soon ? 'text-[#747F79]' : 'text-[#AAB0AC]'
                       }`}
                     >
-                      <MapPin size={10} strokeWidth={2} aria-hidden="true" />
-                      <span className="truncate">{stage.place}</span>
+                      {stage.place}
                     </span>
                   </span>
                   <span
                     className={`shrink-0 leading-none ${
                       active
                         ? 'text-[9px] font-[750] normal-case text-[#F7CC1B]'
-                        : `inline-flex min-h-[20px] items-center rounded-full px-[9px] text-[7px] font-[750] uppercase ${
+                        : `inline-flex min-h-[18px] items-center rounded-full px-[8px] text-[7px] font-[750] uppercase ${
                             soon
                               ? 'bg-[#FFF3C6] text-[#8B4311]'
                               : 'bg-[#EFF9F1] text-[#A5B0AA]'
@@ -234,14 +213,6 @@ export default function LivePage() {
                   >
                     {stage.status}
                   </span>
-                  <ChevronRight
-                    size={14}
-                    strokeWidth={2.2}
-                    className={`shrink-0 transition-transform group-hover:translate-x-[2px] ${
-                      active ? 'text-white/70' : soon ? 'text-[#9FB2A5]' : 'text-[#C3CEC7]'
-                    }`}
-                    aria-hidden="true"
-                  />
                 </button>
               );
             })}
