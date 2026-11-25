@@ -22,6 +22,8 @@ const focusOnDark =
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
+const stageButtonClass = `flex min-h-[62px] w-full items-center gap-[12px] rounded-[14px] border px-[12px] py-[11px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md ${focusOnLight}`;
+
 export default function LivePage() {
   const [selectedName, setSelectedName] = useState<StageName>('Stage 01');
   const selected = stages.find((stage) => stage.name === selectedName) ?? stages[0];
@@ -158,7 +160,6 @@ export default function LivePage() {
           <div className="mx-[10px] mt-[12px] flex flex-col gap-[10px]">
             {stages.map((stage, index) => {
               const active = stage.tone === 'active';
-              const soon = stage.tone === 'soon';
               const selectedStage = stage.name === selectedName;
 
               return (
@@ -168,23 +169,13 @@ export default function LivePage() {
                   onClick={() => setSelectedName(stage.name)}
                   aria-pressed={selectedStage}
                   aria-label={`Select ${stage.name}, ${stage.place}`}
-                  className={`flex min-h-[62px] w-full items-center gap-[12px] rounded-[14px] border px-[12px] py-[11px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md ${focusOnLight} ${
-                    active
-                      ? 'border-[#15532E] bg-[#15532E] text-white'
-                      : soon
-                        ? 'border-[#DDE7DF] bg-white text-[#195030]'
-                        : 'border-[#EFF9F1] bg-[#FBFDFA] text-[#719780]'
-                  } ${
-                    selectedStage && !active ? 'border-[#15532E] ring-1 ring-[#15532E]' : ''
-                  }`}
+                  className={stageButtonClass}
+                  data-stage-button=""
+                  data-active={active ? 'true' : undefined}
                 >
                   <span
                     className={`grid h-[30px] w-[30px] shrink-0 place-items-center rounded-[10px] text-[9px] font-[800] ${
-                      active
-                        ? 'bg-white/15 text-[#FACC16]'
-                        : soon
-                          ? 'bg-[#E6F3EA] text-[#15532E]'
-                          : 'bg-[#F1F5F2] text-[#8AA094]'
+                      active ? 'bg-white/15 text-[#FACC16]' : 'bg-[#F1F5F2] text-[#8AA094]'
                     }`}
                     aria-hidden="true"
                   >
@@ -194,7 +185,7 @@ export default function LivePage() {
                     <span className="text-[11px] font-[750] leading-[1.15]">{stage.name}</span>
                     <span
                       className={`truncate text-[8px] leading-[1.1] ${
-                        active ? 'text-[#A3C9B2]' : soon ? 'text-[#747F79]' : 'text-[#AAB0AC]'
+                        active ? 'text-[#A3C9B2]' : 'text-[#747F79]'
                       }`}
                     >
                       {stage.place}
@@ -204,11 +195,7 @@ export default function LivePage() {
                     className={`shrink-0 leading-none ${
                       active
                         ? 'text-[9px] font-[750] normal-case text-[#F7CC1B]'
-                        : `inline-flex min-h-[18px] items-center rounded-full px-[8px] text-[7px] font-[750] uppercase ${
-                            soon
-                              ? 'bg-[#FFF3C6] text-[#8B4311]'
-                              : 'bg-[#EFF9F1] text-[#A5B0AA]'
-                          }`
+                        : 'text-[8px] font-[750] uppercase text-[#8AA094]'
                     }`}
                   >
                     {stage.status}

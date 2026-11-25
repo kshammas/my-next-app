@@ -1744,6 +1744,19 @@ svg {
   background: #16834d;
 }
 
+/* Live — every stage button shares one class; only the live stage is filled. */
+[data-stage-button] {
+  border-color: #e3e9e4;
+  background-color: #ffffff;
+  color: #195030;
+}
+
+[data-stage-button][data-active='true'] {
+  border-color: #15532e;
+  background-color: #15532e;
+  color: #ffffff;
+}
+
 /* Dock proportions from the reference post-login screen. */
 .bottom-nav {
   bottom: max(8px, env(safe-area-inset-bottom));
