@@ -26,6 +26,7 @@ export default function LivePage() {
   const [selectedName, setSelectedName] = useState<StageName>('Stage 01');
   const selected = stages.find((stage) => stage.name === selectedName) ?? stages[0];
   const isActive = selected.tone === 'active';
+  const isOffline = selected.tone === 'offline';
 
   return (
     <AppShell>
@@ -44,7 +45,13 @@ export default function LivePage() {
         <div className="pb-[40px]">
           <div
             role={isActive ? undefined : 'img'}
-            aria-label={isActive ? undefined : 'Live video preview loading'}
+            aria-label={
+              isActive
+                ? undefined
+                : isOffline
+                  ? `${selected.name} offline — no live stream`
+                  : 'Live video preview loading'
+            }
             className="relative mx-[6px] mt-[14px] flex aspect-video items-center justify-center overflow-hidden rounded-[14px] bg-black"
           >
             {isActive ? (
@@ -56,6 +63,24 @@ export default function LivePage() {
                 allowFullScreen
                 referrerPolicy="strict-origin-when-cross-origin"
               />
+            ) : isOffline ? (
+              <div className="flex flex-col items-center gap-[6px] text-white/70">
+                <svg
+                  className="h-[52px] w-[52px]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M5.6 5.6 18.4 18.4" />
+                </svg>
+                <span className="text-[8px] font-[750] uppercase tracking-[0.14em] text-[#FACC16]">
+                  Offline
+                </span>
+              </div>
             ) : (
               <>
                 <span
