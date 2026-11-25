@@ -22,7 +22,7 @@ const focusOnDark =
 const focusOnLight =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15532E]';
 
-const stageButtonClass = `flex min-h-[62px] w-full items-center gap-[12px] rounded-[14px] border px-[12px] py-[11px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md ${focusOnLight}`;
+const stageButtonClass = `flex min-h-[62px] w-full items-center gap-[12px] rounded-[14px] border px-[12px] py-[11px] text-left transition-all duration-200 hover:-translate-y-[1px] hover:shadow-md border-[var(--stage-border)] bg-[var(--stage-bg)] text-[var(--stage-text)] ${focusOnLight}`;
 
 export default function LivePage() {
   const [selectedName, setSelectedName] = useState<StageName>('Stage 01');

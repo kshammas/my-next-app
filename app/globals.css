@@ -1744,17 +1744,17 @@ svg {
   background: #16834d;
 }
 
-/* Live — every stage button shares one class; only the live stage is filled. */
+/* Live — every stage button shares one class; the active stage swaps these vars. */
 [data-stage-button] {
-  border-color: #e3e9e4;
-  background-color: #ffffff;
-  color: #195030;
+  --stage-border: #e3e9e4;
+  --stage-bg: #ffffff;
+  --stage-text: #195030;
 }
 
 [data-stage-button][data-active='true'] {
-  border-color: #15532e;
-  background-color: #15532e;
-  color: #ffffff;
+  --stage-border: #15532e;
+  --stage-bg: #15532e;
+  --stage-text: #ffffff;
 }
 
 /* Dock proportions from the reference post-login screen. */
