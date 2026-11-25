@@ -1643,20 +1643,40 @@ svg {
   white-space: nowrap;
 }
 
-.home-banner-wrap { margin-bottom: 14px; }
+.home-banner-wrap { margin-top: 1.6rem; margin-bottom: 14px; }
 
-.home-banner {
+.banner-viewport {
   position: relative;
-  display: block;
-  width: 100%;
   height: 116px;
   overflow: hidden;
   border-radius: 23px;
   background: #032c20;
   box-shadow: 0 5px 13px rgba(14, 53, 35, 0.16);
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.banner-viewport:active { cursor: grabbing; }
+
+.banner-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 320ms var(--ease);
+  will-change: transform;
+}
+
+.banner-track-dragging { transition: none; }
+
+.home-banner {
+  position: relative;
+  display: block;
+  height: 100%;
+  flex: 0 0 100%;
+  overflow: hidden;
   color: #fff;
   text-align: left;
-  margin-top: 1.6rem;
 }
 
 .home-banner img {
@@ -1776,7 +1796,7 @@ svg {
   .coin-pair { top: 24px; right: 30px; width: 126px; height: 95px; }
   .wallet-actions { margin-top: 16px; }
   .shortcut-tile { min-height: 95px; }
-  .home-banner { height: 150px; }
+  .banner-viewport { height: 150px; }
 }
 
 @media (max-width: 360px) {

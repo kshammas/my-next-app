@@ -16,7 +16,7 @@ import {
   Trophy,
   Wallet,
 } from '@/components/icons';
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { usePrototype } from '@/lib/prototype-store';
 import type { AppNotification, Session } from '@/lib/types';
@@ -207,7 +207,26 @@ function GuestHome({ notifications }: { notifications: AppNotification[] }) {
 
 function ParticipantHome({ session }: { session: Session }) {
   const [highlight, setHighlight] = useState(1);
-  const current = highlights[highlight];
+  const [dragOffset, setDragOffset] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startX = useRef<number | null>(null);
+  const moved = useRef(false);
+  const suppressClick = useRef(false);
+
+  const finishDrag = (clientX?: number) => {
+    if (startX.current === null) return;
+    const distance = clientX === undefined ? 0 : clientX - startX.current;
+    if (moved.current && Math.abs(distance) > 42) {
+      setHighlight((index) =>
+        distance < 0
+          ? Math.min(index + 1, highlights.length - 1)
+          : Math.max(index - 1, 0),
+      );
+    }
+    startX.current = null;
+    setDragging(false);
+    setDragOffset(0);
+  };
 
   return (
     <AppShell showBottomNav>
@@ -259,26 +278,92 @@ function ParticipantHome({ session }: { session: Session }) {
           ))}
         </section>
 
-        <section className="home-banner-wrap" aria-label="Festival highlights">
-          <Link href={current.href} className="home-banner" aria-label={current.title}>
-            <Image src={current.image} alt="" fill sizes="(max-width: 640px) 100vw, 540px" priority />
-            <span className="banner-vignette" />
-            <span className="banner-copy">
-              <strong>{current.title}</strong>
-              <small>{current.subtitle}</small>
-            </span>
-            {current.action ? (
-              <span className="banner-action">
-                Watch Live <ArrowUpRight size={17} strokeWidth={2} aria-hidden="true" />
-              </span>
-            ) : null}
-          </Link>
+        <section
+          className="home-banner-wrap"
+          aria-label="Festival highlights"
+          aria-roledescription="carousel"
+        >
+          <div
+            className="banner-viewport"
+            onPointerDown={(event) => {
+              if (event.pointerType === 'mouse' && event.button !== 0) return;
+              startX.current = event.clientX;
+              moved.current = false;
+              suppressClick.current = false;
+            }}
+            onPointerMove={(event) => {
+              if (startX.current === null) return;
+              const distance = event.clientX - startX.current;
+              if (Math.abs(distance) > 6) {
+                moved.current = true;
+                setDragging(true);
+                setDragOffset(distance);
+              }
+            }}
+            onPointerUp={(event) => {
+              suppressClick.current = moved.current;
+              finishDrag(event.clientX);
+            }}
+            onPointerCancel={() => {
+              suppressClick.current = false;
+              finishDrag();
+            }}
+            onPointerLeave={(event) => {
+              if (startX.current !== null) {
+                suppressClick.current = moved.current;
+                finishDrag(event.clientX);
+              }
+            }}
+            onClickCapture={(event) => {
+              if (!suppressClick.current) return;
+              event.preventDefault();
+              event.stopPropagation();
+              suppressClick.current = false;
+            }}
+          >
+            <div
+              className={`banner-track${dragging ? ' banner-track-dragging' : ''}`}
+              style={{
+                transform: `translate3d(calc(${-highlight * 100}% + ${dragOffset}px), 0, 0)`,
+              }}
+            >
+              {highlights.map((item, index) => (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className="home-banner"
+                  aria-label={item.title}
+                  draggable={false}
+                >
+                  <Image
+                    src={item.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, 540px"
+                    priority={index === highlight}
+                    draggable={false}
+                  />
+                  <span className="banner-vignette" />
+                  <span className="banner-copy">
+                    <strong>{item.title}</strong>
+                    <small>{item.subtitle}</small>
+                  </span>
+                  {item.action ? (
+                    <span className="banner-action">
+                      Watch Live <ArrowUpRight size={17} strokeWidth={2} aria-hidden="true" />
+                    </span>
+                  ) : null}
+                </Link>
+              ))}
+            </div>
+          </div>
           <div className="banner-dots" aria-label="Choose highlight">
             {highlights.map((item, index) => (
               <button
                 key={item.title}
                 type="button"
                 aria-label={`Show highlight ${index + 1}`}
+                aria-current={index === highlight ? 'true' : undefined}
                 className={index === highlight ? 'banner-dot-active' : ''}
                 onClick={() => setHighlight(index)}
               />
